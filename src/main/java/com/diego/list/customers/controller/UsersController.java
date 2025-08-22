@@ -9,12 +9,11 @@ import java.util.List;
 @RestController
 public class UsersController {
     @GetMapping("/users")
-    public String Users() {
-        var users = List.of(
+    public List<User> Users() {
+        return List.of(
                 new User(1, "Diego", ""),
                 new User(1, "Diego", ""),
                 new User(1, "Diego", "")
         );
-        return "Users endpoint is working!";
     }
 }
