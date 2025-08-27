@@ -2,21 +2,67 @@ package com.diego.list.customers.controller;
 
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.services.UsersServices;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/users")
 public class UsersController {
-    @GetMapping("/users")
-    public List<User> Users() {
-        UsersServices usersServices = new UsersServices("Diego");
-        System.out.println("UsersController.Users() chamado");
-        return List.of(
-                new User(1, "Diego", ""),
-                new User(1, "Diego", ""),
-                new User(1, "Diego", "")
-        );
+
+    @Autowired
+    private UsersServices usersServices;
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return usersServices.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        Optional<User> user = usersServices.getUserById(id);
+        return user.map(ResponseEntity::ok)
+                  .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+        return usersServices.saveUser(user);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+        Optional<User> optionalUser = usersServices.getUserById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setName(userDetails.getName());
+            user.setEmail(userDetails.getEmail());
+            return ResponseEntity.ok(usersServices.saveUser(user));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        if (usersServices.getUserById(id).isPresent()) {
+            usersServices.deleteUser(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/search")
+    public List<User> searchUsers(@RequestParam String term) {
+        return usersServices.searchUsers(term);
+    }
+
+    @GetMapping("/by-email")
+    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
+        Optional<User> user = usersServices.getUserByEmail(email);
+        return user.map(ResponseEntity::ok)
+                  .orElse(ResponseEntity.notFound().build());
     }
 }
