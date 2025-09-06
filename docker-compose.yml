@@ -1,4 +1,14 @@
 services:
+  postgres_mn_db:
+    image: postgres:17
+    container_name: postgres_mn_db
+    environment:
+      POSTGRES_USER: diego
+      POSTGRES_PASSWORD: diego
+      POSTGRES_DB: manager_person
+    ports:
+      - "25432:5432"
+    restart: unless-stopped
   java-app:
     build:
       context: .
