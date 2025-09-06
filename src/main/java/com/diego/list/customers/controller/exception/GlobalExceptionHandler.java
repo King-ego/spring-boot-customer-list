@@ -22,5 +22,10 @@ public class GlobalExceptionHandler {
     static class SimpleError(int status, String message) {
         public int status;
         public String message;
+
+        public SimpleError(int status, String message) {
+            this.status = status;
+            this.message = message;
+        }
     }
 }
