@@ -19,13 +19,8 @@ public class GlobalExceptionHandler {
                 .body(new SimpleError(HttpStatus.BAD_REQUEST.value(), message));
     }
 
-    static class SimpleError(int status, String message) {
-        public int status;
-        public String message;
 
-        public SimpleError(int status, String message) {
-            this.status = status;
-            this.message = message;
-        }
+    record SimpleError(int status, String message) {
+
     }
 }
