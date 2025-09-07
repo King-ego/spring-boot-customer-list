@@ -19,7 +19,6 @@ public class CreateProductDto {
     @NotNull(message = "A quantidade em estoque é obrigatória")
     private Integer quantity_in_stock;
 
-
     private String description;
 
     @NotNull(message = "A categoria do produto é obrigatória")
