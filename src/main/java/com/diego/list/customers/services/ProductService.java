@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class ProductServices {
-    public ProductServices(){
+public class ProductService {
+    public ProductService(){
         System.out.println("Service de criação de produto iniciado");
     }
 
