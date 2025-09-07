@@ -11,6 +11,8 @@ public class CustomErrorController {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<String> handle404(NoHandlerFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Página não encontrada (404)");
+                .body(
+                        "Custom 404 error: The resource you are looking for was not found."
+                );
     }
 }
