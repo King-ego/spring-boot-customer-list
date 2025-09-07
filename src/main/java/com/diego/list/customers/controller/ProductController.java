@@ -33,6 +33,8 @@ public class ProductController {
                 product.getCategory()
         );
 
+        productService.createProduct(create);
+
         return ResponseEntity.status(HttpStatus.CREATED).toString();
     }
 }
