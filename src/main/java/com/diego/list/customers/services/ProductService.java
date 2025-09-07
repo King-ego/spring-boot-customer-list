@@ -3,8 +3,10 @@ package com.diego.list.customers.services;
 import com.diego.list.customers.command.CreateProductCommand;
 import com.diego.list.customers.model.Product;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @Transactional
 public class ProductService {
@@ -21,7 +23,7 @@ public class ProductService {
                 .category(command.getCategory())
                 .build();
 
-        System.out.println("Produto Criado com sucesso" + product);
+        log.info("Creando produto: {}", product);
 
         return "Produto " + command.getName() + " com preço " + command.getPrice() + " criado com sucesso!";
     }
