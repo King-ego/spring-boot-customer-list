@@ -2,6 +2,7 @@ package com.diego.list.customers.controller;
 
 import com.diego.list.customers.command.CreateProductCommand;
 import com.diego.list.customers.dto.CreateProductDto;
+import com.diego.list.customers.dto.FilterProductDto;
 import com.diego.list.customers.model.Product;
 import com.diego.list.customers.services.ProductService;
 import jakarta.validation.Valid;
@@ -38,7 +39,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> index(){
+    public List<Product> index(@ModelAttribute FilterProductDto query){
         return productService.getAllProducts();
     }
 }
