@@ -16,3 +16,5 @@ services:
     restart: unless-stopped
     ports:
       - "8079:8079"
+    volumes:
+      - .:/src/app
