@@ -21,15 +21,15 @@ public class OrderService {
 
     public void createOrder(CreateOrderCommand command) {
         List<OrderItemCommand> items = command.getOrders();
-        UUID customerId = command.getCustomerId();
 
         items.forEach(item -> {
             Order order = Order.builder()
-                    .customerId(customerId)
+                    .customerId(command.getCustomerId())
                     .productId(item.getProductId())
                     .quantity(item.getAmount())
                     .build();
-            log.info("Item de la orden: {}", item);
+
+            orderRepository.save(order);
         });
         log.info("Creando orden");
     }
