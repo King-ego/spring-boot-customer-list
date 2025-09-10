@@ -3,7 +3,10 @@ package com.diego.list.customers.controller;
 import com.diego.list.customers.command.CreateOrderCommand;
 import com.diego.list.customers.command.OrderItemCommand;
 import com.diego.list.customers.dto.CreateOrderDto;
+import com.diego.list.customers.services.OrderService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +19,11 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @RequestMapping("/orders")
+@AllArgsConstructor
 public class OrderController {
+
+    private final OrderService orderService;
+
     @PostMapping
     public void createOrder(@Valid @RequestBody CreateOrderDto orderDto) {
         log.info("Creating order {}", orderDto);
@@ -27,6 +34,8 @@ public class OrderController {
                         .map(item -> new OrderItemCommand(item.getProductId(), item.getAmount()))
                         .collect(Collectors.toList())
         );
+
+        orderService.CreateOrder(order);
 
         log.info("Creating order {}", order);
     }
