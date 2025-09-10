@@ -1,26 +1,32 @@
-# Customer List Application
+# E-Commerce Order Management System
 
-A simple Spring Boot application for managing and listing customers/users.
+A Spring Boot-based order management system for e-commerce applications with product catalog, customer management, order processing, and simulated payment integration.
 
 ## 📋 Overview
 
 This is a demo Spring Boot application that provides basic functionality for customer management. The application is built using Java 21 and Spring Boot 3.5.4, offering RESTful APIs for customer operations.
 
-## 🚀 Features
+## Features
 
-- Customer listing functionality
-- RESTful API endpoints
-- Health check endpoint
-- Spring Boot DevTools for development
-- Maven-based project structure
+- **Product Management**: CRUD operations for products with inventory tracking
+- **Customer Management**: Complete customer profile and address management
+- **Order Processing**: Order creation, status tracking, and inventory validation
+- **Payment Integration**: Simulated payment gateway with webhook support
+- **RESTful API**: Comprehensive API endpoints for all operations
+- **Data Validation**: Robust input validation and error handling
+- **Testing**: Comprehensive unit and integration tests
 
-## 🛠️ Technologies Used
+
+## Tech Stack
 
 - **Java 21**
-- **Spring Boot 3.5.4**
-- **Spring Web**
-- **Maven** for dependency management
-- **Spring Boot DevTools** for development productivity
+- **Spring Boot 3.2.0**
+- **Spring Data JPA**
+- **H2 Database** (Development)
+- **PostgreSQL 17** (Production)
+- **Maven**
+- **Docker & Docker Compose**
+- **JUnit 5 & Mockito**
 
 ## 📦 Prerequisites
 
@@ -35,29 +41,17 @@ Before running this application, make sure you have:
 ### Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:King-ego/spring-boot-customer-list.git
 cd list.customers
-```
-
-### Build the Application
-
-```bash
-./mvnw clean compile
 ```
 
 ### Run the Application
 
 ```bash
-./mvnw spring-boot:run
+docker compose up --build
 ```
 
-Or alternatively:
-
-```bash
-java -jar target/list.customers-0.0.1-SNAPSHOT.jar
-```
-
-The application will start on `http://localhost:8080`
+The application will start on `http://localhost:8079`
 
 ## 📡 API Endpoints
 
@@ -103,14 +97,6 @@ src/
 ## 🔧 Configuration
 
 The application uses default Spring Boot configurations. You can modify settings in `src/main/resources/application.properties`.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📝 License
 
