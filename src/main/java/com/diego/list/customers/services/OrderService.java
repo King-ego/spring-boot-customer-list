@@ -21,12 +21,15 @@ public class OrderService {
 
     public void createOrder(CreateOrderCommand command) {
         List<OrderItemCommand> items = command.getOrders();
+        UUID orderId = UUID.randomUUID();
 
         items.forEach(item -> {
             Order order = Order.builder()
                     .customerId(command.getCustomerId())
                     .productId(item.getProductId())
                     .quantity(item.getAmount())
+                    .orderId(orderId)
+                    .status("PENDING")
                     .build();
 
             orderRepository.save(order);
