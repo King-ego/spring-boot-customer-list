@@ -1,7 +1,6 @@
 package com.diego.list.customers.services;
 
 import com.diego.list.customers.command.CreateOrderCommand;
-import com.diego.list.customers.model.Order;
 import com.diego.list.customers.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
