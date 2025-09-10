@@ -34,6 +34,6 @@ public class OrderService {
 
             orderRepository.save(order);
         });
-        log.info("Creando orden");
+
     }
 }
