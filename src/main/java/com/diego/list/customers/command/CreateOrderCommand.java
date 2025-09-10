@@ -14,7 +14,5 @@ import java.util.UUID;
 public class CreateOrderCommand {
     private UUID customerId;
 
-    private UUID productId;
-
-    private Integer quantity;
+    private String order;
 }
