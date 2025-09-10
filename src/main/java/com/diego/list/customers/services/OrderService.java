@@ -2,6 +2,7 @@ package com.diego.list.customers.services;
 
 import com.diego.list.customers.command.CreateOrderCommand;
 import com.diego.list.customers.command.OrderItemCommand;
+import com.diego.list.customers.model.Order;
 import com.diego.list.customers.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Transactional
@@ -17,10 +19,18 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
 
-    public void CreateOrder(CreateOrderCommand order) {
-        List<OrderItemCommand> items = order.getOrders();
+    public void createOrder(CreateOrderCommand command) {
+        List<OrderItemCommand> items = command.getOrders();
+        UUID customerId = command.getCustomerId();
 
-
+        items.forEach(item -> {
+            Order order = Order.builder()
+                    .customerId(customerId)
+                    .productId(item.getProductId())
+                    .quantity(item.getAmount())
+                    .build();
+            log.info("Item de la orden: {}", item);
+        });
         log.info("Creando orden");
     }
 }
