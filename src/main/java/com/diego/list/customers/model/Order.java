@@ -29,4 +29,6 @@ public class Order {
     private Integer quantity;
 
     private String status;
+
+    private UUID orderId;
 }
