@@ -22,7 +22,6 @@ public class CustomerService {
         Optional<Customer> existCustomer = customerRepository.findByEmail(command.getEmail());
 
         if (existCustomer.isPresent()) {
-            log.warn("El cliente con email {} ya existe", command.getEmail());
             throw new IllegalArgumentException("Customer exist");
         }
 
