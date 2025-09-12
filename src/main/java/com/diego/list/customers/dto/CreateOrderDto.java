@@ -16,5 +16,5 @@ public class CreateOrderDto {
     private UUID customerId;
 
     @NotNull(message = "A lista de itens do pedido é obrigatória")
-    private List<OrderItemDto> order;
+    private List<OrderItemDto> orders;
 }
