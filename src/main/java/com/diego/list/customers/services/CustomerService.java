@@ -1,11 +1,13 @@
 package com.diego.list.customers.services;
 
 import com.diego.list.customers.command.CreateCustomerCommand;
+import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Customer;
 import com.diego.list.customers.repository.CustomerRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,7 +24,7 @@ public class CustomerService {
         Optional<Customer> existCustomer = customerRepository.findByEmail(command.getEmail());
 
         if (existCustomer.isPresent()) {
-            throw new IllegalArgumentException("Customer exist");
+            throw new CustomException("Customer exist", HttpStatus.CONFLICT);
         }
 
         Customer customer = Customer.builder()
