@@ -3,6 +3,7 @@ package com.diego.list.customers.services;
 import com.diego.list.customers.command.CreateOrderCommand;
 import com.diego.list.customers.command.OrderItemCommand;
 import com.diego.list.customers.model.Order;
+import com.diego.list.customers.repository.CustomerRepository;
 import com.diego.list.customers.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
 
     public void createOrder(CreateOrderCommand command) {
         List<OrderItemCommand> items = command.getOrders();
