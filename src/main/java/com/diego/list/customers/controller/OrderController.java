@@ -35,7 +35,7 @@ public class OrderController {
                         .collect(Collectors.toList())
         );
 
-        orderService.CreateOrder(order);
+        orderService.createOrder(order);
 
         log.info("Creating order {}", order);
     }
