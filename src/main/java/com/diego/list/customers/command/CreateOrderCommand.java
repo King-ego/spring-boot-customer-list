@@ -15,5 +15,5 @@ import java.util.UUID;
 public class CreateOrderCommand {
     private UUID customerId;
 
-    private List<OrderItemCommand> order;
+    private List<OrderItemCommand> orders;
 }
