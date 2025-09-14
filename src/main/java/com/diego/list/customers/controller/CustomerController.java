@@ -29,7 +29,7 @@ public class CustomerController {
     }
 
     @GetMapping
-    public String hello(){
+    public String Customers(){
         return "Hello World";
     }
 }
