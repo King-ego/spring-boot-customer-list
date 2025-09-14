@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import java.util.concurrent.atomic.AtomicReference;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class OrderService {
             throw new CustomException("Customer not found", HttpStatus.NOT_FOUND);
         }
 
-        double price = 0.0;
+        AtomicReference<Double> totalPrice = new AtomicReference<>(0.0);
 
         items.forEach(item -> {
 
@@ -56,11 +57,15 @@ public class OrderService {
                     .status("PENDING")
                     .build();
 
-             double price_all = ((product.get().getPrice()) * (item.getAmount())) + price;
+            double itemPrice = product.get().getPrice() * item.getAmount();
+
+            totalPrice.updateAndGet(current -> current + itemPrice);
 
 
             orderRepository.save(order);
         });
+
+        log.info("Order Created: {}", totalPrice.get());
 
     }
 }
