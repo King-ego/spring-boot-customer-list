@@ -38,7 +38,7 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    private  Optional<Customer> getCustomerById(UUID customerId) {
+    public Optional<Customer> customerById(UUID customerId) {
         return customerRepository.findById(customerId);
     }
 }
