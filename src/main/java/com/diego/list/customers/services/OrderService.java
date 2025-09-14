@@ -5,8 +5,10 @@ import com.diego.list.customers.command.OrderItemCommand;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Customer;
 import com.diego.list.customers.model.Order;
+import com.diego.list.customers.model.Product;
 import com.diego.list.customers.repository.CustomerRepository;
 import com.diego.list.customers.repository.OrderRepository;
+import com.diego.list.customers.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import java.util.UUID;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
 
     public void createOrder(CreateOrderCommand command) {
         List<OrderItemCommand> items = command.getOrders();
@@ -35,7 +38,16 @@ public class OrderService {
             throw new CustomException("Customer not found", HttpStatus.NOT_FOUND);
         }
 
+        double price = 0.0;
+
         items.forEach(item -> {
+
+            Optional<Product> product = productRepository.findById(item.getProductId());
+
+            if (product.isEmpty()) {
+                throw new CustomException("Product not found", HttpStatus.NOT_FOUND);
+            }
+
             Order order = Order.builder()
                     .customerId(command.getCustomerId())
                     .productId(item.getProductId())
@@ -43,6 +55,9 @@ public class OrderService {
                     .orderId(orderId)
                     .status("PENDING")
                     .build();
+
+             double price_all = ((product.get().getPrice()) * (item.getAmount())) + price;
+
 
             orderRepository.save(order);
         });
