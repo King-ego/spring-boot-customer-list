@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/customers")
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class CustomerController {
     }
 
     @GetMapping
-    public String CustomerById(@Param("id") String id){
+    public String CustomerById(@PathVariable UUID id){
         return "Hello World";
     }
 }
