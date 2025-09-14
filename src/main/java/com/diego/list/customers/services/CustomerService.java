@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -35,5 +36,9 @@ public class CustomerService {
                 .build();
 
         customerRepository.save(customer);
+    }
+
+    private  Optional<Customer> getCustomerById(UUID customerId) {
+        return customerRepository.findById(customerId);
     }
 }
