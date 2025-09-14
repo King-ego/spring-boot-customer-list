@@ -2,6 +2,7 @@ package com.diego.list.customers.controller;
 
 import com.diego.list.customers.command.CreateCustomerCommand;
 import com.diego.list.customers.dto.CreateCustomersDto;
+import com.diego.list.customers.model.Customer;
 import com.diego.list.customers.services.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -32,7 +34,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{customer_id}")
-    public String CustomerById(@PathVariable UUID customer_id){
-        return "Hello World";
+    public Optional<Customer> CustomerById(@PathVariable UUID customer_id){
+        return customerService.customerById(customer_id);
     }
 }
