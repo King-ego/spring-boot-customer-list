@@ -6,10 +6,7 @@ import com.diego.list.customers.services.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customers")
@@ -29,5 +26,10 @@ public class CustomerController {
         );
 
         customerService.create(customer);
+    }
+
+    @GetMapping
+    public String hello(){
+        return "Hello World";
     }
 }
