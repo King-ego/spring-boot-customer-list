@@ -31,8 +31,8 @@ public class CustomerController {
         customerService.create(customer);
     }
 
-    @GetMapping
-    public String CustomerById(@PathVariable UUID id){
+    @GetMapping("/{customer_id}")
+    public String CustomerById(@PathVariable UUID customer_id){
         return "Hello World";
     }
 }
