@@ -31,7 +31,7 @@ public class OrderService {
 
         Optional<Customer> customer = customerRepository.findById(command.getCustomerId());
 
-        if (customer.isPresent()) {
+        if (customer.isEmpty()) {
             throw new CustomException("Customer not found", HttpStatus.NOT_FOUND);
         }
 
