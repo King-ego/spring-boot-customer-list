@@ -30,5 +30,5 @@ public class Order {
 
     private String status;
 
-    private UUID orderId;
+    private UUID groupId;
 }
