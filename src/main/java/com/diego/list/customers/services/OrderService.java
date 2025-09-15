@@ -3,6 +3,8 @@ package com.diego.list.customers.services;
 import com.diego.list.customers.command.CreateOrderCommand;
 import com.diego.list.customers.command.OrderItemCommand;
 import com.diego.list.customers.errors.CustomException;
+import com.diego.list.customers.fila.exchange.RabbitMQProducer;
+import com.diego.list.customers.fila.exchange.event.OderCreateEvent;
 import com.diego.list.customers.model.Customer;
 import com.diego.list.customers.model.Order;
 import com.diego.list.customers.model.Product;
@@ -30,6 +32,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
+    private final RabbitMQProducer rabbitMQProducer;
 
     public void createOrder(CreateOrderCommand command) {
         List<OrderItemCommand> items = command.getOrders();
@@ -41,7 +44,7 @@ public class OrderService {
             throw new CustomException("Customer not found", HttpStatus.NOT_FOUND);
         }
 
-        AtomicReference<Double> totalPrice = new AtomicReference<>(0.0);
+        AtomicReference<BigDecimal> totalPrice = new AtomicReference<>(BigDecimal.ZERO);
 
         items.forEach(item -> {
 
@@ -62,14 +65,21 @@ public class OrderService {
             BigDecimal itemPrice = product.get().getPrice()
                     .multiply(BigDecimal.valueOf(item.getAmount()));
 
-            totalPrice.updateAndGet(current ->
-                    BigDecimal.valueOf(current).add(itemPrice).doubleValue()
-            );
+            totalPrice.updateAndGet(current -> current.add(itemPrice));
 
             orderRepository.save(order);
         });
 
         log.info("Order Created: {}", totalPrice.get());
+
+        OderCreateEvent event = new OderCreateEvent(
+                orderId,
+                command.getCustomerId(),
+                "PENDING",
+                totalPrice.get()
+        );
+
+        rabbitMQProducer.sendEvent(event);
 
     }
 }
