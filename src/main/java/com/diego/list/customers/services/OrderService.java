@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicReference;
 
 import java.util.List;
@@ -57,10 +59,12 @@ public class OrderService {
                     .status("PENDING")
                     .build();
 
-            double itemPrice = product.get().getPrice() * item.getAmount();
+            BigDecimal itemPrice = product.get().getPrice()
+                    .multiply(BigDecimal.valueOf(item.getAmount()));
 
-            totalPrice.updateAndGet(current -> current + itemPrice);
-
+            totalPrice.updateAndGet(current ->
+                    BigDecimal.valueOf(current).add(itemPrice).doubleValue()
+            );
 
             orderRepository.save(order);
         });
