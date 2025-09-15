@@ -8,10 +8,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class RabbitMQConsumer {
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
-    public void receiveMessage(String message) {
-        log.info("Received message from exchange: {}", message);
-    }
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
     public void receiveOrderEvent(OderCreateEvent event) {
