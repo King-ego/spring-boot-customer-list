@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -13,5 +14,5 @@ public class OderCreateEvent {
     private UUID orderId;
     private UUID customerId;
     private String orderStatus;
-    private Float orderTotal;
+    private BigDecimal orderTotal;
 }
