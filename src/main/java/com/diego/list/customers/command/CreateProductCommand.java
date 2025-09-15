@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class CreateProductCommand {
     private String name;
 
-    private Integer price;
+    private BigDecimal price;
 
     private Integer quantity_in_stock;
 
