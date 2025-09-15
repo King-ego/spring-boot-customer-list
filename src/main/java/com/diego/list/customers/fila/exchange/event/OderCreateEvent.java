@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OderCreateEvent {
-    private UUID orderId;
+    private UUID groupId;
     private UUID customerId;
     private String orderStatus;
     private BigDecimal orderTotal;
