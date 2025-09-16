@@ -1,4 +1,4 @@
-HELP.md
+app/HELP.md
 target/
 /http
 .mvn/wrapper/maven-wrapper.jar
@@ -16,6 +16,7 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
+/**/.idea
 *.iws
 *.iml
 *.ipr
