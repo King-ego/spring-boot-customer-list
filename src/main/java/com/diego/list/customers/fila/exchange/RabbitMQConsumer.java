@@ -22,10 +22,10 @@ public class RabbitMQConsumer {
 
     private void processOrderEvent(OderCreateEvent event) {
         log.info("Processing order {} for customer {} with total: {}",
-                event.getOrderId(),
+                event.getGroupId(),
                 event.getCustomerId(),
                 event.getOrderTotal());
 
-        log.info("Order {} processed successfully", event.getOrderId());
+        log.info("Order {} processed successfully", event.getGroupId());
     }
 }
