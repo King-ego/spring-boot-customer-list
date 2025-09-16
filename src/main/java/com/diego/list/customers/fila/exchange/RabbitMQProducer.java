@@ -17,4 +17,9 @@ public class RabbitMQProducer {
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
         log.info("Sent message to exchange: {}", RabbitMQConfig.EXCHANGE_NAME);
     }
+
+    public void sendEvent(Object event) {
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, event);
+        log.info("Sent event to exchange: {}", RabbitMQConfig.EXCHANGE_NAME);
+    }
 }
