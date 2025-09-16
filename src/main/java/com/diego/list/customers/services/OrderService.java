@@ -36,7 +36,7 @@ public class OrderService {
 
     public void createOrder(CreateOrderCommand command) {
         List<OrderItemCommand> items = command.getOrders();
-        UUID orderId = UUID.randomUUID();
+        UUID groupId = UUID.randomUUID();
 
         Optional<Customer> customer = customerRepository.findById(command.getCustomerId());
 
@@ -58,7 +58,7 @@ public class OrderService {
                     .customerId(command.getCustomerId())
                     .productId(item.getProductId())
                     .quantity(item.getAmount())
-                    .orderId(orderId)
+                    .groupId(groupId)
                     .status("PENDING")
                     .build();
 
@@ -73,7 +73,7 @@ public class OrderService {
         log.info("Order Created: {}", totalPrice.get());
 
         OderCreateEvent event = new OderCreateEvent(
-                orderId,
+                groupId,
                 command.getCustomerId(),
                 "PENDING",
                 totalPrice.get()
