@@ -2,7 +2,7 @@
 
 A Spring Boot-based order management system for e-commerce applications with product catalog, customer management, order processing, and simulated payment integration.
 
-## 📋 Overview
+##  Overview
 
 This is a demo Spring Boot application that provides basic functionality for customer management. The application is built using Java 21 and Spring Boot 3.5.4, offering RESTful APIs for customer operations.
 
@@ -22,8 +22,10 @@ This is a demo Spring Boot application that provides basic functionality for cus
 - **Java 21**
 - **Spring Boot 3.2.0**
 - **Spring Data JPA**
-- **H2 Database** (Development)
-- **PostgreSQL 17** (Production)
+- **PostgreSQL 17** 
+- **GoLang** (for payment simulation)
+- **RESTful APIs**
+- **Lombok**
 - **Maven**
 - **Docker & Docker Compose**
 - **JUnit 5 & Mockito**
