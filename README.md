@@ -78,38 +78,6 @@ Execute the test suite:
 ./mvnw test
 ```
 
-## 📁 Project Structure
-
-```
-src/
-├── main/
-│   ├── java/
-│   │   └── com/diego/list/customers/
-│   │       ├── Application.java          # Main application class
-│   │       └── controller/
-│   │           └── HealthController.java # Health check controller
-│   └── resources/
-│       ├── application.properties        # Application configuration
-│       ├── static/                      # Static resources
-│       └── templates/                   # Template files
-└── test/
-    └── java/
-        └── com/diego/list/customers/
-            └── ApplicationTests.java     # Application tests
-```
-
 ## 🔧 Configuration
 
 The application uses default Spring Boot configurations. You can modify settings in `src/main/resources/application.properties`.
-
-## 📝 License
-
-This project is a demo application for learning purposes.
-
-## 📞 Contact
-
-For questions or support, please reach out to the development team.
-
----
-
-*This is a demo project created for educational purposes using Spring Boot framework.*
