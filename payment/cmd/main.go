@@ -19,7 +19,7 @@ func connectToRabbitMQ() (*amqp.Connection, error) {
 	var conn *amqp.Connection
 	var err error
 
-	for i := 0; i < 30; i++ { // Tenta por 30 vezes
+	for i := 0; i < 30; i++ {
 		conn, err = amqp.Dial("amqp://guest:guest@rabbitmq:5672/")
 		if err == nil {
 			log.Println("Connected to RabbitMQ!")
@@ -27,7 +27,7 @@ func connectToRabbitMQ() (*amqp.Connection, error) {
 		}
 
 		log.Printf("Failed to connect to RabbitMQ (attempt %d/30): %s", i+1, err)
-		time.Sleep(2 * time.Second) // Espera 2 segundos
+		time.Sleep(2 * time.Second)
 	}
 
 	return nil, err
@@ -48,7 +48,6 @@ func main() {
 	}
 	defer ch.Close()
 
-	// Resto do código igual...
 	queue, err := ch.QueueDeclare(
 		"customer-queue",
 		true,
@@ -58,7 +57,7 @@ func main() {
 		nil,
 	)
 	if err != nil {
-		log.Fatalf("Failed to declare a queue: %s", err)
+		log.Fatal("Failed to declare a queue: %s", err)
 	}
 
 	msgs, err := ch.Consume(
@@ -70,8 +69,9 @@ func main() {
 		false,
 		nil,
 	)
+
 	if err != nil {
-		log.Fatalf("Failed to register a consumer: %s", err)
+		log.Fatal("Failed to register a consumer: %s", err)
 	}
 
 	forever := make(chan bool)
