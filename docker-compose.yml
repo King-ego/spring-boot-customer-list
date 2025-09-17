@@ -14,15 +14,27 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+  go-app:
+    build:
+      context: payment
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8787:8787"
+    #volumes:
+    #- .:/src/payment
+    depends_on:
+      - rabbitmq
+      - postgres_mn_db
   java-app:
     build:
-      context: .
+      context: app
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - "8079:8079"
-    volumes:
-      - .:/src/app
+    #volumes:
+      # - .:/src/app
     depends_on:
       - rabbitmq
       - postgres_mn_db
