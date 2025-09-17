@@ -57,11 +57,15 @@ The application will start on `http://localhost:8079`
 
 ### Health Check
 - **GET** `/health`
-  - Description: Check application health status
-  - Query Parameters:
-    - `name` (optional): Name to include in greeting (default: "World")
-  - Example: `GET /health?name=Diego`
-  - Response: `Hello, Diego!`
+    - Description: Check application health status
+    - Example: `GET /health`
+    - Response: 200
+  ```json
+    {
+      "status": "UP",
+      "database": "Connected",
+      "message": "Application is healthy"  
+    }
 
 ### Customer Operations
 *Additional customer endpoints will be implemented here*
