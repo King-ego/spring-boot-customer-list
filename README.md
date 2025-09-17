@@ -28,15 +28,13 @@ This is a demo Spring Boot application that provides basic functionality for cus
 - **Docker & Docker Compose**
 - **JUnit 5 & Mockito**
 
-## 📦 Prerequisites
+## Prerequisites
 
 Before running this application, make sure you have:
 
-- Java 21 or higher installed
-- Maven 3.6+ installed
-- Your favorite IDE (IntelliJ IDEA, Eclipse, VS Code, etc.)
+- docker
 
-## 🏃‍♂️ Getting Started
+## ️ Getting Started
 
 ### Clone the Repository
 
@@ -53,9 +51,7 @@ docker compose up --build
 
 The application will start on `http://localhost:8079`
 
-## 📡 API Endpoints
-
-### Health Check
+## Health Check
 - **GET** `/health`
     - Description: Check application health status
     - Example: `GET /health`
@@ -67,10 +63,8 @@ The application will start on `http://localhost:8079`
       "message": "Application is healthy"  
     }
 
-### Customer Operations
-*Additional customer endpoints will be implemented here*
 
-## 🧪 Running Tests
+##  Running Tests
 
 Execute the test suite:
 
@@ -78,6 +72,6 @@ Execute the test suite:
 ./mvnw test
 ```
 
-## 🔧 Configuration
+##  Configuration
 
 The application uses default Spring Boot configurations. You can modify settings in `src/main/resources/application.properties`.
