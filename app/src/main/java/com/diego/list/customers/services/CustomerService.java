@@ -19,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final StripeServices stripeServices;
 
     public void create(CreateCustomerCommand command){
 
@@ -38,6 +39,8 @@ public class CustomerService {
         customerRepository.save(customer);
 
         String stripeKey = System.getenv("STRIPE_API_KEY");
+
+        stripeServices.createCustomer();
 
         log.info("Stripe key: {}", stripeKey);
     }
