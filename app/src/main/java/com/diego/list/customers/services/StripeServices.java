@@ -1,5 +1,7 @@
 package com.diego.list.customers.services;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +14,8 @@ import org.springframework.stereotype.Service;
 public class StripeServices {
     private final String stripeApiKey  = System.getenv("STRIPE_API_KEY");
 
-    public void createCustomer() {
+    public void createCustomer(String email, String name) throws StripeException {
+        Stripe.apiKey = stripeApiKey;
         log.info("Creating Stripe Customer {}", stripeApiKey);
     }
 }
