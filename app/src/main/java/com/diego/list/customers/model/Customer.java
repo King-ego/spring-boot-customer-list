@@ -28,6 +28,6 @@ public class Customer {
 
     private String address;
 
-    @Column(nullable = true)
+    @Column()
     private String stripeCustomerId;
 }
