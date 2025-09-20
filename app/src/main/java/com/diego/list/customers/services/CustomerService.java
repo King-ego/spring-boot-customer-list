@@ -36,11 +36,12 @@ public class CustomerService {
                 .address(command.getAddress())
                 .build();
 
+        String stripeId = stripeServices.createCustomer(command.getEmail(), command.getName());
+
         customerRepository.save(customer);
 
         String stripeKey = System.getenv("STRIPE_API_KEY");
 
-        stripeServices.createCustomer();
 
         log.info("Stripe key: {}", stripeKey);
     }
