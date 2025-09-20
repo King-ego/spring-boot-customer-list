@@ -29,14 +29,15 @@ public class CustomerService {
             throw new CustomException("Customer exist", HttpStatus.CONFLICT);
         }
 
+        String stripeId = stripeServices.createCustomer(command.getEmail(), command.getName());
+
         Customer customer = Customer.builder()
                 .name(command.getName())
                 .email(command.getEmail())
                 .phone(command.getPhone())
                 .address(command.getAddress())
+                .stripeCustomerId(stripeId)
                 .build();
-
-        String stripeId = stripeServices.createCustomer(command.getEmail(), command.getName());
 
         customerRepository.save(customer);
 
