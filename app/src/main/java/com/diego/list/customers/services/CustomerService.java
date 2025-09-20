@@ -40,11 +40,6 @@ public class CustomerService {
                 .build();
 
         customerRepository.save(customer);
-
-        String stripeKey = System.getenv("STRIPE_API_KEY");
-
-
-        log.info("Stripe key: {}", stripeKey);
     }
 
     public Optional<Customer> customerById(UUID customerId) {
