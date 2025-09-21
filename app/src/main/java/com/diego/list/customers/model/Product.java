@@ -19,10 +19,15 @@ public class Product {
     @Id
     @GeneratedValue
     private UUID id;
+
     private String name;
+
     @Column(precision =  10, scale = 2)
     private BigDecimal price;
+
     private Integer quantity_in_stock;
+
     private String description;
+
     private String category;
 }
