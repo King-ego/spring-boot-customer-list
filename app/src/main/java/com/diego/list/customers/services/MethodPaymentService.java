@@ -10,4 +10,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MethodPaymentService {
+    public void createMethodPayment() {
+        log.info("Creating method payment");
+    }
 }
