@@ -17,7 +17,7 @@ public class MethodPaymentController {
 
     @PostMapping
     public void createMethodPayment() {
-        log.info("Creating method payment 1");
+        log.info("Creating method payment");
         methodPaymentService.createMethodPayment();
     }
 }
