@@ -14,6 +14,7 @@ public class CreateMethodPaymentDto {
     @NotBlank(message = "method_payment_id is required")
     private String method_payment_id;
 
+    @NotBlank(message = "isDefault is required")
     private boolean isDefault;
 
     private String brand;
