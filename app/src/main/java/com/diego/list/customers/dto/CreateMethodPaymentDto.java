@@ -1,9 +1,11 @@
 package com.diego.list.customers.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.UUID;
 
 public class CreateMethodPaymentDto {
-
+    @NotBlank(message = "customerId is required")
     private UUID customerId;
 
     private String type;
