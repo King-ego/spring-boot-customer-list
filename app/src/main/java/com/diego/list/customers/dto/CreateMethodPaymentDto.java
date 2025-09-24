@@ -1,4 +1,24 @@
 package com.diego.list.customers.dto;
 
+import java.util.UUID;
+
 public class CreateMethodPaymentDto {
+
+    private UUID customerId;
+
+    private String type;
+
+    private String method_payment_id;
+
+    private boolean isDefault;
+
+    private String brand;
+
+    private String exp_month;
+
+    private String exp_year;
+
+    private String last4;
+
+    private String funding;
 }
