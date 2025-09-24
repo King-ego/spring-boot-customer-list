@@ -8,6 +8,7 @@ public class CreateMethodPaymentDto {
     @NotBlank(message = "customerId is required")
     private UUID customerId;
 
+    @NotBlank(message = "type is required")
     private String type;
 
     private String method_payment_id;
