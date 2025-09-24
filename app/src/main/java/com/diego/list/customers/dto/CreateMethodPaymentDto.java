@@ -26,7 +26,9 @@ public class CreateMethodPaymentDto {
     @NotBlank(message = "exp_year is required")
     private String exp_year;
 
+    @NotBlank(message = "last4 is required")
     private String last4;
 
+    @NotBlank(message = "funding is required")
     private String funding;
 }
