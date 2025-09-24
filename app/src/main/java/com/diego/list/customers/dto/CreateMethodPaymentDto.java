@@ -17,8 +17,10 @@ public class CreateMethodPaymentDto {
     @NotBlank(message = "isDefault is required")
     private boolean isDefault;
 
+    @NotBlank(message = "brand is required")
     private String brand;
 
+    @NotBlank(message = "exp_month is required")
     private String exp_month;
 
     private String exp_year;
