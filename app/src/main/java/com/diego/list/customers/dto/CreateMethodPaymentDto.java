@@ -23,6 +23,7 @@ public class CreateMethodPaymentDto {
     @NotBlank(message = "exp_month is required")
     private String exp_month;
 
+    @NotBlank(message = "exp_year is required")
     private String exp_year;
 
     private String last4;
