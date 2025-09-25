@@ -23,7 +23,15 @@ public class MethodPaymentController {
     public void createMethodPayment(@Valid @RequestBody CreateMethodPaymentDto methodPaymentDto) {
         log.info("Creating method payment");
         CreateMethodPaymentCommand command = new CreateMethodPaymentCommand(
-
+            methodPaymentDto.getCustomerId(),
+            methodPaymentDto.getType(),
+            methodPaymentDto.getMethod_payment_id(),
+            methodPaymentDto.isDefault(),
+            methodPaymentDto.getBrand(),
+            methodPaymentDto.getExp_month(),
+            methodPaymentDto.getExp_year(),
+            methodPaymentDto.getLast4(),
+            methodPaymentDto.getFunding()
         );
         methodPaymentService.createMethodPayment();
     }
