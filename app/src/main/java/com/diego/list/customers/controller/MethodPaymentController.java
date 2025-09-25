@@ -33,6 +33,7 @@ public class MethodPaymentController {
             methodPaymentDto.getLast4(),
             methodPaymentDto.getFunding()
         );
-        methodPaymentService.createMethodPayment();
+
+        methodPaymentService.createMethodPayment(command);
     }
 }
