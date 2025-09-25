@@ -2,6 +2,7 @@ package com.diego.list.customers.controller;
 
 import com.diego.list.customers.dto.CreateMethodPaymentDto;
 import com.diego.list.customers.services.MethodPaymentService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ public class MethodPaymentController {
     private final MethodPaymentService methodPaymentService;
 
     @PostMapping
-    public void createMethodPayment(@RequestBody CreateMethodPaymentDto methodPaymentDto) {
+    public void createMethodPayment(@Valid @RequestBody CreateMethodPaymentDto methodPaymentDto) {
         log.info("Creating method payment");
         methodPaymentService.createMethodPayment();
     }
