@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class MethodPaymentService {
     private final MethodPaymentRepository methodPaymentRepository;
+
     public void createMethodPayment(CreateMethodPaymentCommand command) {
         MethodPayment methodPayment = MethodPayment.builder()
             .customerId(command.getCustomerId())
@@ -27,6 +28,8 @@ public class MethodPaymentService {
             .last4(command.getLast4())
             .funding(command.getFunding())
             .build();
+
+        methodPaymentRepository.save(methodPayment);
 
 
         log.info("Creating method payment: {}", methodPayment);
