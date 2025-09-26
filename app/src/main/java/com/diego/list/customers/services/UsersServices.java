@@ -25,10 +25,6 @@ public class UsersServices {
         System.out.println("UsersServices inicializado!");
     }
 
-    public String getServiceName() {
-        return "User Service";
-    }
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
