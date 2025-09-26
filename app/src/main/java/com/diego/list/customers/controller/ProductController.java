@@ -21,7 +21,6 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-
     @PostMapping
     public String createProduct(@Valid @RequestBody CreateProductDto product) {
 
