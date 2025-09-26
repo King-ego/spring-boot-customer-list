@@ -31,7 +31,5 @@ public class MethodPaymentService {
 
         methodPaymentRepository.save(methodPayment);
 
-
-        log.info("Creating method payment: {}", methodPayment);
     }
 }
