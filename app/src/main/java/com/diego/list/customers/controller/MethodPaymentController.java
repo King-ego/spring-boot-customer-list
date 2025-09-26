@@ -21,7 +21,7 @@ public class MethodPaymentController {
 
     @PostMapping
     public void createMethodPayment(@Valid @RequestBody CreateMethodPaymentDto methodPaymentDto) {
-        log.info("Creating method payment");
+
         CreateMethodPaymentCommand command = new CreateMethodPaymentCommand(
             methodPaymentDto.getCustomerId(),
             methodPaymentDto.getType(),
