@@ -42,8 +42,8 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/by-name")
-    public String getByName(@RequestParam String name) {
-        return "Product";
+    @GetMapping("/by-name/:name")
+    public Product getByName(@RequestParam String name) {
+        return productService.getByName(name);
     }
 }
