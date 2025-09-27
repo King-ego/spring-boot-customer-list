@@ -21,10 +21,6 @@ public class UsersServices {
     @Autowired
     private UserRepository userRepository;
 
-    public UsersServices() {
-        System.out.println("UsersServices inicializado!");
-    }
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
