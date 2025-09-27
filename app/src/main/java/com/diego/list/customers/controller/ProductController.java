@@ -41,4 +41,9 @@ public class ProductController {
     public List<Product> index(@ModelAttribute FilterProductDto query){
         return productService.getAllProducts();
     }
+
+    @GetMapping("/by-name")
+    public String getByName(@RequestParam String name) {
+        return "Product";
+    }
 }
