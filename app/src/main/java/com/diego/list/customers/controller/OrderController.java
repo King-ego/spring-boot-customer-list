@@ -36,9 +36,4 @@ public class OrderController {
 
         log.info("Creating order {}", order);
     }
-
-    @GetMapping
-    public String index() {
-        return "ok";
-    }
 }
