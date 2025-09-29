@@ -4,6 +4,7 @@ import com.diego.list.customers.command.CreateProductCommand;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Product;
 import com.diego.list.customers.repository.ProductRepository;
+import com.diego.list.customers.utils.SlugUtil;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +30,15 @@ public class ProductService {
             throw new CustomException("Product exist", HttpStatus.CONFLICT);
         }
 
+        String slug = SlugUtil.toSlug(command.getName());
+
         Product product = Product.builder()
                 .name(command.getName())
                 .price(command.getPrice())
                 .quantity_in_stock(command.getQuantity_in_stock())
                 .description(command.getDescription())
                 .category(command.getCategory())
+                .slug(slug)
                 .build();
 
         log.info("Creando produto: {}", product);
