@@ -46,4 +46,9 @@ public class ProductController {
     public Product getByName(@RequestParam String name) {
         return productService.getByName(name);
     }
+
+    @GetMapping("/:slug")
+    public String getBySlug(@RequestParam String slug) {
+        return "Test" + slug;
+    }
 }
