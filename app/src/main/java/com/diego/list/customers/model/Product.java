@@ -30,4 +30,7 @@ public class Product {
     private String description;
 
     private String category;
+
+    @Column(unique = true, nullable = false)
+    private String slug;
 }
