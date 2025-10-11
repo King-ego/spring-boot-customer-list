@@ -48,9 +48,9 @@ public class ProductController {
         return productService.getAllProducts(); // Placeholder
     }
 
-    @GetMapping("/by-name/:identifier")
-    public List<Product> getIdentifier(@RequestParam String identifier) {
-        return productService.getIdentifier(identifier);
+    @GetMapping("/search-identity/:identifier")
+    public List<Product> searchByItemIdentity(@RequestParam String identifier) {
+        return productService.searchByItemIdentity(identifier);
     }
 
     @GetMapping("/:slug")
