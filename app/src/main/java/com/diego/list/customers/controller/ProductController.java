@@ -42,6 +42,12 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @GetMapping("/search")
+    public List<Product> search(@RequestParam String term) {
+        // Implement search logic in the service layer if needed
+        return productService.getAllProducts(); // Placeholder
+    }
+
     @GetMapping("/by-name/:name")
     public Product getByName(@RequestParam String name) {
         return productService.getByName(name);
