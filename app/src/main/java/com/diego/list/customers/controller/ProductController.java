@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<Product> search(@RequestParam String term) {
+    public List<Product> search(@Valid @ModelAttribute String query) {
         // Implement search logic in the service layer if needed
         return productService.getAllProducts(); // Placeholder
     }
