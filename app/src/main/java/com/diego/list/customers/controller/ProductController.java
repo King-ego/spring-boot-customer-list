@@ -48,8 +48,8 @@ public class ProductController {
         return productService.getAllProducts(); // Placeholder
     }
 
-    @GetMapping("/by-name/:description_name_category")
-    public Product getIdentifier(@RequestParam String identifier) {
+    @GetMapping("/by-name/:identifier")
+    public List<Product> getIdentifier(@RequestParam String identifier) {
         return productService.getIdentifier(identifier);
     }
 
