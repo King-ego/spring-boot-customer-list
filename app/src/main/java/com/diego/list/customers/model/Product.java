@@ -33,4 +33,6 @@ public class Product {
 
     @Column(unique = true, nullable = false)
     private String slug;
+
+    private String image_url;
 }
