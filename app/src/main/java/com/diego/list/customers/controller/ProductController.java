@@ -42,14 +42,8 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/search")
-    public List<Product> search(@Valid @ModelAttribute String query) {
-        // Implement search logic in the service layer if needed
-        return productService.getAllProducts(); // Placeholder
-    }
-
     @GetMapping("/search-identity/:identifier")
-    public List<Product> searchByItemIdentity(@RequestParam String identifier) {
+    public List<Product> searchByItemIdentity(@Valid @RequestParam String identifier) {
         return productService.searchByItemIdentity(identifier);
     }
 
