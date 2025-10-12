@@ -51,12 +51,7 @@ public class ProductService {
     }
 
     public List<Product> searchByItemIdentity(String identifier) {
-        return productRepository.findAll();
-    }
-
-    public Product getByName(String name) {
-        Optional<Product> product = productRepository.findByName(name);
-        return product.orElseThrow(() -> new CustomException("Product not found", HttpStatus.NOT_FOUND));
+        return productRepository.findByIdentity(identifier);
     }
 
 
