@@ -14,6 +14,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("SELECT p FROM Product p WHERE p.name = :name")
     Optional<Product> findByName(String name);
 
-    @Query("SELECT p FROM Product p WHERE p.name LIKE %:identifier% OR p.category LIKE %:identifier% OR p.description LIKE %:identifier%")
+    @Query("SELECT p FROM Product p WHERE p.name LIKE :identifier% OR p.category LIKE :identifier% OR p.description LIKE :identifier%")
     List<Product> findByIdentity(String identifier);
 }
