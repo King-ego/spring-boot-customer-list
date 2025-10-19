@@ -40,3 +40,12 @@ services:
     depends_on:
       - rabbitmq
       - postgres_mn_db
+  challenge_english:
+    build:
+      context: challenge_english
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8097:8097"
+    depends_on:
+      - postgres_mn_db
