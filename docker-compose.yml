@@ -47,5 +47,7 @@ services:
     restart: unless-stopped
     ports:
       - "8097:8097"
+    environment:
+      OPENAI_KEY: ${OPENAI_KEY}
     depends_on:
       - postgres_mn_db
