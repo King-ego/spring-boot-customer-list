@@ -11,7 +11,7 @@ func GetChallengeCron() *cron.Cron {
 	c := cron.New()
 
 	// Schedule a job to run every minute
-	if _, err := c.AddFunc("@every 1m", func() {
+	if _, err := c.AddFunc("@every 10m", func() {
 		fmt.Println("This job runs every minute:", time.Now())
 	}); err != nil {
 		fmt.Printf("failed to add 1m job: %v\n", err)
