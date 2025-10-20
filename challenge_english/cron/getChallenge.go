@@ -12,20 +12,13 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
-/*
-	type openAIRequest struct {
-		Model string      `json:"model"`
-		Input interface{} `json:"input"`
-	}
-*/
 func GetChallengeCron() *cron.Cron {
 	c := cron.New()
 
 	// Schedule a job to run every minute
 	if _, err := c.AddFunc("@every 1m", func() {
 		fmt.Println("This job runs every minute:", time.Now())
-		err := callOpenAi()
-		if err != nil {
+		if err := callOpenAi(); err != nil {
 			fmt.Printf("Error calling OpenAI: %v\n", err)
 		}
 	}); err != nil {
@@ -47,43 +40,72 @@ func GetChallengeCron() *cron.Cron {
 func callOpenAi() error {
 	apiKey := os.Getenv("HUGGING_KEY")
 	if apiKey == "" {
-		fmt.Println("Erro: HUGGING_KEY não está setado")
 		return fmt.Errorf("HUGGING_KEY não está setado")
 	}
 
-	// Aqui o modelo do Hugging Face, não da OpenAI
-	/*modelURL := "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-	 */
-	modelURL := "https://api-inference.huggingface.co/models/gpt2"
+	// Confirme o slug do modelo no Hugging Face Hub
+	modelURL := "https://router.huggingface.co/v1/chat/completions"
 
-	// Para geração de texto, usamos parâmetros diferentes
 	payload := map[string]interface{}{
-		"inputs": "Escreva uma história curta de ninar sobre um unicórnio mágico que sonha em voar:",
+		"model": "zai-org/GLM-4.6-FP8:zai-org",
+		"messages": []map[string]interface{}{
+			{
+				"role":    "user",
+				"content": "What is the capital of France?",
+			},
+		},
+		"stream": false,
 	}
 
-	body, _ := json.Marshal(payload)
-
-	req, err := http.NewRequest(http.MethodPost, modelURL, bytes.NewBuffer(body))
+	bodyBytes, err := json.Marshal(payload)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("falha ao serializar payload: %w", err)
 	}
 
+	req, err := http.NewRequest(http.MethodPost, modelURL, bytes.NewReader(bodyBytes))
+	if err != nil {
+		return fmt.Errorf("falha ao criar requisição: %w", err)
+	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 
-	res, err := http.DefaultClient.Do(req)
+	client := &http.Client{Timeout: 50 * time.Second}
+	res, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("falha na requisição HTTP: %w", err)
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
+	if res == nil {
+		return fmt.Errorf("resposta HTTP é nil")
+	}
+	defer func() {
+		_ = res.Body.Close()
+	}()
 
+	data, err := io.ReadAll(res.Body)
+	if err != nil {
+		return fmt.Errorf("falha ao ler resposta: %w", err)
+	}
+
+	// Tratamento de status HTTP
+	if res.StatusCode == http.StatusNotFound {
+		// Imprime corpo para ajudar debug (pode conter mensagem do servidor)
+		return fmt.Errorf("modelo não encontrado (404). verifique o slug '%s' no Hugging Face Hub. resposta: %s", modelURL, string(data))
+	}
+	if res.StatusCode >= 400 {
+		return fmt.Errorf("requisição retornou status %d: %s", res.StatusCode, string(data))
+	}
+
+	// Tenta extrair "generated_text" de resposta estruturada (ex: [{ "generated_text": "..." }])
+	var parsed []map[string]interface{}
+	if err := json.Unmarshal(data, &parsed); err == nil && len(parsed) > 0 {
+		if gen, ok := parsed[0]["generated_text"].(string); ok {
+			fmt.Println("Resposta gerada:", gen)
+			return nil
 		}
-	}(res.Body)
+	}
 
-	data, _ := io.ReadAll(res.Body)
+	// Fallback: imprime corpo bruto
 	fmt.Println("Status:", res.Status)
-	fmt.Println("Resposta:", string(data))
+	fmt.Println("Resposta (raw):", string(data))
 	return nil
 }
