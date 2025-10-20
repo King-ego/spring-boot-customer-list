@@ -44,14 +44,14 @@ func GetChallengeCron() *cron.Cron {
 }
 
 func callOpenAi() (string, error) {
-	apiKey := os.Getenv("OPENAI_KEY")
+	apiKey := os.Getenv("HUGGING_KEY")
 	fmt.Println("OpenAI API key:", apiKey)
 	if apiKey == "" {
 		return "Não encontrado", fmt.Errorf("OPENAI_KEY não setado")
 	}
 
 	reqBody := openAIRequest{
-		Model: "gpt-5",
+		Model: "gpt-4o-mini",
 		Input: "Write a short bedtime story about a unicorn.",
 	}
 
@@ -60,7 +60,7 @@ func callOpenAi() (string, error) {
 		return "", fmt.Errorf("marshal request: %w", err)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, "https://api.openai.com/v1/responses", bytes.NewReader(b))
+	req, err := http.NewRequest(http.MethodPost, "https://api-inference.huggingface.co/models/facebook/bart-large-cnn", bytes.NewReader(b))
 	if err != nil {
 		return "", fmt.Errorf("criar request: %w", err)
 	}
