@@ -47,7 +47,7 @@ func callOpenAi() error {
 	apiKey := os.Getenv("HUGGING_KEY")
 	if apiKey == "" {
 		fmt.Println("Erro: HUGGING_KEY não está setado")
-		return Error("HUGGING_KEY não está setado")
+		return fmt.Errorf("HUGGING_KEY não está setado")
 	}
 
 	// Aqui o modelo do Hugging Face, não da OpenAI
