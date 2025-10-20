@@ -47,18 +47,17 @@ func callOpenAi() error {
 	apiKey := os.Getenv("HUGGING_KEY")
 	if apiKey == "" {
 		fmt.Println("Erro: HUGGING_KEY não está setado")
-		return nil
+		return Error("HUGGING_KEY não está setado")
 	}
 
 	// Aqui o modelo do Hugging Face, não da OpenAI
 	/*modelURL := "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
 	 */
-	modelURL := "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-	/*modelURL := "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta"*/
+	modelURL := "https://api-inference.huggingface.co/models/gpt2"
 
-	// Corpo da requisição (o Hugging Face espera "inputs")
-	payload := map[string]string{
-		"inputs": "Escreva uma história curta de ninar sobre um unicórnio mágico que sonha em voar.",
+	// Para geração de texto, usamos parâmetros diferentes
+	payload := map[string]interface{}{
+		"inputs": "Escreva uma história curta de ninar sobre um unicórnio mágico que sonha em voar:",
 	}
 
 	body, _ := json.Marshal(payload)
