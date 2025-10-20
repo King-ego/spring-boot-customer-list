@@ -12,11 +12,12 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
-type openAIRequest struct {
-	Model string      `json:"model"`
-	Input interface{} `json:"input"`
-}
-
+/*
+	type openAIRequest struct {
+		Model string      `json:"model"`
+		Input interface{} `json:"input"`
+	}
+*/
 func GetChallengeCron() *cron.Cron {
 	c := cron.New()
 
@@ -74,7 +75,12 @@ func callOpenAi() error {
 	if err != nil {
 		panic(err)
 	}
-	defer res.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(res.Body)
 
 	data, _ := io.ReadAll(res.Body)
 	fmt.Println("Status:", res.Status)
