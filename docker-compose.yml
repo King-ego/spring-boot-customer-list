@@ -50,5 +50,6 @@ services:
     environment:
       OPENAI_KEY: ${OPENAI_KEY}
       HUGGING_KEY: ${HUGGING_KEY}
+      MODEL_URL: ${MODEL_URL}
     depends_on:
       - postgres_mn_db
