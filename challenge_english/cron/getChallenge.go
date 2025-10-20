@@ -23,7 +23,7 @@ func GetChallengeCron() *cron.Cron {
 	// Schedule a job to run every minute
 	if _, err := c.AddFunc("@every 1m", func() {
 		fmt.Println("This job runs every minute:", time.Now())
-		_, err := callOpenAi()
+		err := callOpenAi()
 		if err != nil {
 			fmt.Printf("Error calling OpenAI: %v\n", err)
 		}
@@ -43,54 +43,42 @@ func GetChallengeCron() *cron.Cron {
 	return c
 }
 
-func callOpenAi() (string, error) {
+func callOpenAi() error {
 	apiKey := os.Getenv("HUGGING_KEY")
-	fmt.Println("OpenAI API key:", apiKey)
 	if apiKey == "" {
-		return "Não encontrado", fmt.Errorf("OPENAI_KEY não setado")
+		fmt.Println("Erro: HUGGING_KEY não está setado")
+		return nil
 	}
 
-	reqBody := openAIRequest{
-		Model: "gpt-4o-mini",
-		Input: "Write a short bedtime story about a unicorn.",
+	// Aqui o modelo do Hugging Face, não da OpenAI
+	/*modelURL := "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+	 */
+	modelURL := "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+	/*modelURL := "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta"*/
+
+	// Corpo da requisição (o Hugging Face espera "inputs")
+	payload := map[string]string{
+		"inputs": "Escreva uma história curta de ninar sobre um unicórnio mágico que sonha em voar.",
 	}
 
-	b, err := json.Marshal(reqBody)
+	body, _ := json.Marshal(payload)
+
+	req, err := http.NewRequest(http.MethodPost, modelURL, bytes.NewBuffer(body))
 	if err != nil {
-		return "", fmt.Errorf("marshal request: %w", err)
+		panic(err)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, "https://api-inference.huggingface.co/models/facebook/bart-large-cnn", bytes.NewReader(b))
-	if err != nil {
-		return "", fmt.Errorf("criar request: %w", err)
-	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 
-	client := &http.Client{Timeout: 15 * time.Second}
-	resp, err := client.Do(req)
+	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", fmt.Errorf("request failed: %w", err)
+		panic(err)
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
+	defer res.Body.Close()
 
-		}
-	}(resp.Body)
-
-	body, _ := io.ReadAll(resp.Body)
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return "", fmt.Errorf("status %d: %s", resp.StatusCode, string(body))
-	}
-
-	// decodifica e imprime a resposta para inspeção
-	var out map[string]interface{}
-	if err := json.Unmarshal(body, &out); err != nil {
-		return "", fmt.Errorf("decodificar resposta: %w", err)
-	}
-	pretty, _ := json.MarshalIndent(out, "", "  ")
-	fmt.Printf("OpenAI response:\n%s\n", pretty)
-
-	return apiKey, nil
+	data, _ := io.ReadAll(res.Body)
+	fmt.Println("Status:", res.Status)
+	fmt.Println("Resposta:", string(data))
+	return nil
 }
