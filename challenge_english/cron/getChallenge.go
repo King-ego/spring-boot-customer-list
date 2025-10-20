@@ -39,11 +39,10 @@ func GetChallengeCron() *cron.Cron {
 
 func callOpenAi() error {
 	apiKey := os.Getenv("HUGGING_KEY")
-	if apiKey == "" {
+	modelURL := os.Getenv("HUGGING_MODEL")
+	if apiKey == "" || modelURL == "" {
 		return fmt.Errorf("HUGGING_KEY não está setado")
 	}
-
-	modelURL := "https://router.huggingface.co/v1/chat/completions"
 
 	payload := map[string]interface{}{
 		"model": "zai-org/GLM-4.6-FP8:zai-org",
