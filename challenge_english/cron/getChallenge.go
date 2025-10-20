@@ -8,6 +8,11 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
+type openAIRequest struct {
+	Model string      `json:"model"`
+	Input interface{} `json:"input"`
+}
+
 func GetChallengeCron() *cron.Cron {
 	c := cron.New()
 
@@ -40,5 +45,11 @@ func callOpenAi() (string, error) {
 	if apiKey == "" {
 		return "Não encontrado", fmt.Errorf("OPENAI_KEY não setado")
 	}
+
+	reqBody := openAIRequest{
+		Model: "gpt-5",
+		Input: "Write a short bedtime story about a unicorn.",
+	}
+
 	return apiKey, nil
 }
