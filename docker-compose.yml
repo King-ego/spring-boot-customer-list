@@ -49,5 +49,6 @@ services:
       - "8097:8097"
     environment:
       OPENAI_KEY: ${OPENAI_KEY}
+      HUGGING_KEY: ${HUGGING_KEY}
     depends_on:
       - postgres_mn_db
