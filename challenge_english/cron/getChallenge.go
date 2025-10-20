@@ -1,7 +1,11 @@
 package cron
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"time"
 
@@ -50,6 +54,43 @@ func callOpenAi() (string, error) {
 		Model: "gpt-5",
 		Input: "Write a short bedtime story about a unicorn.",
 	}
+
+	b, err := json.Marshal(reqBody)
+	if err != nil {
+		return "", fmt.Errorf("marshal request: %w", err)
+	}
+
+	req, err := http.NewRequest(http.MethodPost, "https://api.openai.com/v1/responses", bytes.NewReader(b))
+	if err != nil {
+		return "", fmt.Errorf("criar request: %w", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+apiKey)
+
+	client := &http.Client{Timeout: 15 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("request failed: %w", err)
+	}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(resp.Body)
+
+	body, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return "", fmt.Errorf("status %d: %s", resp.StatusCode, string(body))
+	}
+
+	// decodifica e imprime a resposta para inspeção
+	var out map[string]interface{}
+	if err := json.Unmarshal(body, &out); err != nil {
+		return "", fmt.Errorf("decodificar resposta: %w", err)
+	}
+	pretty, _ := json.MarshalIndent(out, "", "  ")
+	fmt.Printf("OpenAI response:\n%s\n", pretty)
 
 	return apiKey, nil
 }
