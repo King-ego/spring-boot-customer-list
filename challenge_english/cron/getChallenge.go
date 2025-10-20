@@ -2,6 +2,7 @@ package cron
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/robfig/cron/v3"
@@ -11,8 +12,12 @@ func GetChallengeCron() *cron.Cron {
 	c := cron.New()
 
 	// Schedule a job to run every minute
-	if _, err := c.AddFunc("@every 10m", func() {
+	if _, err := c.AddFunc("@every 1m", func() {
 		fmt.Println("This job runs every minute:", time.Now())
+		_, err := callOpenAi()
+		if err != nil {
+			fmt.Printf("Error calling OpenAI: %v\n", err)
+		}
 	}); err != nil {
 		fmt.Printf("failed to add 1m job: %v\n", err)
 	}
@@ -27,4 +32,13 @@ func GetChallengeCron() *cron.Cron {
 	c.Start()
 
 	return c
+}
+
+func callOpenAi() (string, error) {
+	apiKey := os.Getenv("OPENAI_KEY")
+	fmt.Println("OpenAI API key:", apiKey)
+	if apiKey == "" {
+		return "Não encontrado", fmt.Errorf("OPENAI_KEY não setado")
+	}
+	return apiKey, nil
 }
