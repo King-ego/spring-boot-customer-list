@@ -43,7 +43,6 @@ func callOpenAi() error {
 		return fmt.Errorf("HUGGING_KEY não está setado")
 	}
 
-	// Confirme o slug do modelo no Hugging Face Hub
 	modelURL := "https://router.huggingface.co/v1/chat/completions"
 
 	payload := map[string]interface{}{
@@ -86,16 +85,13 @@ func callOpenAi() error {
 		return fmt.Errorf("falha ao ler resposta: %w", err)
 	}
 
-	// Tratamento de status HTTP
 	if res.StatusCode == http.StatusNotFound {
-		// Imprime corpo para ajudar debug (pode conter mensagem do servidor)
 		return fmt.Errorf("modelo não encontrado (404). verifique o slug '%s' no Hugging Face Hub. resposta: %s", modelURL, string(data))
 	}
 	if res.StatusCode >= 400 {
 		return fmt.Errorf("requisição retornou status %d: %s", res.StatusCode, string(data))
 	}
 
-	// Tenta extrair "generated_text" de resposta estruturada (ex: [{ "generated_text": "..." }])
 	var parsed []map[string]interface{}
 	if err := json.Unmarshal(data, &parsed); err == nil && len(parsed) > 0 {
 		if gen, ok := parsed[0]["generated_text"].(string); ok {
@@ -104,7 +100,6 @@ func callOpenAi() error {
 		}
 	}
 
-	// Fallback: imprime corpo bruto
 	fmt.Println("Status:", res.Status)
 	fmt.Println("Resposta (raw):", string(data))
 	return nil
