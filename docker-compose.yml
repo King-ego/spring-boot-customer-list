@@ -50,6 +50,13 @@ services:
     environment:
       OPENAI_KEY: ${OPENAI_KEY}
       HUGGING_KEY: ${HUGGING_KEY}
-      MODEL_URL: ${MODEL_URL}
+      HUGGING_MODEL: ${HUGGING_MODEL}
     depends_on:
       - postgres_mn_db
+  test_attack:
+    build:
+      context: test_attack
+      dockerfile: test_attack/Dockerfile2
+    environment:
+     EXPECTED_AUTH: ${EXPECTED_AUTH}
+    restart: "no"
