@@ -12,6 +12,17 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
+type Message struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
+type Payload struct {
+	Model    string    `json:"model"`
+	Messages []Message `json:"messages"`
+	Stream   bool      `json:"stream"`
+}
+
 func GetChallengeCron() *cron.Cron {
 	c := cron.New()
 
@@ -44,15 +55,12 @@ func callOpenAi() error {
 		return fmt.Errorf("HUGGING_KEY não está setado")
 	}
 
-	payload := map[string]interface{}{
-		"model": "zai-org/GLM-4.6-FP8:zai-org",
-		"messages": []map[string]interface{}{
-			{
-				"role":    "user",
-				"content": "What is the capital of France?",
-			},
+	payload := Payload{
+		Model: "zai-org/GLM-4.6-FP8:zai-org",
+		Messages: []Message{
+			{Role: "user", Content: "Qual é a capital da França?"},
 		},
-		"stream": false,
+		Stream: false,
 	}
 
 	bodyBytes, err := json.Marshal(payload)
@@ -69,12 +77,15 @@ func callOpenAi() error {
 
 	client := &http.Client{Timeout: 50 * time.Second}
 	res, err := client.Do(req)
+
 	if err != nil {
 		return fmt.Errorf("falha na requisição HTTP: %w", err)
 	}
+
 	if res == nil {
 		return fmt.Errorf("resposta HTTP é nil")
 	}
+
 	defer func() {
 		_ = res.Body.Close()
 	}()
