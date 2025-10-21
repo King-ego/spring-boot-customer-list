@@ -82,10 +82,6 @@ func callOpenAi() error {
 		return fmt.Errorf("falha na requisição HTTP: %w", err)
 	}
 
-	if res == nil {
-		return fmt.Errorf("resposta HTTP é nil")
-	}
-
 	defer func() {
 		_ = res.Body.Close()
 	}()
@@ -95,9 +91,6 @@ func callOpenAi() error {
 		return fmt.Errorf("falha ao ler resposta: %w", err)
 	}
 
-	if res.StatusCode == http.StatusNotFound {
-		return fmt.Errorf("modelo não encontrado (404). verifique o slug '%s' no Hugging Face Hub. resposta: %s", modelURL, string(data))
-	}
 	if res.StatusCode >= 400 {
 		return fmt.Errorf("requisição retornou status %d: %s", res.StatusCode, string(data))
 	}
