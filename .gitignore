@@ -5,6 +5,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 **/.env
+test_attack/start.txt
+test_attack
 
 ### STS ###
 .apt_generated
