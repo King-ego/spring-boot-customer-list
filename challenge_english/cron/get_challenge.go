@@ -2,6 +2,7 @@ package cron
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -9,6 +10,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/robfig/cron/v3"
 )
 
@@ -25,6 +28,12 @@ type Payload struct {
 
 func GetChallengeCron() *cron.Cron {
 	c := cron.New()
+	cfg, err := config.LoadDefaultConfig(context.Background())
+	if err != nil {
+		fmt.Printf("erro ao carregar config AWS: %v\n", err)
+	}
+
+	lambdaClient := lambda.NewFromConfig(cfg)
 
 	// Schedule a job to run every minute
 	if _, err := c.AddFunc("@every 1m", func() {
