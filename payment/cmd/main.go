@@ -40,13 +40,23 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to connect to RabbitMQ after 30 attempts: %s", err)
 	}
-	defer conn.Close()
+	defer func(conn *amqp.Connection) {
+		err := conn.Close()
+		if err != nil {
+			log.Printf("Error closing RabbitMQ connection: %s", err)
+		}
+	}(conn)
 
 	ch, err := conn.Channel()
 	if err != nil {
 		log.Fatal("Failed to open a channel: %s", err)
 	}
-	defer ch.Close()
+	defer func(ch *amqp.Channel) {
+		err := ch.Close()
+		if err != nil {
+			log.Printf("Error closing channel: %s", err)
+		}
+	}(ch)
 
 	queue, err := ch.QueueDeclare(
 		"customer-queue",
