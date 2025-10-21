@@ -2,6 +2,7 @@ package cron
 
 import (
 	"bytes"
+	"challenge_english/lambdas"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -56,15 +57,6 @@ func GetChallengeCron() *cron.Cron {
 
 	return c
 }
-
-type Open struct {
-	lambda *lambda.Client
-}
-
-// callOpenAi chama a API do Hugging Face para gerar uma resposta
-// usando o modelo especificado.
-// Certifique-se de definir as variáveis de ambiente HUGGING_KEY e HUGGING_MODEL
-// antes de executar esta função.
 
 func callOpenAi(lambdaClient *lambda.Client) error {
 
@@ -124,6 +116,9 @@ func callOpenAi(lambdaClient *lambda.Client) error {
 
 	fmt.Println("Status:", res.Status)
 	fmt.Println("Resposta (raw):", string(data))
+
+	l := lambdas.NewChallengeJob(lambdaClient, string(data))
+	l.RunChallengeJob()
 	return nil
 
 }
