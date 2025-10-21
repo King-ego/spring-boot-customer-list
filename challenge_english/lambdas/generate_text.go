@@ -2,7 +2,10 @@ package lambdas
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"os"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
@@ -23,6 +26,24 @@ func NewChallengeJob(client *lambda.Client, message string) *RunChallenge {
 func (cj *RunChallenge) RunChallengeJob() {
 	var client = cj.client
 	var message = cj.message
+
+	fmt.Println(message)
+
+	lambdaPayload := map[string]interface{}{
+		"event": "cron_run",
+		"when":  time.Now().Format(time.RFC3339),
+	}
+	pb, _ := json.Marshal(lambdaPayload)
+
+	if name := os.Getenv("LAMBDA_NAME"); name != "" {
+		if err := invokeLambda(context.Background(), client, name, pb); err != nil {
+			fmt.Printf("erro ao invocar lambda: %v\n", err)
+		} else {
+			fmt.Println("Lambda invocado com sucesso")
+		}
+	} else {
+		fmt.Println("LAMBDA_NAME não configurado; pulando invocação")
+	}
 }
 
 func invokeLambda(ctx context.Context, client *lambda.Client, functionName string, payload []byte) error {
