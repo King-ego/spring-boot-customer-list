@@ -38,7 +38,7 @@ func GetChallengeCron() *cron.Cron {
 	// Schedule a job to run every minute
 	if _, err := c.AddFunc("@every 1m", func() {
 		fmt.Println("This job runs every minute:", time.Now())
-		if err := callOpenAi(); err != nil {
+		if err := callOpenAi(lambdaClient); err != nil {
 			fmt.Printf("Error calling OpenAI: %v\n", err)
 		}
 	}); err != nil {
@@ -57,7 +57,17 @@ func GetChallengeCron() *cron.Cron {
 	return c
 }
 
-func callOpenAi() error {
+type Open struct {
+	lambda *lambda.Client
+}
+
+// callOpenAi chama a API do Hugging Face para gerar uma resposta
+// usando o modelo especificado.
+// Certifique-se de definir as variáveis de ambiente HUGGING_KEY e HUGGING_MODEL
+// antes de executar esta função.
+
+func callOpenAi(lambdaClient *lambda.Client) error {
+
 	apiKey := os.Getenv("HUGGING_KEY")
 	modelURL := os.Getenv("HUGGING_MODEL")
 	if apiKey == "" || modelURL == "" {
@@ -115,4 +125,65 @@ func callOpenAi() error {
 	fmt.Println("Status:", res.Status)
 	fmt.Println("Resposta (raw):", string(data))
 	return nil
+
 }
+
+/*func callOpenAi(co *Open) error {
+	apiKey := os.Getenv("HUGGING_KEY")
+	modelURL := os.Getenv("HUGGING_MODEL")
+	if apiKey == "" || modelURL == "" {
+		return fmt.Errorf("HUGGING_KEY não está setado")
+	}
+
+	payload := Payload{
+		Model: "zai-org/GLM-4.6-FP8:zai-org",
+		Messages: []Message{
+			{Role: "user", Content: "Qual é a capital da França?"},
+		},
+		Stream: false,
+	}
+
+	bodyBytes, err := json.Marshal(payload)
+	if err != nil {
+		return fmt.Errorf("falha ao serializar payload: %w", err)
+	}
+
+	req, err := http.NewRequest(http.MethodPost, modelURL, bytes.NewReader(bodyBytes))
+	if err != nil {
+		return fmt.Errorf("falha ao criar requisição: %w", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+apiKey)
+
+	client := &http.Client{Timeout: 50 * time.Second}
+	res, err := client.Do(req)
+
+	if err != nil {
+		return fmt.Errorf("falha na requisição HTTP: %w", err)
+	}
+
+	defer func() {
+		_ = res.Body.Close()
+	}()
+
+	data, err := io.ReadAll(res.Body)
+	if err != nil {
+		return fmt.Errorf("falha ao ler resposta: %w", err)
+	}
+
+	if res.StatusCode >= 400 {
+		return fmt.Errorf("requisição retornou status %d: %s", res.StatusCode, string(data))
+	}
+
+	var parsed []map[string]interface{}
+	if err := json.Unmarshal(data, &parsed); err == nil && len(parsed) > 0 {
+		if gen, ok := parsed[0]["generated_text"].(string); ok {
+			fmt.Println("Resposta gerada:", gen)
+			return nil
+		}
+	}
+
+	fmt.Println("Status:", res.Status)
+	fmt.Println("Resposta (raw):", string(data))
+	return nil
+}*/
