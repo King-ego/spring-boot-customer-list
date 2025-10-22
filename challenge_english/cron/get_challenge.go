@@ -36,15 +36,17 @@ func GetChallengeCron() *cron.Cron {
 
 	lambdaClient := lambda.NewFromConfig(cfg)
 
+	fmt.Println(lambdaClient)
+
 	// Schedule a job to run every minute
-	if _, err := c.AddFunc("@every 1m", func() {
+	/*if _, err := c.AddFunc("@every 1m", func() {
 		fmt.Println("This job runs every minute:", time.Now())
 		if err := callOpenAi(lambdaClient); err != nil {
 			fmt.Printf("Error calling OpenAI: %v\n", err)
 		}
 	}); err != nil {
 		fmt.Printf("failed to add 1m job: %v\n", err)
-	}
+	}*/
 
 	// Schedule a job to run at a specific time (e.g., 2:30 PM every day)
 	if _, err := c.AddFunc("30 14 * * *", func() {
