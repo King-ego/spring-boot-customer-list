@@ -56,7 +56,7 @@ services:
   test_attack:
     build:
       context: test_attack
-      dockerfile: test_attack/Dockerfile2
+      dockerfile: Dockerfile
     environment:
      EXPECTED_AUTH: ${EXPECTED_AUTH}
     restart: "no"
