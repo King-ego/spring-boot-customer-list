@@ -62,7 +62,6 @@ func invokeLambda(ctx context.Context, client *lambda.Client, functionName strin
 		return fmt.Errorf("invoke failed: %w", err)
 	}
 
-	// Lambda pode retornar erro via FunctionError ou payload com dados
 	if resp.FunctionError != nil {
 		return fmt.Errorf("lambda returned function error: %s", *resp.FunctionError)
 	}
