@@ -67,7 +67,6 @@ func invokeLambda(ctx context.Context, client *lambda.Client, functionName strin
 	}
 
 	if resp.Payload != nil {
-		// imprime resposta do lambda (opcional)
 		fmt.Println("Lambda response:", string(resp.Payload))
 	}
 
