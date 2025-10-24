@@ -9,6 +9,7 @@ services:
     ports:
       - "25432:5432"
     restart: unless-stopped
+
   rabbitmq:
     image: rabbitmq:3-management
     ports:
