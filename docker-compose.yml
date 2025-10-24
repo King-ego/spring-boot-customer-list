@@ -15,7 +15,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-  
+
   go-app:
     build:
       context: payment
@@ -28,6 +28,7 @@ services:
     depends_on:
       - rabbitmq
       - postgres_mn_db
+
   java-app:
     build:
       context: app
