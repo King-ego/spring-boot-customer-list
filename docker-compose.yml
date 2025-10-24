@@ -43,6 +43,7 @@ services:
     depends_on:
       - rabbitmq
       - postgres_mn_db
+
   challenge_english:
     build:
       context: challenge_english
