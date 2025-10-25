@@ -66,6 +66,7 @@ func callOpenAi(lambdaClient *lambda.Client) error {
 
 	apiKey := os.Getenv("HUGGING_KEY")
 	modelURL := os.Getenv("HUGGING_MODEL")
+
 	if apiKey == "" || modelURL == "" {
 		return fmt.Errorf("HUGGING_KEY não está setado")
 	}
