@@ -41,6 +41,7 @@ func (cj *RunChallenge) RunChallengeJob() {
 		} else {
 			fmt.Println("Lambda invocado com sucesso")
 		}
+
 	} else {
 		fmt.Println("LAMBDA_NAME não configurado; pulando invocação")
 	}
@@ -58,6 +59,7 @@ func invokeLambda(ctx context.Context, client *lambda.Client, functionName strin
 	}
 
 	resp, err := client.Invoke(ctx, input)
+
 	if err != nil {
 		return fmt.Errorf("invoke failed: %w", err)
 	}
