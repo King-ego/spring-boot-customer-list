@@ -65,7 +65,6 @@ func GetChallengeCron() *cron.Cron {
 func callOpenAi(lambdaClient *lambda.Client) error {
 
 	apiKey := os.Getenv("HUGGING_KEY")
-
 	modelURL := os.Getenv("HUGGING_MODEL")
 
 	if apiKey == "" || modelURL == "" {
