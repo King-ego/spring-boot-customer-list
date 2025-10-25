@@ -30,6 +30,7 @@ type Payload struct {
 func GetChallengeCron() *cron.Cron {
 	c := cron.New()
 	cfg, err := config.LoadDefaultConfig(context.Background())
+
 	if err != nil {
 		fmt.Printf("erro ao carregar config AWS: %v\n", err)
 	}
