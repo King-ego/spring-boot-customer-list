@@ -38,6 +38,7 @@ func (cj *RunChallenge) RunChallengeJob() {
 	if name := os.Getenv("LAMBDA_NAME"); name != "" {
 		if err := invokeLambda(context.Background(), client, name, pb); err != nil {
 			fmt.Printf("erro ao invocar lambda: %v\n", err)
+
 		} else {
 			fmt.Println("Lambda invocado com sucesso")
 		}
