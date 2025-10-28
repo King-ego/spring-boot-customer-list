@@ -50,6 +50,7 @@ func GetChallengeCron() *cron.Cron {
 	}*/
 
 	// Schedule a job to run at a specific time (e.g., 2:30 PM every day)
+
 	if _, err := c.AddFunc("30 14 * * *", func() {
 		fmt.Println("This job runs at 2:30 PM:", time.Now())
 
