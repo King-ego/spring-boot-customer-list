@@ -1,5 +1,6 @@
 FROM golang:1.24.6
 
+
 WORKDIR /src/payment
 
 COPY go.mod go.sum ./
