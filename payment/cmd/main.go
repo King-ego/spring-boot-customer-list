@@ -70,7 +70,7 @@ func main() {
 		log.Fatal("Failed to declare a queue: %s", err)
 	}
 
-	msgs, err := ch.Consume(
+	msg, err := ch.Consume(
 		queue.Name,
 		"",
 		true,
@@ -87,7 +87,7 @@ func main() {
 	forever := make(chan bool)
 
 	go func() {
-		for d := range msgs {
+		for d := range msg {
 			log.Printf("Received a message: %s", d.Body)
 
 			var event OrderCreatedEvent
