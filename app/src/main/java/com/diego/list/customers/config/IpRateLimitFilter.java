@@ -22,7 +22,7 @@ public class IpRateLimitFilter extends HttpFilter {
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
     private Bucket newBucket() {
-        Bandwidth limit = Bandwidth.classic(20, Refill.intervally(20, Duration.ofMinutes(1)));
+        Bandwidth limit = Bandwidth.classic(20, Refill.intervally(20, Duration.ofSeconds(1)));
         return Bucket.builder()
                 .addLimit(limit)
                 .build();
