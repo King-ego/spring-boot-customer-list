@@ -45,7 +45,7 @@ func (cj *RunChallenge) RunChallengeJob() {
 		}
 
 	} else {
-		fmt.Println("LAMBDA_NAME não configurado; pulando invocação")
+		fmt.Println("LAMBDA_NAME não configurado nas variáveis de ambiente")
 	}
 }
 
