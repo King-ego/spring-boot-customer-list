@@ -49,7 +49,7 @@ func main() {
 
 	ch, err := conn.Channel()
 	if err != nil {
-		log.Fatal("Failed to open a channel : %s", err)
+		log.Fatal("Failed to open a channel: %s", err)
 	}
 	defer func(ch *amqp.Channel) {
 		err := ch.Close()
