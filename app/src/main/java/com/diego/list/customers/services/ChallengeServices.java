@@ -10,4 +10,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 @AllArgsConstructor
 public class ChallengeServices {
+    public String getChallengeEnglish() {
+        return "Challenge endpoint is working!";
+    }
 }
