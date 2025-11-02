@@ -1,5 +1,6 @@
 package com.diego.list.customers.controller;
 
+import com.diego.list.customers.services.ChallengeServices;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,10 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 public class ChallengeController {
+    private final ChallengeServices challengeServices;
+
     @GetMapping("/:user_id")
     public String getChallenge(@Valid @PathVariable UUID customer_id) {
-        return "Challenge endpoint is working!";
+        return challengeServices.getChallengeEnglish();
     }
 }
