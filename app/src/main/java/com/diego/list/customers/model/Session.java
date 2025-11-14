@@ -22,4 +22,8 @@ public class Session {
 
     private String deviceFingerprint;
 
+    private String ipAddress;
+
+    private String userAgent;
+
 }
