@@ -13,6 +13,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;*/
 
+import com.diego.list.customers.model.Session;
+
 @Component
 @Order(1)
 public class SessionValidationFilter extends OncePerRequestFilter {
