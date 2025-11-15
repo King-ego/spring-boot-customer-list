@@ -3,6 +3,7 @@ package com.diego.list.customers.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +15,23 @@ public class SecurityLog {
     @Id
     @GeneratedValue
     private UUID id;
+
+    private String userId;
+    private String sessionId;
+    private String eventType;
+    private String description;
+
+    private String ipAddress;
+    private String userAgent;
+    private String deviceFingerprint;
+
+    private boolean success;
+    private int riskScore;
+
+    @Column(columnDefinition = "JSON")
+    private String metadata;
+
+    private LocalDateTime timestamp = LocalDateTime.now();
 
 
 }
