@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@RedisHash("Session")
+@RedisHash(value = "Session", timeToLive = 1800)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
