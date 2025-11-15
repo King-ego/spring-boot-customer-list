@@ -9,6 +9,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @RedisHash("Session")
@@ -30,6 +33,19 @@ public class Session {
 
     @Embedded
     private DeviceInfo deviceInfo;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime lastActivity;
+    private LocalDateTime expiresAt;
+
+    private boolean isActive = true;
+    private boolean mfaVerified = false;
+
+    private Set<String> permissions = new HashSet<>();
+
+    private LocalDateTime revokedAt;
+    private UUID revokedBy;
+    private String revocationReason;
 
 }
 
