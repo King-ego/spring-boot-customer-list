@@ -20,8 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Session {
     @Id
-    @GeneratedValue
-    private UUID sessionId;
+    private String sessionId;
 
     private UUID userId;
 
@@ -49,19 +48,3 @@ public class Session {
 
 }
 
-@Embeddable
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class DeviceInfo {
-    private String browser;
-    private String os;
-    private String screenResolution;
-    private String timezone;
-    private String language;
-    private String country;
-    private String city;
-    private Boolean isMobile;
-    private Boolean isTablet;
-    private Boolean isDesktop;
-}
