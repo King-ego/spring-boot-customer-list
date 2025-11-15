@@ -25,6 +25,9 @@ public class User {
 
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER;
+
     private boolean enabled = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
@@ -36,4 +39,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Token.NetworkData.Device> trustedDevices = new ArrayList<>();
+}
+
+enum UserRole {
+    USER, ADMIN, SUPER_ADMIN
 }
