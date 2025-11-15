@@ -28,7 +28,7 @@ public class SecurityLog {
     private boolean success;
     private int riskScore;
 
-    @Column(columnDefinition = "JSON")
+    @Column(columnDefinition = "TEXT")
     private String metadata;
 
     private LocalDateTime timestamp = LocalDateTime.now();
