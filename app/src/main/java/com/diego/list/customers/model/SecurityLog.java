@@ -35,13 +35,3 @@ public class SecurityLog {
 
 }
 
-enum SecurityEventType {
-    LOGIN_SUCCESS,
-    LOGIN_FAILURE,
-    LOGOUT,
-    SESSION_REVOKED,
-    MFA_VERIFICATION,
-    PASSWORD_CHANGE,
-    SUSPICIOUS_ACTIVITY,
-    ACCOUNT_LOCKED
-}
