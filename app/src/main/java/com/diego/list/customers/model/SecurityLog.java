@@ -16,9 +16,9 @@ public class SecurityLog {
     @GeneratedValue
     private UUID id;
 
-    private String userId;
+    private UUID userId;
     private String sessionId;
-    private String eventType;
+    private SecurityEventType eventType;
     private String description;
 
     private String ipAddress;
@@ -27,6 +27,8 @@ public class SecurityLog {
 
     private boolean success;
     private int riskScore;
+
+    private String revokedBy;
 
     @Column(columnDefinition = "TEXT")
     private String metadata;
