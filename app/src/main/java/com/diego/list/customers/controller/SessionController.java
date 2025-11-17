@@ -1,6 +1,10 @@
 package com.diego.list.customers.controller;
 
+import com.diego.list.customers.dto.*;
+import com.diego.list.customers.model.*;
+import com.diego.list.customers.services.SessionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,11 +14,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/sessions")
 @RequiredArgsConstructor
+@Slf4j
 public class SessionController {
 
     private final SessionService sessionService;
 
-    @GetMapping("/active")
+    /*@GetMapping("/active")
     public ResponseEntity<List<SessionInfo>> getActiveSessions(@CookieValue("session_id") String sessionId) {
         Session currentSession = sessionService.getSession(sessionId);
         if (currentSession == null) {
@@ -34,7 +39,7 @@ public class SessionController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(sessions);
-    }
+    }*/
 
     @PostMapping("/revoke/{targetSessionId}")
     public ResponseEntity<ApiResponse> revokeSession(@PathVariable String targetSessionId,
@@ -43,7 +48,7 @@ public class SessionController {
         Session targetSession = sessionService.getSession(targetSessionId);
 
         if (currentSession == null || targetSession == null) {
-            return ResponseEntity.badRequest().body(new ApiResponse("Sessão não encontrada"));
+            return ResponseEntity.badRequest().body(new ApiResponse("Sessão não encontrada 3"));
         }
 
         // Verifica se a sessão pertence ao usuário (exceto para admins)
@@ -52,7 +57,7 @@ public class SessionController {
             return ResponseEntity.status(403).body(new ApiResponse("Sem permissão para revogar esta sessão"));
         }
 
-        sessionService.revokeSession(targetSessionId, currentSession.getUserId(), "Revogação manual");
+        sessionService.revokeSession(targetSessionId, currentSession.getRevokedBy(), "Revogação manual");
         return ResponseEntity.ok(new ApiResponse("Sessão revogada com sucesso"));
     }
 
