@@ -28,6 +28,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
+    private String passwordHash;
+
     private boolean enabled = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
@@ -37,10 +39,8 @@ public class User {
     private LocalDateTime lastLogin;
     private String usualTimezone;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Token.NetworkData.Device> trustedDevices = new ArrayList<>();
-}
 
-enum UserRole {
-    USER, ADMIN, SUPER_ADMIN
+    public UserInfo toUserInfo() {
+        return new UserInfo(this.id, this.email, this.name, this.role);
+    }
 }
