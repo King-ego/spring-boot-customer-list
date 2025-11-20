@@ -19,6 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Session {
+    @org.springframework.data.annotation.Id
     @Id
     private String sessionId;
 
@@ -43,7 +44,7 @@ public class Session {
     private Set<String> permissions = new HashSet<>();
 
     private LocalDateTime revokedAt;
-    private UUID revokedBy;
+    private String revokedBy;
     private String revocationReason;
 
 }
