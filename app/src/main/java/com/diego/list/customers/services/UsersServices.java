@@ -37,9 +37,6 @@ public class UsersServices {
         userRepository.deleteById(id);
     }
 
-    public List<User> searchUsersByName(String name) {
-        return userRepository.findByNameContainingIgnoreCase(name);
-    }
 
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
