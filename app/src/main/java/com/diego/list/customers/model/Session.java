@@ -48,4 +48,3 @@ public class Session {
     private String revocationReason;
 
 }
-
