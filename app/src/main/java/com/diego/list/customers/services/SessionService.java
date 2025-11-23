@@ -241,6 +241,4 @@ public class SessionService {
                 allSessions.size()
         );
     }
-
-
 }
