@@ -113,7 +113,6 @@ public class SessionService {
 
         sessionRedisRepository.save(session);
 
-        // Remove da lista de sessões ativas do usuário
         String userSessionsKey = "user_sessions:" + session.getUserId();
         redisTemplate.opsForSet().remove(userSessionsKey, sessionId);
 
