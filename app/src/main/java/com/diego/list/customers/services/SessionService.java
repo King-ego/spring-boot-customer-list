@@ -153,7 +153,7 @@ public class SessionService {
             device.setIpAddress(getClientIP(request));
             device.setFirstSeen(LocalDateTime.now());
             device.setLastSeen(LocalDateTime.now());
-            device.setTrusted(false); // Requer aprovação do usuário
+            device.setTrusted(false);
 
             deviceRepository.save(device);
             log.info("Novo dispositivo registrado para usuário: {}", userId);
