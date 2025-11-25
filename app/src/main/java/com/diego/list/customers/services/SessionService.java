@@ -82,7 +82,6 @@ public class SessionService {
             return false;
         }
 
-        // Verifica inatividade
         if (Duration.between(session.getLastActivity(), LocalDateTime.now()).compareTo(INACTIVITY_LIMIT) > 0) {
             revokeSession(session.getSessionId(), "system", "Inatividade prolongada");
             return false;
