@@ -19,28 +19,6 @@ public class SessionController {
 
     private final SessionService sessionService;
 
-    /*@GetMapping("/active")
-    public ResponseEntity<List<SessionInfo>> getActiveSessions(@CookieValue("session_id") String sessionId) {
-        Session currentSession = sessionService.getSession(sessionId);
-        if (currentSession == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        List<SessionInfo> sessions = sessionService.getActiveUserSessions(currentSession.getUserId())
-                .stream()
-                .map(session -> new SessionInfo(
-                        session.getSessionId(),
-                        session.getDeviceInfo(),
-                        session.getIpAddress(),
-                        session.getCreatedAt(),
-                        session.getLastActivity(),
-                        session.getSessionId().equals(sessionId)
-                ))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(sessions);
-    }*/
-
     @PostMapping("/revoke/{targetSessionId}")
     public ResponseEntity<ApiResponse> revokeSession(@PathVariable String targetSessionId,
                                                      @CookieValue("session_id") String currentSessionId) {
