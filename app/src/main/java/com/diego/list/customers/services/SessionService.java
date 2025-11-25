@@ -96,7 +96,6 @@ public class SessionService {
             return false;
         }
 
-        // Atualiza última atividade
         updateLastActivity(session.getSessionId());
 
         return true;
