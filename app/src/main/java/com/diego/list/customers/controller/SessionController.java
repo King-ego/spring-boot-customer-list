@@ -29,7 +29,6 @@ public class SessionController {
             return ResponseEntity.badRequest().body(new ApiResponse("Sessão não encontrada 3"));
         }
 
-        // Verifica se a sessão pertence ao usuário (exceto para admins)
         if (!currentSession.getUserId().equals(targetSession.getUserId()) &&
                 !currentSession.getPermissions().contains("ADMIN")) {
             return ResponseEntity.status(403).body(new ApiResponse("Sem permissão para revogar esta sessão"));
