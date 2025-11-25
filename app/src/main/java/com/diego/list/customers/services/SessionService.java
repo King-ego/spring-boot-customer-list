@@ -71,7 +71,6 @@ public class SessionService {
     }
 
     public boolean validateSession(Session session, HttpServletRequest request) {
-        // Verifica se está ativa
         if (!session.isActive()) {
             return false;
         }
