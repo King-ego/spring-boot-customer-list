@@ -88,7 +88,6 @@ public class SessionService {
             return false;
         }
 
-        // Verifica fingerprint do dispositivo
         String currentFingerprint = fingerprintService.generateFingerprint(request);
         if (!session.getDeviceFingerprint().equals(currentFingerprint)) {
             securityMonitor.logSuspiciousActivity(session.getUserId(), "Mismatch de fingerprint", request);
