@@ -57,7 +57,6 @@ public class SessionService {
         // Salva no Redis
         sessionRedisRepository.save(session);
 
-        // Adiciona à lista de sessões do usuário
         String userSessionsKey = "user_sessions:" + user.getId();
         redisTemplate.opsForSet().add(userSessionsKey, sessionId);
         redisTemplate.expire(userSessionsKey, SESSION_DURATION);
