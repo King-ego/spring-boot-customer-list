@@ -76,7 +76,6 @@ public class SessionService {
             return false;
         }
 
-        // Verifica expiração
         if (LocalDateTime.now().isAfter(session.getExpiresAt())) {
             revokeSession(session.getSessionId(), "system", "Sessão expirada");
             return false;
