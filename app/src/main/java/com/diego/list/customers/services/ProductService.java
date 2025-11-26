@@ -53,5 +53,4 @@ public class ProductService {
     public List<Product> searchByItemIdentity(String identifier) {
         return productRepository.findByIdentity(identifier);
     }
-
 }
