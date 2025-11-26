@@ -80,6 +80,5 @@ public class OrderService {
         );
 
         rabbitMQProducer.sendEvent(event);
-
     }
 }
