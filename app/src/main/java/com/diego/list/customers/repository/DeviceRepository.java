@@ -16,6 +16,4 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
 
     @Query("SELECT d FROM Device d WHERE d.user.id = :userId AND d.trusted = true")
     List<Device> findTrustedDevicesByUserId(@Param("userId") UUID userId);
-
-    long countByUserId(UUID userId);
 }
