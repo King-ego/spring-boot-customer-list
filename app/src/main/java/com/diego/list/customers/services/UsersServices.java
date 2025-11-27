@@ -46,7 +46,4 @@ public class UsersServices {
         return userRepository.findByNameOrEmailContaining(searchTerm);
     }
 
-    public boolean userExistsByEmail(String email) {
-        return userRepository.existsByEmail(email);
-    }
 }
