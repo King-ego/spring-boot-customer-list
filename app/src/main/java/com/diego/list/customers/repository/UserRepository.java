@@ -17,22 +17,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByEmail(String email);
     @Query("SELECT u FROM User u WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR LOWER(u.email) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     List<User> findByNameOrEmailContaining(@Param("searchTerm") String searchTerm);
-
-/*    @Query("SELECT u.usualTimezone FROM User u WHERE u.id = :userId")
-    Optional<String> findUsualTimezoneByUserId(@Param("userId") String userId);
-    Optional<User> findByUsername(String username);
-    Optional<User> findByEmail(String email);
-    boolean existsByUsername(String username);
-
-    @Query("SELECT u.usualTimezone FROM User u WHERE u.id = :userId")
-    Optional<String> findUsualTimezoneByUserId(@Param("userId") String userId);
-
-    List<User> findByNameContainingIgnoreCase(String name);
-
-    @Query("SELECT u FROM User u WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR LOWER(u.email) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
-    List<User> findByNameOrEmailContaining(@Param("searchTerm") String searchTerm);
-
-    long countByNameContainingIgnoreCase(String name);
-
-    boolean existsByEmail(String email);*/
 }
