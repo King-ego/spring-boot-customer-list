@@ -5,6 +5,7 @@ import com.diego.list.customers.model.Session;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.services.records.RiskAssessment;
+import com.diego.list.customers.services.records.TempTokenData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -161,13 +162,3 @@ public class AuthService {
     }
 }
 
-record TempTokenData(UUID userId, LocalDateTime expiresAt) {
-    // Adicione os getters
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-}
