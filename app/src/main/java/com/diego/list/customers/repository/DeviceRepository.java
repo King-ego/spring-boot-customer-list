@@ -13,7 +13,4 @@ import java.util.UUID;
 @Repository
 public interface DeviceRepository extends JpaRepository<Device, Long> {
     Optional<Device> findByUserIdAndDeviceFingerprint(UUID userId, String deviceFingerprint);
-
-    @Query("SELECT d FROM Device d WHERE d.user.id = :userId AND d.trusted = true")
-    List<Device> findTrustedDevicesByUserId(@Param("userId") UUID userId);
 }
