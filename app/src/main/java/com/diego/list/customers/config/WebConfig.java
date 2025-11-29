@@ -38,4 +38,3 @@ public class WebConfig {
         return loggingFilter;
     }
 }
-
