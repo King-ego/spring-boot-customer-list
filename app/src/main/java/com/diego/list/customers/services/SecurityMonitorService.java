@@ -121,7 +121,9 @@ public class SecurityMonitorService {
     private boolean isUnusualTime(User user) {
         // Simulado - verificar se é horário incomum para o usuário
         int currentHour = LocalDateTime.now().getHour();
-        return currentHour < 6 || currentHour > 22; // Fora do horário comercial
+        int startHour = 8;
+        int endHour = 20;
+        return currentHour < startHour || currentHour > endHour; // Fora do horário comercial
     }
 
     private boolean isRiskyIP(String ip) {
