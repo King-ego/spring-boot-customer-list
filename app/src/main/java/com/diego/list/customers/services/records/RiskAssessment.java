@@ -15,3 +15,4 @@ public record RiskAssessment(int score, boolean requiresMFA, List<String> factor
         return factors;
     }
 }
+
