@@ -14,3 +14,4 @@ import java.util.UUID;
 public interface DeviceRepository extends JpaRepository<Device, Long> {
     Optional<Device> findByUserIdAndDeviceFingerprint(UUID userId, String deviceFingerprint);
 }
+
