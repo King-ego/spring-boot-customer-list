@@ -45,5 +45,4 @@ public class UsersServices {
     public List<User> searchUsers(String searchTerm) {
         return userRepository.findByNameOrEmailContaining(searchTerm);
     }
-
 }
