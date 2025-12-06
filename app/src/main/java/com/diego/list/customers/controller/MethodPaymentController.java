@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @Slf4j
-@RequestMapping("/method-payments")
+@RequestMapping("/api/method-payments")
 @AllArgsConstructor
 public class MethodPaymentController {
 
