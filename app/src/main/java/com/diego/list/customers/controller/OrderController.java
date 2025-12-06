@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@RequestMapping("/orders")
+@RequestMapping("/api/orders")
 @AllArgsConstructor
 public class OrderController {
 
