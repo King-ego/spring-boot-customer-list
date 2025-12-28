@@ -10,3 +10,4 @@ import java.util.UUID;
 public interface MethodPaymentRepository extends JpaRepository<MethodPayment, UUID> {
 }
 
+
