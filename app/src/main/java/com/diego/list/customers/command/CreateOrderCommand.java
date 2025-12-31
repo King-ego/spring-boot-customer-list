@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class CreateOrderCommand {
-    private UUID customerId;
+    private UUID userId;
 
     private List<OrderItemCommand> orders;
 }
