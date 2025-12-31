@@ -22,10 +22,12 @@ public class User {
 
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;
+    private String phone;
 
-    private String passwordHash;
+/*    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER;*/
+
+    private String password;
 
     private boolean enabled = true;
     private boolean accountNonLocked = true;
@@ -36,8 +38,11 @@ public class User {
     private LocalDateTime lastLogin;
     private String usualTimezone;
 
+    private String country;
+    private LocalDateTime birthDate;
+
 
     public UserInfo toUserInfo() {
-        return new UserInfo(this.id, this.email, this.name, this.role);
+        return new UserInfo(this.id, this.email, this.name);
     }
 }
