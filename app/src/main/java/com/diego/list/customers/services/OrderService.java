@@ -38,7 +38,7 @@ public class OrderService {
         List<OrderItemCommand> items = command.getOrders();
         UUID groupId = UUID.randomUUID();
 
-        Optional<Customer> customer = customerRepository.findById(command.getCustomerId());
+        Optional<Customer> customer = customerRepository.findByUserId(command.getUserId());
 
         if (customer.isEmpty()) {
             throw new CustomException("Customer not found", HttpStatus.NOT_FOUND);
@@ -55,7 +55,7 @@ public class OrderService {
             }
 
             Order order = Order.builder()
-                    .customerId(command.getCustomerId())
+                    .customerId(command.getUserId())
                     .productId(item.getProductId())
                     .quantity(item.getAmount())
                     .groupId(groupId)
@@ -74,7 +74,7 @@ public class OrderService {
 
         OderCreateEvent event = new OderCreateEvent(
                 groupId,
-                command.getCustomerId(),
+                command.getUserId(),
                 "PENDING",
                 totalPrice.get()
         );
