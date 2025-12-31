@@ -112,8 +112,8 @@ public class SessionValidationFilter extends OncePerRequestFilter {
     private boolean isPublicEndpoint(HttpServletRequest request) {
         String path = request.getRequestURI();
         return path.startsWith("/login") ||
-                path.startsWith("/register") ||
                 path.startsWith("/health") ||
-                path.startsWith("/public/");
+                path.startsWith("/public/") ||
+                path.equals("/users/register");
     }
 }
