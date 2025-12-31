@@ -191,10 +191,10 @@ public class SessionService {
         Set<String> permissions = new HashSet<>();
         permissions.add("READ");
 
-        if (user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.SUPER_ADMIN) {
+       /* if (user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.SUPER_ADMIN) {
             permissions.add("WRITE");
             permissions.add("ADMIN");
-        }
+        }*/
 
         return permissions;
     }
