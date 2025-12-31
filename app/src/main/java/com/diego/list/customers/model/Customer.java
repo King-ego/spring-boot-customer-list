@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -19,15 +20,31 @@ public class Customer {
     @GeneratedValue
     private UUID id;
 
-    private String name;
+    @Column(nullable = false, unique = true)
+    private UUID userId;
 
-    @Column(unique = true)
-    private String email;
+    private String document; // CPF
 
-    private String phone;
+    private LocalDateTime birthDate;
 
-    private String address;
+    private Boolean newsletterSubscribed = false;
 
-    @Column()
-    private String stripeCustomerId;
+    private Integer totalOrders = 0;
+
+    private Double totalSpent = 0.0;
+
+    private LocalDateTime lastPurchaseAt;
+
+
+    /*@Column()
+    private String stripeCustomerId;*/
+
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    private LocalDateTime updatedAt;
+
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
