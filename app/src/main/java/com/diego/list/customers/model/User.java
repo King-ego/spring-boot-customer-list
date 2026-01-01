@@ -20,12 +20,13 @@ public class User {
 
     private String name;
 
+    @Column(unique = true)
     private String email;
 
     private String phone;
 
-/*    @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;*/
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.CUSTOMER;
 
     private String password;
 
@@ -34,7 +35,7 @@ public class User {
     private boolean credentialsNonExpired = true;
     private boolean accountNonExpired = true;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime lastLogin;
     private String usualTimezone;
 
@@ -43,6 +44,6 @@ public class User {
 
 
     public UserInfo toUserInfo() {
-        return new UserInfo(this.id, this.email, this.name);
+        return new UserInfo(this.id, this.email, this.name, this.role);
     }
 }
