@@ -21,7 +21,6 @@ public class DeviceFingerprintFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        // Coleta informações do dispositivo para logging
         String userAgent = request.getHeader("User-Agent");
         String ip = getClientIP(request);
 
