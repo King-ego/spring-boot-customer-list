@@ -34,7 +34,7 @@ public class UsersController {
         return usersServices.saveUser(user);
     }
 
-    @PutMapping("/{id}")
+    /*@PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User userDetails) {
         Optional<User> optionalUser = usersServices.getUserById(id);
         if (optionalUser.isPresent()) {
@@ -44,7 +44,7 @@ public class UsersController {
             return ResponseEntity.ok(usersServices.saveUser(user));
         }
         return ResponseEntity.notFound().build();
-    }
+    }*/
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
