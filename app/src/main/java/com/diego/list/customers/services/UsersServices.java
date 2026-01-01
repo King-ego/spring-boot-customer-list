@@ -1,11 +1,13 @@
 package com.diego.list.customers.services;
 
+import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +32,12 @@ public class UsersServices {
     }
 
     public User saveUser(User user) {
+        Optional<User> existUser = userRepository.findByEmail(user.getEmail());
+
+        if (existUser.isPresent()) {
+            throw new CustomException("Email already in use", HttpStatus.CONFLICT);
+        }
+
         return userRepository.save(user);
     }
 
