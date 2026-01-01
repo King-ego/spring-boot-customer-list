@@ -2,7 +2,9 @@ package com.diego.list.customers.services;
 
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.User;
+import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.UserRepository;
+import com.diego.list.customers.services.execute.CreateTypeAccount;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +39,18 @@ public class UsersServices {
 
         if (existUser.isPresent()) {
             throw new CustomException("Email already in use", HttpStatus.CONFLICT);
+        }
+
+        var createTypeAccount = new CreateTypeAccount();
+
+        Map<UserRole, Runnable> validatedCreateRole = Map.of(
+                UserRole.CUSTOMER, createTypeAccount::createRoleCustomer,
+                UserRole.SELLER, createTypeAccount::createRoleSeller
+        );
+
+        Runnable action = validatedCreateRole.get(user.getRole());
+        if (action != null) {
+            action.run();
         }
 
         return userRepository.save(user);
