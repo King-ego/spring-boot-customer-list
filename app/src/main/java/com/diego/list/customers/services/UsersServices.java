@@ -66,14 +66,14 @@ public class UsersServices {
         Map<UserRole, Runnable> validatedCreateRole = Map.of(
                 UserRole.CUSTOMER, () -> {
                     CreateCustomerCommand customerCommand = CreateCustomerCommand.builder()
-                            .userId(create_user.getId())
+                            .user(create_user)
                             .document(createUser.getCustomerDetails().getDocument())
                             .build();
                     createTypeAccount.createRoleCustomer(customerCommand);
                 },
                 UserRole.SELLER, () -> {
                     CreateSellerCommand sellerCommand = CreateSellerCommand.builder()
-                            .userId(create_user.getId())
+                            .user(create_user)
                             .storeName(createUser.getSellerDetails().getStoreName())
                             .documentNumber(createUser.getSellerDetails().getDocumentNumber())
                             .storeDescription(createUser.getSellerDetails().getStoreDescription())
