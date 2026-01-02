@@ -2,6 +2,7 @@ package com.diego.list.customers.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.*;
 @Entity
 @Table(name = "sellers")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Seller {
@@ -35,8 +37,10 @@ public class Seller {
 
     private Boolean verified;
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
     @PreUpdate
