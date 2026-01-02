@@ -13,9 +13,9 @@ import java.util.UUID;
 @Repository
 public interface SecurityLogRepository extends JpaRepository<SecurityLog, Long> {
 
-    @Query("SELECT COUNT(sl) FROM SecurityLog sl WHERE sl.userId = :userId AND sl.eventType = com.diego.list.customers.model.SecurityEventType.LOGIN_FAILURE AND sl.timestamp > :since")
+    @Query("SELECT COUNT(sl) FROM SecurityLog sl WHERE sl.userId = :userId AND sl.eventType = com.diego.list.customers.model.SecurityEventType.LOGIN_FAILURE AND sl.localTimestamp > :since")
     long countRecentFailures(@Param("userId") UUID userId, @Param("since") LocalDateTime since);
 
-    @Query("SELECT sl FROM SecurityLog sl WHERE sl.timestamp >= :startDate ORDER BY sl.timestamp DESC")
+    @Query("SELECT sl FROM SecurityLog sl WHERE sl.localTimestamp >= :startDate ORDER BY sl.localTimestamp DESC")
     List<SecurityLog> findRecentLogs(@Param("startDate") LocalDateTime startDate);
 }
