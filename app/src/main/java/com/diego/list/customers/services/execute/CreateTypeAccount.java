@@ -16,7 +16,7 @@ public class CreateTypeAccount {
 
     public void createRoleCustomer(CreateCustomerCommand command){
         Customer customer = Customer.builder()
-                        .userId(command.getUserId())
+                        .user(command.getUser())
                         .document(command.getDocument())
                         .totalOrders(0)
                         .totalSpent(0.0)
