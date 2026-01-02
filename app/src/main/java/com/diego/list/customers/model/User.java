@@ -44,6 +44,12 @@ public class User {
     private String country;
     private LocalDateTime birthDate;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Customer customer;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Seller seller;
+
 
     public UserInfo toUserInfo() {
         return new UserInfo(this.id, this.email, this.name, this.role);
