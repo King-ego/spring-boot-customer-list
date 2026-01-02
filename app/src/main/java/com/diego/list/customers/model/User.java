@@ -28,17 +28,16 @@ public class User {
 
     private String phone;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.CUSTOMER;
+    private UserRole role;
 
     private String password;
 
-    private boolean enabled = true;
-    private boolean accountNonLocked = true;
-    private boolean credentialsNonExpired = true;
-    private boolean accountNonExpired = true;
+    private boolean enabled;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean accountNonExpired;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
     private LocalDateTime lastLogin;
     private String usualTimezone;
 
@@ -48,5 +47,15 @@ public class User {
 
     public UserInfo toUserInfo() {
         return new UserInfo(this.id, this.email, this.name, this.role);
+    }
+
+    @PrePersist
+    public void preCreate() {
+        createdAt = LocalDateTime.now();
+        accountNonExpired = true;
+        credentialsNonExpired = true;
+        accountNonLocked = true;
+        enabled = true;
+        role = UserRole.CUSTOMER;
     }
 }
