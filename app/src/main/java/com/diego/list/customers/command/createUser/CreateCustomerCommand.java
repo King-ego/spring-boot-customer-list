@@ -1,5 +1,6 @@
 package com.diego.list.customers.command.createUser;
 
+import com.diego.list.customers.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCustomerCommand {
-    private UUID userId;
+    private User user;
 
     private String document; // CPF
 
