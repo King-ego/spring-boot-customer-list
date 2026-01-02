@@ -23,9 +23,7 @@ public class Customer {
     @Column(nullable = false, unique = true)
     private UUID userId;
 
-    private String document; // CPF
-
-    private LocalDateTime birthDate;
+    private String document;
 
     private Boolean newsletterSubscribed = false;
 
@@ -39,12 +37,17 @@ public class Customer {
     /*@Column()
     private String stripeCustomerId;*/
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     @PreUpdate
     public void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @PrePersist
+    public void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 }
