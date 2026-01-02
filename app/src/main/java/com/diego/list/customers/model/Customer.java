@@ -20,8 +20,6 @@ public class Customer {
     @GeneratedValue
     private UUID id;
 
-
-
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
@@ -40,8 +38,10 @@ public class Customer {
     /*@Column()
     private String stripeCustomerId;*/
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
     @PreUpdate
