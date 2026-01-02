@@ -25,11 +25,11 @@ public class Customer {
 
     private String document;
 
-    private Boolean newsletterSubscribed = false;
+    private Boolean newsletterSubscribed;
 
-    private Integer totalOrders = 0;
+    private Integer totalOrders;
 
-    private Double totalSpent = 0.0;
+    private Double totalSpent;
 
     private LocalDateTime lastPurchaseAt;
 
@@ -49,5 +49,8 @@ public class Customer {
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();
+        totalOrders = 0;
+        totalSpent = 0.0;
+        newsletterSubscribed = false;
     }
 }
