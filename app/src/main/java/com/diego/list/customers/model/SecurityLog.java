@@ -33,11 +33,11 @@ public class SecurityLog {
     @Column(columnDefinition = "TEXT")
     private String metadata;
 
-    private LocalDateTime timestamp;
+    private LocalDateTime localTimestamp;
 
     @PrePersist
     public void onCreate() {
-        timestamp = LocalDateTime.now();
+        localTimestamp = LocalDateTime.now();
     }
 
 }
