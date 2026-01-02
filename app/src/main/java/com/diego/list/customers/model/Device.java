@@ -30,5 +30,10 @@ public class Device {
 
     private LocalDateTime firstSeen;
     private LocalDateTime lastSeen;
-    private boolean trusted = false;
+    private boolean trusted;
+
+    @PrePersist
+    public void onCreate() {
+        trusted = false;
+    }
 }
