@@ -20,8 +20,11 @@ public class Customer {
     @GeneratedValue
     private UUID id;
 
-    @Column(nullable = false, unique = true)
-    private UUID userId;
+
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 
     private String document;
 
