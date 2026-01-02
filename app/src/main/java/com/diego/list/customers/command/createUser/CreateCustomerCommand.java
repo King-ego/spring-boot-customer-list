@@ -1,20 +1,21 @@
-package com.diego.list.customers.command;
+package com.diego.list.customers.command.createUser;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCustomerCommand {
-    private String name;
+    private UUID userId;
 
-    private String email;
+    private String document; // CPF
 
-    private String phone;
-
-    private String address;
+    private LocalDateTime birthDate;
 }
