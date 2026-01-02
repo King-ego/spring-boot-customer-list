@@ -37,7 +37,9 @@ public class User {
     private boolean credentialsNonExpired;
     private boolean accountNonExpired;
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime lastLogin;
     private String usualTimezone;
 
