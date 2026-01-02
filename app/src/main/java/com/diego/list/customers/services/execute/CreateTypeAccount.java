@@ -3,7 +3,9 @@ package com.diego.list.customers.services.execute;
 import com.diego.list.customers.command.createUser.CreateCustomerCommand;
 import com.diego.list.customers.command.createUser.CreateSellerCommand;
 import com.diego.list.customers.model.Customer;
+import com.diego.list.customers.model.Seller;
 import com.diego.list.customers.repository.CustomerRepository;
+import com.diego.list.customers.repository.SellerRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,13 +15,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class CreateTypeAccount {
     private final CustomerRepository customerRepository;
+    private final SellerRepository sellerRepository;
 
     public void createRoleCustomer(CreateCustomerCommand command){
         Customer customer = Customer.builder()
                         .user(command.getUser())
                         .document(command.getDocument())
-                        .totalOrders(0)
-                        .totalSpent(0.0)
                         .build();
 
         customerRepository.save(customer);
@@ -27,6 +28,14 @@ public class CreateTypeAccount {
     }
 
     public void createRoleSeller(CreateSellerCommand command){
+        Seller seller = Seller.builder()
+                        .user(command.getUser())
+                        .storeName(command.getStoreName())
+                        .documentNumber(command.getDocumentNumber())
+                        .storeDescription(command.getStoreDescription())
+                        .build();
+
+        sellerRepository.save(seller);
         log.info("Updating role seller {}", command);
     }
 }
