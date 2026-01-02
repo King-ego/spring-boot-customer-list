@@ -1,5 +1,7 @@
 package com.diego.list.customers.services;
 
+import com.diego.list.customers.command.createUser.CreateCustomerCommand;
+import com.diego.list.customers.command.createUser.CreateSellerCommand;
 import com.diego.list.customers.command.createUser.CreateUserCommand;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.User;
@@ -27,6 +29,8 @@ public class UsersServices {
     @Autowired
     private UserRepository userRepository;
 
+    private final CreateTypeAccount createTypeAccount;
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -42,16 +46,12 @@ public class UsersServices {
             throw new CustomException("Email already in use", HttpStatus.CONFLICT);
         }
 
-        var createTypeAccount = new CreateTypeAccount();
+        if (createUser.getRole() == UserRole.CUSTOMER && createUser.getCustomerDetails() == null) {
+            throw new CustomException("Customer details are required", HttpStatus.BAD_REQUEST);
+        }
 
-        Map<UserRole, Runnable> validatedCreateRole = Map.of(
-                UserRole.CUSTOMER, createTypeAccount::createRoleCustomer,
-                UserRole.SELLER, createTypeAccount::createRoleSeller
-        );
-
-        Runnable action = validatedCreateRole.get(createUser.getRole());
-        if (action != null) {
-            action.run();
+        if (createUser.getRole() == UserRole.SELLER && createUser.getSellerDetails() == null) {
+            throw new CustomException("Seller details are required", HttpStatus.BAD_REQUEST);
         }
 
         User user = User.builder()
@@ -61,7 +61,33 @@ public class UsersServices {
                 .role(createUser.getRole())
                 .build();
 
-        return userRepository.save(user);
+        var create_user = userRepository.save(user);
+
+        Map<UserRole, Runnable> validatedCreateRole = Map.of(
+                UserRole.CUSTOMER, () -> {
+                    CreateCustomerCommand customerCommand = CreateCustomerCommand.builder()
+                            .userId(create_user.getId())
+                            .document(createUser.getCustomerDetails().getDocument())
+                            .build();
+                    createTypeAccount.createRoleCustomer(customerCommand);
+                },
+                UserRole.SELLER, () -> {
+                    CreateSellerCommand sellerCommand = CreateSellerCommand.builder()
+                            .userId(create_user.getId())
+                            .storeName(createUser.getSellerDetails().getStoreName())
+                            .documentNumber(createUser.getSellerDetails().getDocumentNumber())
+                            .storeDescription(createUser.getSellerDetails().getStoreDescription())
+                            .build();
+                    createTypeAccount.createRoleSeller(sellerCommand);
+                }
+        );
+
+        Runnable action = validatedCreateRole.get(createUser.getRole());
+        if (action != null) {
+            action.run();
+        }
+
+        return  create_user;
     }
 
     public void deleteUser(UUID id) {
