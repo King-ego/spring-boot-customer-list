@@ -1,5 +1,6 @@
 package com.diego.list.customers.services;
 
+import com.diego.list.customers.command.createUser.CreateUserCommand;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.model.UserRole;
@@ -34,8 +35,8 @@ public class UsersServices {
         return userRepository.findById(id);
     }
 
-    public User saveUser(User user) {
-        Optional<User> existUser = userRepository.findByEmail(user.getEmail());
+    public User saveUser(CreateUserCommand createUser) {
+        Optional<User> existUser = userRepository.findByEmail(createUser.getEmail());
 
         if (existUser.isPresent()) {
             throw new CustomException("Email already in use", HttpStatus.CONFLICT);
@@ -48,10 +49,17 @@ public class UsersServices {
                 UserRole.SELLER, createTypeAccount::createRoleSeller
         );
 
-        Runnable action = validatedCreateRole.get(user.getRole());
+        Runnable action = validatedCreateRole.get(createUser.getRole());
         if (action != null) {
             action.run();
         }
+
+        User user = User.builder()
+                .name(createUser.getName())
+                .email(createUser.getEmail())
+                .password(createUser.getPassword())
+                .role(createUser.getRole())
+                .build();
 
         return userRepository.save(user);
     }
