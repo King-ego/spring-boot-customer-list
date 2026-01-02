@@ -1,5 +1,6 @@
 package com.diego.list.customers.controller;
 
+import com.diego.list.customers.command.createUser.CreateUserCommand;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.services.UsersServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody CreateUserCommand user) {
         return usersServices.saveUser(user);
     }
 
