@@ -1,0 +1,34 @@
+package com.diego.list.customers.command.createUser;
+
+import com.diego.list.customers.model.UserRole;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CreateUserCommand {
+    private String name;
+
+    private String email;
+
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    private String phone;
+
+    private  String country;
+
+    private String birthDate;
+
+    private CreateCustomerCommand customerDetails;
+
+    private CreateSellerCommand sellerDetails;
+}
