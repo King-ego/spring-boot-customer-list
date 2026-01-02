@@ -28,18 +28,26 @@ public class Seller {
     @Column(columnDefinition = "TEXT")
     private String storeDescription;
 
-    private Double rating = 0.0;
+    private Double rating;
 
-    private Integer totalReviews = 0;
+    private Integer totalReviews;
 
-    private Boolean verified = false;
+    private Boolean verified;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        totalReviews = 0;
+        rating = 0.0;
+        verified = false;
     }
 }
