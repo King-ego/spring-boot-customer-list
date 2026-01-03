@@ -1,5 +1,7 @@
 package com.diego.list.customers.controller;
 
+import com.diego.list.customers.command.CreateAddressCommand;
+import com.diego.list.customers.services.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/address")
 @RequiredArgsConstructor
 public class AddressController {
-    @PostMapping("")
-    public void createAddress() {
+    private final AddressService addressService;
 
+    @PostMapping("")
+    public void createAddress(@RequestBody CreateAddressCommand createAddressCommand) {
+        addressService.CreateAddress(createAddressCommand);
     }
 }
