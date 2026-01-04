@@ -20,7 +20,12 @@ services:
     ports:
       - "2379:6379"
     restart: unless-stopped
-    command: [ "redis-server", "--requirepass", "12345" ]
+    command: [ "redis-server", "--requirepass", "12345", "--bind", "0.0.0.0" ]
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "12345", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   go-app:
     build:
       context: payment
@@ -48,6 +53,7 @@ services:
     depends_on:
       - rabbitmq
       - postgres_mn_db
+      - redis_app
 
   challenge_english:
     build:
