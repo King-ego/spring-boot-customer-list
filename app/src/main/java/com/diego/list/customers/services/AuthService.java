@@ -39,30 +39,32 @@ public class AuthService {
     private final ObjectMapper objectMapper;
 
     public AuthResponse login(LoginRequest request, HttpServletRequest httpRequest) {
-        // Rate limiting
-        if (isRateLimited(request.getEmail(), httpRequest.getRemoteAddr())) {
+        log.info("request: {}", request);
+        log.info("httpRequest: {}", httpRequest);
+
+        var validated = isRateLimited(request.getEmail(), httpRequest.getRemoteAddr());
+        log.info("validated: {}", validated);
+        log.info("email: {}", request.getEmail());
+        log.info("remote: {}", httpRequest.getRemoteAddr());
+        if (validated) {
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Muitas tentativas. Tente novamente mais tarde.");
         }
 
-        // Busca usuário
+
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas"));
 
-        // Verifica senha
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             securityMonitor.logAuthAttempt(user.getId(), false, httpRequest, "Senha incorreta");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas");
         }
 
-        // Verifica se conta está ativa
         if (!user.isEnabled() || !user.isAccountNonLocked()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Conta bloqueada ou desativada");
         }
 
-        // Gera fingerprint do dispositivo
         String deviceFingerprint = fingerprintService.generateFingerprint(httpRequest);
 
-        // Calcula risco e decide se precisa de MFA
         RiskAssessment risk = securityMonitor.assessRisk(user, httpRequest, deviceFingerprint);
 
         if (risk.isRequiresMFA()) {
@@ -80,7 +82,6 @@ public class AuthService {
                     .build();
         }
 
-        // Login direto - cria sessão
         return createSessionAndRespond(user, httpRequest, deviceFingerprint);
     }
 
