@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class UsersServices {
     private UserRepository userRepository;
 
     private final CreateTypeAccount createTypeAccount;
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -54,10 +56,12 @@ public class UsersServices {
             throw new CustomException("Seller details are required", HttpStatus.BAD_REQUEST);
         }
 
+        String password_encoder = passwordEncoder.encode(createUser.getPassword());
+
         User user = User.builder()
                 .name(createUser.getName())
                 .email(createUser.getEmail())
-                .password(createUser.getPassword())
+                .password(password_encoder)
                 .role(createUser.getRole())
                 .build();
 
