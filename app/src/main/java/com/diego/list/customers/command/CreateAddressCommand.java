@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -28,5 +30,5 @@ public class CreateAddressCommand {
 
     private String phone_number;
 
-    private String user_id;
+    private UUID user_id;
 }
