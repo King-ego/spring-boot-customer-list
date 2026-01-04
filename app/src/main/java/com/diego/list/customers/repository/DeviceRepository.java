@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DeviceRepository extends JpaRepository<Device, Long> {
+public interface DeviceRepository extends JpaRepository<Device, UUID> {
     Optional<Device> findByUserIdAndDeviceFingerprint(UUID userId, String deviceFingerprint);
 }
