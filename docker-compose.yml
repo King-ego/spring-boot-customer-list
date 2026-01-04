@@ -15,7 +15,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-  radis_app:
+  redis_app:
     image: redis:7-alpine
     ports:
       - "2379:6379"
