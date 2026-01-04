@@ -31,4 +31,6 @@ public class CreateAddressCommand {
     private String phone_number;
 
     private UUID user_id;
+
+    private Boolean is_default;
 }
