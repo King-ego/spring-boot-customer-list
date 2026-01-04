@@ -38,6 +38,8 @@ public class Address {
 
     private String phone_number;
 
+    private Boolean is_default;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
