@@ -24,11 +24,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/login", "/users/register")
+                        .ignoringRequestMatchers("/login", "/users/register", "/verify-mfa")
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/login", "/health", "/users/register").permitAll()
+                        .requestMatchers("/login", "/health", "/users/register", "/verify-mfa").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/**").authenticated()
                         .anyRequest().permitAll()
