@@ -34,6 +34,7 @@ public class MFAService {
 
     public boolean verifyMFACode(String mfaId, String code) {
         String stored = (String) redisTemplate.opsForValue().get("mfa_code:" + mfaId);
+        log.info("Verificando código MFA para mfaId: {}, código fornecido: {}, código armazenado: {}", mfaId, code, stored);
         if (stored == null) {
             return false;
         }
