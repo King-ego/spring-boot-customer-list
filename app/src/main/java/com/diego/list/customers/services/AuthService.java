@@ -142,7 +142,7 @@ public class AuthService {
         TempTokenData tempData = new TempTokenData(userId, LocalDateTime.now().plusMinutes(5));
 
         try {
-            redisTemplate.opsForValue().set("temp_token:" + token, objectMapper.writeValueAsString(tempData), Duration.ofMinutes(5));
+            redisTemplate.opsForValue().set("tempToken:" + token, objectMapper.writeValueAsString(tempData), Duration.ofMinutes(5));
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Erro ao gerar token temporário", e);
         }
@@ -152,7 +152,8 @@ public class AuthService {
 
     private TempTokenData verifyTempToken(String token) {
         try {
-            String data = (String) redisTemplate.opsForValue().get("temp_token:" + token);
+            String data = (String) redisTemplate.opsForValue().get("tempToken:" + token);
+            log.info("token data: {}", data);
             if (data == null) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expirado ou inválido");
             }
