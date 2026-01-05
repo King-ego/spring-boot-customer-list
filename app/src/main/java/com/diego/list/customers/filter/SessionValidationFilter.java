@@ -49,6 +49,10 @@ public class SessionValidationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+
+        log.info("Request 1: {}", request);
+        log.info("Response 2: {}", request);
+        log.info("FilterChain 3: {}", filterChain);
         if (isPublicEndpoint(request)) {
             filterChain.doFilter(request, response);
             return;
@@ -56,7 +60,7 @@ public class SessionValidationFilter extends OncePerRequestFilter {
 
         String sessionId = getSessionIdFromRequest(request);
         if (sessionId == null) {
-            sendError(response, "Sessão não encontrada 1", HttpStatus.UNAUTHORIZED);
+            sendError(response, "Sessão não encontrada", HttpStatus.UNAUTHORIZED);
             return;
         }
 
@@ -114,6 +118,7 @@ public class SessionValidationFilter extends OncePerRequestFilter {
         return path.startsWith("/login") ||
                 path.startsWith("/health") ||
                 path.startsWith("/public/") ||
+                path.startsWith("/verify-mfa") ||
                 path.equals("/users/register");
     }
 }
