@@ -1,6 +1,7 @@
 package com.diego.list.customers.services;
 
 import com.diego.list.customers.model.User;
+import com.diego.list.customers.utils.RedisUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,6 +18,7 @@ public class MFAService {
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final Random random = new Random();
+    private final RedisUtils redisUtils;
 
     public String generateMFACode(UUID userId) {
         String code = generateRandomCode(6);
@@ -46,7 +48,7 @@ public class MFAService {
 
         boolean valid = parts[1].equals(code);
         if (valid) {
-            redisTemplate.delete("mfa_code:" + mfaId);
+            redisUtils.safeDel("mfa_code:" + mfaId);
         }
 
         return valid;
