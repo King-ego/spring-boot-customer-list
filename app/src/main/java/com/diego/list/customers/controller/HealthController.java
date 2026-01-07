@@ -39,4 +39,3 @@ public class HealthController {
         return response;
     }
 }
-
