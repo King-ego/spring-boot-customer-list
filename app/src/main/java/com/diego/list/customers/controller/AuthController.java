@@ -36,7 +36,6 @@ public class AuthController {
                                                   HttpServletResponse response) {
         AuthResponse authResponse = authService.verifyMFA(request, httpRequest);
 
-        // Configura cookie de sessão
         if (authResponse.isSuccess()) {
             ResponseCookie cookie = createSessionCookie(authResponse.getSessionId());
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
