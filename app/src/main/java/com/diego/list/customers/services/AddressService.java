@@ -1,6 +1,7 @@
 package com.diego.list.customers.services;
 
-import com.diego.list.customers.command.CreateAddressCommand;
+import com.diego.list.customers.command.address.CreateAddressCommand;
+import com.diego.list.customers.command.address.UpdateAddressCommand;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Address;
 import com.diego.list.customers.model.User;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -44,4 +46,6 @@ public class AddressService {
 
         addressRepository.save(address);
     }
+
+    public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){}
 }
