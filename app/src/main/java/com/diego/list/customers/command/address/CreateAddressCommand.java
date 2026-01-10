@@ -1,4 +1,4 @@
-package com.diego.list.customers.command;
+package com.diego.list.customers.command.address;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
