@@ -1,6 +1,6 @@
 package com.diego.list.customers.controller;
 
-import com.diego.list.customers.command.CreateAddressCommand;
+import com.diego.list.customers.command.address.CreateAddressCommand;
 import com.diego.list.customers.services.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,5 +14,10 @@ public class AddressController {
     @PostMapping("")
     public void createAddress(@RequestBody CreateAddressCommand createAddressCommand) {
         addressService.CreateAddress(createAddressCommand);
+    }
+
+    @PatchMapping("/{addressId}")
+    public void updateAddress(@PathVariable Long addressId, @RequestBody CreateAddressCommand updateAddressCommand) {
+        addressService.updateAddress(addressId, updateAddressCommand);
     }
 }
