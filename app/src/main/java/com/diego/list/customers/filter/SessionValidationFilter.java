@@ -38,7 +38,6 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 @Order(1)
@@ -54,10 +53,6 @@ public class SessionValidationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-
-        log.info("Request 1: {}", request);
-        log.info("Response 2: {}", request);
-        log.info("FilterChain 3: {}", filterChain);
         if (isPublicEndpoint(request)) {
             filterChain.doFilter(request, response);
             return;
@@ -65,7 +60,6 @@ public class SessionValidationFilter extends OncePerRequestFilter {
 
         String sessionId = getSessionIdFromRequest(request);
 
-        log.info("Session ID: {}", sessionId);
         if (sessionId == null) {
             sendError(response, "Sessão não encontrada", HttpStatus.BAD_REQUEST);
             return;
@@ -86,10 +80,9 @@ public class SessionValidationFilter extends OncePerRequestFilter {
             SessionAuthentication authentication = new SessionAuthentication(session, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            log.info("✅ Sessão validada e autenticada no Spring Security");
             SessionRequestWrapper wrappedRequest = new SessionRequestWrapper(request, session);
             filterChain.doFilter(wrappedRequest, response);
-            log.info("✅ Retornou do controller");
+
 
         } catch (Exception e) {
             log.error("Erro na validação da sessão", e);
