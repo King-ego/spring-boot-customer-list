@@ -59,21 +59,26 @@ public class SessionValidationFilter extends OncePerRequestFilter {
         }
 
         String sessionId = getSessionIdFromRequest(request);
+
+        log.info("Session ID: {}", sessionId);
         if (sessionId == null) {
-            sendError(response, "Sessão não encontrada", HttpStatus.UNAUTHORIZED);
+            sendError(response, "Sessão não encontrada", HttpStatus.BAD_REQUEST);
             return;
         }
 
         try {
             Session session = sessionService.getSession(sessionId);
+            log.info("Session: {}", session);
             if (session == null || !sessionService.validateSession(session, request)) {
-                sendError(response, "Sessão inválida ou expirada", HttpStatus.UNAUTHORIZED);
+                sendError(response, "Sessão inválida ou expirada", HttpStatus.NOT_FOUND);
                 return;
             }
 
             // Adiciona sessão ao contexto da requisição
+            log.info("✅ Sessão validada com sucesso, continuando para o controller");
             SessionRequestWrapper wrappedRequest = new SessionRequestWrapper(request, session);
             filterChain.doFilter(wrappedRequest, response);
+            log.info("✅ Retornou do controller");
 
         } catch (Exception e) {
             log.error("Erro na validação da sessão", e);
