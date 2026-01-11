@@ -47,5 +47,29 @@ public class AddressService {
         addressRepository.save(address);
     }
 
-    public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){}
+    public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
+        Optional <Address> existingAddress = addressRepository.findById(addressId);
+
+        if (existingAddress.isEmpty()) {
+            throw new CustomException("Address not found", HttpStatus.NOT_FOUND);
+        }
+
+        Address address = existingAddress.get();
+
+        address.setCity(updateAddressCommand.getCity());
+        address.setStreet_address(updateAddressCommand.getStreet_address());
+        address.setComplement(updateAddressCommand.getComplement());
+        address.setStreet_number(updateAddressCommand.getStreet_number());
+        address.setRecipient(updateAddressCommand.getRecipient());
+        address.setNeighborhood(updateAddressCommand.getNeighborhood());
+        address.setState(updateAddressCommand.getState());
+        address.setZip_code(updateAddressCommand.getZip_code());
+        address.setPhone_number(updateAddressCommand.getPhone_number());
+        address.setIs_default(updateAddressCommand.getIs_default());
+        
+        addressRepository.save(address);
+
+    }
+
+
 }
