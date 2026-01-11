@@ -30,15 +30,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login", "/health", "/users/register", "/verify-mfa").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/**").authenticated()
-                        .anyRequest().permitAll()
+                        .anyRequest().permitAll()  // ← MUDE AQUI: permitAll() em vez de authenticated()
                 )
                 .addFilterBefore(sessionFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers
                         .contentSecurityPolicy(csp -> csp
                                 .policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'")
                         )
-                            .httpStrictTransportSecurity(hsts -> hsts
+                        .httpStrictTransportSecurity(hsts -> hsts
                                 .includeSubDomains(true)
                                 .preload(true)
                                 .maxAgeInSeconds(31536000)
