@@ -36,8 +36,6 @@ public class Address {
 
     private String complement;
 
-    private UUID user_id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
