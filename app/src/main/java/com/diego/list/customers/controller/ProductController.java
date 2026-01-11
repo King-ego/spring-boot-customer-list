@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/products")
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController {
@@ -42,13 +42,13 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/search-identity/:identifier")
+    @GetMapping("/search-identity/{identifier}")
     public List<Product> searchByItemIdentity(@Valid @RequestParam String identifier) {
         return productService.searchByItemIdentity(identifier);
     }
 
-    @GetMapping("/:slug")
-    public String getBySlug(@RequestParam String slug) {
+    @GetMapping("/{slug}")
+    public String getBySlug(@PathVariable String slug) {
         return "Test" + slug;
     }
 }
