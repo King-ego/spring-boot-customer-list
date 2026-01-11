@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login", "/health", "/users/register", "/verify-mfa").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()  // ← MUDE AQUI: permitAll() em vez de authenticated()
+                        .anyRequest().authenticated()  // ← MUDE AQUI: permitAll() em vez de authenticated()
                 )
                 .addFilterBefore(sessionFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers
