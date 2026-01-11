@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;*/
 
 import com.diego.list.customers.model.Session;
+import com.diego.list.customers.security.SessionAuthentication;
 import com.diego.list.customers.services.SessionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -27,13 +28,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @Order(1)
@@ -74,8 +79,14 @@ public class SessionValidationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            // Adiciona sessão ao contexto da requisição
-            log.info("✅ Sessão validada com sucesso, continuando para o controller");
+            List<SimpleGrantedAuthority> authorities = session.getPermissions().stream()
+                    .map(perm -> new SimpleGrantedAuthority("ROLE_" + perm))
+                    .toList();
+
+            SessionAuthentication authentication = new SessionAuthentication(session, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            log.info("✅ Sessão validada e autenticada no Spring Security");
             SessionRequestWrapper wrappedRequest = new SessionRequestWrapper(request, session);
             filterChain.doFilter(wrappedRequest, response);
             log.info("✅ Retornou do controller");
@@ -83,6 +94,8 @@ public class SessionValidationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             log.error("Erro na validação da sessão", e);
             sendError(response, "Erro de autenticação", HttpStatus.INTERNAL_SERVER_ERROR);
+        } finally {
+            SecurityContextHolder.clearContext(); // Limpa após a requisição
         }
     }
 
