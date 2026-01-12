@@ -38,6 +38,11 @@ public class SessionValidationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        log.info("🔍 Filtro executado: {} {} | Session ID no request: {}",
+                request.getMethod(),
+                request.getRequestURI(),
+                getSessionIdFromRequest(request));
+
         if (isPublicEndpoint(request)) {
             filterChain.doFilter(request, response);
             return;
@@ -70,7 +75,7 @@ public class SessionValidationFilter extends OncePerRequestFilter {
 
 
         } catch (Exception e) {
-            log.error("Erro na validação da sessão", e);
+            log.info("Erro na validação da sessão", e);
             sendError(response, "Erro de autenticação", HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             SecurityContextHolder.clearContext(); // Limpa após a requisição
@@ -107,6 +112,8 @@ public class SessionValidationFilter extends OncePerRequestFilter {
         error.put("timestamp", Instant.now().toString());
 
         objectMapper.writeValue(response.getWriter(), error);
+
+        response.getWriter().flush();
     }
 
     private boolean isPublicEndpoint(HttpServletRequest request) {
