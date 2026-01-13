@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,10 +39,8 @@ public class SessionValidationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        log.info("🔍 Filtro executado: {} {} | Session ID no request: {}",
-                request.getMethod(),
-                request.getRequestURI(),
-                getSessionIdFromRequest(request));
+        System.out.println("🔥🔥🔥 FILTRO EXECUTADO: " + request.getRequestURI());
+        log.error("🔥 FILTRO EXECUTADO: {} {}", request.getMethod(), request.getRequestURI());
 
         if (isPublicEndpoint(request)) {
             filterChain.doFilter(request, response);
