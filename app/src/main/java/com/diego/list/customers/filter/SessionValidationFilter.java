@@ -82,7 +82,7 @@ public class SessionValidationFilter extends OncePerRequestFilter {
     }
 
     private String getSessionIdFromRequest(HttpServletRequest request) {
-        // Tenta do cookie primeiro
+
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -92,7 +92,6 @@ public class SessionValidationFilter extends OncePerRequestFilter {
             }
         }
 
-        // Tenta do header Authorization
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Session ")) {
             return authHeader.substring(8);
