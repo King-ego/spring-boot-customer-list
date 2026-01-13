@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/orders")
 @AllArgsConstructor
 public class OrderController {
 
