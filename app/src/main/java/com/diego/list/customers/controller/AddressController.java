@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/address")
+@RequestMapping("/address")
 @RequiredArgsConstructor
 public class AddressController {
     private final AddressService addressService;
@@ -21,7 +21,7 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.CREATED).toString();
     }
 
-    @PatchMapping("/{addressId}")
+    @GetMapping("/{addressId}")
     public String updateAddress(@PathVariable UUID addressId, @RequestBody UpdateAddressCommand updateAddressCommand) {
         addressService.UpdateAddress(addressId, updateAddressCommand);
         return ResponseEntity.status(HttpStatus.CREATED).toString();
