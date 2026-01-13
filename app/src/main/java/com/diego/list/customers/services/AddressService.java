@@ -7,12 +7,15 @@ import com.diego.list.customers.model.Address;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.AddressRepository;
 import com.diego.list.customers.repository.UserRepository;
+import com.diego.list.customers.services.execute.OnlyAddressDefault;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +26,7 @@ import java.util.UUID;
 public class AddressService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final OnlyAddressDefault onlyAddressDefault;
 
     public void CreateAddress(CreateAddressCommand createAddressCommand) {
         Optional<User> existUser = userRepository.findById(createAddressCommand.getUser_id());
@@ -42,9 +46,12 @@ public class AddressService {
                 .zip_code(createAddressCommand.getZip_code())
                 .phone_number(createAddressCommand.getPhone_number())
                 .is_default(createAddressCommand.getIs_default())
+                .user(existUser.get())
                 .build();
 
         addressRepository.save(address);
+
+        onlyAddressDefault.validate(createAddressCommand.getIs_default(), createAddressCommand.getUser_id());
     }
 
     public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
@@ -69,6 +76,14 @@ public class AddressService {
         
         addressRepository.save(address);
 
+    }
+
+    public List<Address> GetAddressesByUserId(UUID userId){
+        if (!userRepository.existsById(userId)) {
+            throw new CustomException("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        return addressRepository.findByUserId(userId);
     }
 
 
