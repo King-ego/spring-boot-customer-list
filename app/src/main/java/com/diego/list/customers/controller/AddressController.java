@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/address")
+@RequestMapping("/api/v1/address")
 @RequiredArgsConstructor
 public class AddressController {
     private final AddressService addressService;
