@@ -15,7 +15,7 @@ public class UpdateAddressCommand {
 
     private String street_address;
 
-    private Number street_number;
+    private String street_number;
 
     private String neighborhood;
 
