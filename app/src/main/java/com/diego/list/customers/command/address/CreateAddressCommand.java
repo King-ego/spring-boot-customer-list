@@ -23,7 +23,7 @@ public class CreateAddressCommand {
     private String street_address;
 
     @NotNull
-    private Number street_number;
+    private String street_number;
 
     @NotNull
     private String neighborhood;
