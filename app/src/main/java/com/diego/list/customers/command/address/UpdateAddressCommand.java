@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class UpdateAddressCommand {
     private String recipient;
 
-    private Number zip_code;
+    private String zip_code;
 
     private String street_address;
 
