@@ -39,8 +39,8 @@ public class SessionValidationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("🔥🔥🔥 FILTRO EXECUTADO: " + request.getRequestURI());
-        log.error("🔥 FILTRO EXECUTADO: {} {}", request.getMethod(), request.getRequestURI());
+        System.out.println("FILTRO EXECUTADO: " + request.getRequestURI());
+        log.error("FILTRO EXECUTADO: {} {}", request.getMethod(), request.getRequestURI());
 
         if (isPublicEndpoint(request)) {
             filterChain.doFilter(request, response);
