@@ -20,18 +20,17 @@ public class AddressController {
     @PostMapping
     public String createAddress(@RequestBody CreateAddressCommand createAddressCommand) {
         addressService.CreateAddress(createAddressCommand);
-        return ResponseEntity.status(HttpStatus.CREATED).toString();
+        return "Create";
     }
 
     @PatchMapping("/{addressId}")
     public String updateAddress(@PathVariable UUID addressId, @RequestBody UpdateAddressCommand updateAddressCommand) {
         addressService.UpdateAddress(addressId, updateAddressCommand);
-        return ResponseEntity.status(HttpStatus.CREATED).toString();
+        return "Teste";
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Address>> getAddressesByUserId(@PathVariable UUID userId) {
-        List<Address> addresses = addressService.GetAddressesByUserId(userId);
-        return ResponseEntity.ok(addresses);
+    public List<Address> getAddressesByUserId(@PathVariable UUID userId) {
+        return addressService.GetAddressesByUserId(userId);
     }
 }
