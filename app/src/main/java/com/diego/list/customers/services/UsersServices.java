@@ -35,7 +35,6 @@ public class UsersServices {
 
     private final CreateTypeAccount createTypeAccount;
     private final PasswordEncoder passwordEncoder;
-    private final SessionService sessionService;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
