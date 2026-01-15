@@ -25,7 +25,7 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID id, @RequestHeader("Authorization") String sessionId) {
+    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
         Optional<User> user = usersServices.getUserById(id);
         return user.map(ResponseEntity::ok)
                   .orElse(ResponseEntity.notFound().build());
@@ -49,7 +49,7 @@ public class UsersController {
     }*/
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id, @RequestHeader("Authorization") String sessionId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         if (usersServices.getUserById(id).isPresent()) {
             usersServices.deleteUser(id);
             return ResponseEntity.ok().build();
