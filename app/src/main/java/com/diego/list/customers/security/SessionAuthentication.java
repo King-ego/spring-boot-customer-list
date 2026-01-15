@@ -23,7 +23,7 @@ public class SessionAuthentication extends AbstractAuthenticationToken{
 
     @Override
     public Object getPrincipal() {
-        return session.getUserId();
+        return session;
     }
 
     public Session getSession() {
