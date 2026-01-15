@@ -1,4 +1,5 @@
 package com.diego.list.customers.http.responses;
+import com.diego.list.customers.model.Customer;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.model.UserRole;
 
@@ -19,7 +20,8 @@ public record ReturnUsers(
         LocalDateTime lastLogin,
         String usualTimezone,
         String country,
-        LocalDateTime birthDate
+        LocalDateTime birthDate,
+        CustomerInfo customer
     ) {
 
     public static ReturnUsers from(User user) {
@@ -37,8 +39,19 @@ public record ReturnUsers(
                 user.getLastLogin(),
                 user.getUsualTimezone(),
                 user.getCountry(),
-                user.getBirthDate()
+                user.getBirthDate(),
+                user.getCustomer() != null ? CustomerInfo.from(user.getCustomer()) : null
         );
+    }
+
+    public record CustomerInfo(
+      String document
+    ){
+        public static CustomerInfo from(Customer customer){
+            return new CustomerInfo(
+                    customer.getDocument()
+            );
+        }
     }
 
 
