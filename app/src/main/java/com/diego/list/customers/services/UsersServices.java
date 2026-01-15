@@ -4,15 +4,18 @@ import com.diego.list.customers.command.createUser.CreateCustomerCommand;
 import com.diego.list.customers.command.createUser.CreateSellerCommand;
 import com.diego.list.customers.command.createUser.CreateUserCommand;
 import com.diego.list.customers.errors.CustomException;
+import com.diego.list.customers.model.Session;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.UserRepository;
+import com.diego.list.customers.security.SessionAuthentication;
 import com.diego.list.customers.services.execute.CreateTypeAccount;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +35,29 @@ public class UsersServices {
 
     private final CreateTypeAccount createTypeAccount;
     private final PasswordEncoder passwordEncoder;
+    private final SessionService sessionService;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     public Optional<User> getUserById(UUID id) {
+        SessionAuthentication auth = (SessionAuthentication) SecurityContextHolder.getContext().getAuthentication();
+
+        log.info("auth: {}", auth);
+
+        if (auth == null || auth.getSession() == null) {
+            throw new CustomException("Sessão inválida ou expirada", HttpStatus.UNAUTHORIZED);
+        }
+
+        Session session = auth.getSession();
+
+        if (!session.getUserId().equals(id)) {
+            throw new CustomException("Você só pode acessar seus próprios dados", HttpStatus.FORBIDDEN);
+        }
+
         return userRepository.findById(id);
+
     }
 
     public User saveUser(CreateUserCommand createUser) {
@@ -102,8 +121,8 @@ public class UsersServices {
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
+/*
     public List<User> searchUsers(String searchTerm) {
         return userRepository.findByNameOrEmailContaining(searchTerm);
-    }
+    }*/
 }
