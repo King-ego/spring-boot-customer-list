@@ -43,16 +43,14 @@ public class UsersServices {
     public Optional<User> getUserById(UUID id) {
         SessionAuthentication auth = (SessionAuthentication) SecurityContextHolder.getContext().getAuthentication();
 
-        log.info("auth: {}", auth);
-
         if (auth == null || auth.getSession() == null) {
-            throw new CustomException("Sessão inválida ou expirada", HttpStatus.UNAUTHORIZED);
+            throw new CustomException("Session Expire or Invalid", HttpStatus.UNAUTHORIZED);
         }
 
         Session session = auth.getSession();
 
         if (!session.getUserId().equals(id)) {
-            throw new CustomException("Você só pode acessar seus próprios dados", HttpStatus.FORBIDDEN);
+            throw new CustomException("Not Access", HttpStatus.FORBIDDEN);
         }
 
         return userRepository.findById(id);
