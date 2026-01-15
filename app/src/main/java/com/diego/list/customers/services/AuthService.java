@@ -108,6 +108,8 @@ public class AuthService {
         user.setLastLogin(LocalDateTime.now());
         userRepository.save(user);
 
+        sessionService.cleanupInactiveSessions(user.getId());
+
         return AuthResponse.builder()
                 .success(true)
                 .sessionId(session.getSessionId())
