@@ -17,7 +17,7 @@ public class CreateAddressCommand {
     private String recipient;
 
     @NotNull
-    private Number zip_code;
+    private String zip_code;
 
     @NotNull
     private String street_address;
