@@ -25,8 +25,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AddressService {
     private final UserRepository userRepository;
-    private final AddressRepository addressRepository;
-    private final OnlyAddressDefault onlyAddressDefault;
+    private final AddressRepository addressRepository;/*
+    private final OnlyAddressDefault onlyAddressDefault;*/
 
     public void CreateAddress(CreateAddressCommand createAddressCommand) {
         Optional<User> existUser = userRepository.findById(createAddressCommand.getUser_id());
@@ -50,8 +50,8 @@ public class AddressService {
                 .build();
 
         addressRepository.save(address);
-
-        onlyAddressDefault.validate(createAddressCommand.getIs_default(), createAddressCommand.getUser_id());
+/*
+        onlyAddressDefault.validate(createAddressCommand.getIs_default(), createAddressCommand.getUser_id());*/
     }
 
     public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
