@@ -32,7 +32,7 @@ public class SessionService {
     private final DeviceFingerprintService fingerprintService;
     private final RedisTemplate<String, Object> redisTemplate;
 
-    private static final Duration SESSION_DURATION = Duration.ofMinutes(30);
+    private static final Duration SESSION_DURATION = Duration.ofMinutes(60*3);
     private static final Duration INACTIVITY_LIMIT = Duration.ofMinutes(15);
 
     public Session createSession(User user, HttpServletRequest request, String deviceFingerprint) {
@@ -236,4 +236,23 @@ public class SessionService {
                 allSessions.size()
         );
     }
+
+    public void cleanupInactiveSessions(UUID userId) {
+        String userSessionsKey = "user_sessions:" + userId;
+        Set<Object> sessionIds = redisTemplate.opsForSet().members(userSessionsKey);
+
+        if (sessionIds == null) return;
+
+        for (Object sessionIdObj : sessionIds) {
+            String sessionId = (String) sessionIdObj;
+            Session session = sessionRedisRepository.findById(sessionId).orElse(null);
+
+            if (session == null || !session.isActive() || LocalDateTime.now().isAfter(session.getExpiresAt())) {
+                redisTemplate.opsForSet().remove(userSessionsKey, sessionId);
+                sessionRedisRepository.deleteById(sessionId);
+                log.info("Sessão inativa removida: {}", sessionId);
+            }
+        }
+    }
+
 }
