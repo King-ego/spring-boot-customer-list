@@ -3,6 +3,7 @@ package com.diego.list.customers.controller;
 import com.diego.list.customers.command.createUser.CreateUserCommand;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.services.UsersServices;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<User> getUserById(@PathVariable UUID id, @RequestHeader("Authorization") String sessionId) {
         Optional<User> user = usersServices.getUserById(id);
         return user.map(ResponseEntity::ok)
                   .orElse(ResponseEntity.notFound().build());
@@ -48,7 +49,7 @@ public class UsersController {
     }*/
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id, @RequestHeader("Authorization") String sessionId) {
         if (usersServices.getUserById(id).isPresent()) {
             usersServices.deleteUser(id);
             return ResponseEntity.ok().build();
@@ -56,11 +57,17 @@ public class UsersController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/search")
-    public List<User> searchUsers(@RequestParam String term) {
-        return usersServices.searchUsers(term);
-    }
+    /*@GetMapping("/search")
+    public ResponseEntity<List<ListUsers>> searchUsers(@RequestParam String term) {
+        List<User> users = usersServices.searchUsers(term);
 
+        List<ListUsers> response = users.stream()
+                .map(ListUsers::from)
+                .toList();
+
+        return ResponseEntity.ok(response);
+    }
+*/
     @GetMapping("/by-email")
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         Optional<User> user = usersServices.getUserByEmail(email);
