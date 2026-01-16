@@ -1,5 +1,6 @@
 package com.diego.list.customers.fila.exchange;
 
+import com.diego.list.customers.fila.exchange.config.PaymentQueueConfig;
 import com.diego.list.customers.fila.exchange.event.OderCreateEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitMQConsumer {
 
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
+    /*@RabbitListener(queues = PaymentQueueConfig.QUEUE_NAME)
     public void receiveOrderEvent(OderCreateEvent event) {
         log.info("Received order event: {}", event);
 
@@ -18,7 +19,7 @@ public class RabbitMQConsumer {
         } catch (Exception e) {
             log.error("Error processing order event: {}", e.getMessage());
         }
-    }
+    }*/
 
     private void processOrderEvent(OderCreateEvent event) {
         log.info("Processing order {} for customer {} with total: {}",
@@ -28,4 +29,6 @@ public class RabbitMQConsumer {
 
         log.info("Order {} processed successfully", event.getGroupId());
     }
+
+
 }
