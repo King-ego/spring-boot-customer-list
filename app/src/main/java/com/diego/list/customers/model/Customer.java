@@ -36,10 +36,6 @@ public class Customer {
 
     private LocalDateTime lastPurchaseAt;
 
-
-    /*@Column()
-    private String stripeCustomerId;*/
-
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 
