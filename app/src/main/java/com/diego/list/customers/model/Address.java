@@ -23,7 +23,7 @@ public class Address {
 
     private String recipient;
 
-    private String zip_code;
+    private String zipCode;
 
     private String streetAddress;
 
