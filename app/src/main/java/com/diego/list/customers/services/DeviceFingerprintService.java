@@ -15,7 +15,6 @@ public class DeviceFingerprintService {
     public String generateFingerprint(HttpServletRequest request) {
         StringBuilder fingerprintData = new StringBuilder();
 
-        // Coleta dados do dispositivo
         fingerprintData.append(request.getHeader("User-Agent"));
         fingerprintData.append(request.getHeader("Accept-Language"));
         fingerprintData.append(request.getHeader("Accept-Encoding"));
@@ -29,7 +28,7 @@ public class DeviceFingerprintService {
             byte[] hash = digest.digest(fingerprintData.toString().getBytes());
             return Base64.getEncoder().encodeToString(hash);
         } catch (NoSuchAlgorithmException e) {
-            log.error("Erro ao gerar fingerprint", e);
+            log.error("Generating fingerprint failed, falling back to simple hashCode", e);
             return String.valueOf(fingerprintData.toString().hashCode());
         }
     }
