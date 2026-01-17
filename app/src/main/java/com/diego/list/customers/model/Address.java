@@ -25,7 +25,7 @@ public class Address {
 
     private String zip_code;
 
-    private String street_address;
+    private String streetAddress;
 
     private String street_number;
 
