@@ -37,15 +37,15 @@ public class AddressService {
 
         Address address = Address.builder()
                 .city(createAddressCommand.getCity())
-                .street_address(createAddressCommand.getStreet_address())
+                .streetAddress(createAddressCommand.getStreetAddress())
                 .complement(createAddressCommand.getComplement())
-                .street_number(createAddressCommand.getStreet_number())
+                .streetNumber(createAddressCommand.getStreetNumber())
                 .recipient(createAddressCommand.getRecipient())
                 .neighborhood(createAddressCommand.getNeighborhood())
                 .state(createAddressCommand.getState())
-                .zip_code(createAddressCommand.getZip_code())
-                .phone_number(createAddressCommand.getPhone_number())
-                .is_default(createAddressCommand.getIs_default())
+                .zipCode(createAddressCommand.getZipCode())
+                .phoneNumber(createAddressCommand.getPhoneNumber())
+                .isDefault(createAddressCommand.getIsDefault())
                 .user(existUser.get())
                 .build();
 
@@ -64,15 +64,15 @@ public class AddressService {
         Address address = existingAddress.get();
 
         address.setCity(updateAddressCommand.getCity());
-        address.setStreet_address(updateAddressCommand.getStreet_address());
+        address.setStreetAddress(updateAddressCommand.getStreetAddress());
         address.setComplement(updateAddressCommand.getComplement());
-        address.setStreet_number(updateAddressCommand.getStreet_number());
+        address.setStreetNumber(updateAddressCommand.getStreetNumber());
         address.setRecipient(updateAddressCommand.getRecipient());
         address.setNeighborhood(updateAddressCommand.getNeighborhood());
         address.setState(updateAddressCommand.getState());
-        address.setZip_code(updateAddressCommand.getZip_code());
-        address.setPhone_number(updateAddressCommand.getPhone_number());
-        address.setIs_default(updateAddressCommand.getIs_default());
+        address.setZipCode(updateAddressCommand.getZipCode());
+        address.setPhoneNumber(updateAddressCommand.getPhoneNumber());
+        address.setIsDefault(updateAddressCommand.getIsDefault());
         
         addressRepository.save(address);
 
