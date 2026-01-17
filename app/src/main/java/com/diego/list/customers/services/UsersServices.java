@@ -3,6 +3,7 @@ package com.diego.list.customers.services;
 import com.diego.list.customers.command.createUser.CreateCustomerCommand;
 import com.diego.list.customers.command.createUser.CreateSellerCommand;
 import com.diego.list.customers.command.createUser.CreateUserCommand;
+import com.diego.list.customers.dto.UpdateUserDto;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Session;
 import com.diego.list.customers.model.User;
@@ -35,6 +36,9 @@ public class UsersServices {
 
     private final CreateTypeAccount createTypeAccount;
     private final PasswordEncoder passwordEncoder;
+
+    /*@PersistenceContext
+    private EntityManager entityManager;*/
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -117,6 +121,25 @@ public class UsersServices {
 
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public void updateUserPartial(
+            UUID id,
+            UpdateUserDto userDetails
+    ) {
+        String encodedPassword = null;
+        if (userDetails.getPassword() != null) {
+            encodedPassword = passwordEncoder.encode(userDetails.getPassword());
+        }
+/*
+        entityManager.clear();*/
+        userRepository.updateParse(
+                id,
+                userDetails.getName(),
+                userDetails.getBirthDate(),
+                userDetails.getPhone(),
+                encodedPassword
+        );
     }
 /*
     public List<User> searchUsers(String searchTerm) {
