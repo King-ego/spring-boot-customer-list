@@ -1,0 +1,7 @@
+docker compose exec -e K6_AUTH=muda_essa_senha \
+                     -e K6_TARGET=http://app:3000 \
+                     -e K6_DURATION=2m \
+                     -e RPS_CREATE=5 \
+                     -e RPS_READ=10 \
+                     test_attack \
+                     /bin/sh -c 'if [ "$K6_AUTH" = "${EXPECTED_AUTH}" ]; then exec k6 run ddos_like_test.js; else echo "ERRO: token inválido"; exit 1; fi'
