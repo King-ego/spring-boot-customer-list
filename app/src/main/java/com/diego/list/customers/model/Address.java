@@ -27,7 +27,7 @@ public class Address {
 
     private String streetAddress;
 
-    private String street_number;
+    private String streetNumber;
 
     private String neighborhood;
 
@@ -42,9 +42,9 @@ public class Address {
     @JsonBackReference
     private User user;
 
-    private String phone_number;
+    private String phoneNumber;
 
-    private Boolean is_default;
+    private Boolean isDefault;
 
     private LocalDateTime createdAt;
 
