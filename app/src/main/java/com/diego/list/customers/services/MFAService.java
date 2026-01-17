@@ -30,13 +30,11 @@ public class MFAService {
                 Duration.ofMinutes(5)
         );
 
-        log.info("Código MFA gerado para usuário: {}, código: {}", userId, code);
         return mfaId;
     }
 
     public boolean verifyMFACode(String mfaId, String code) {
         String stored = (String) redisTemplate.opsForValue().get("mfa_code:" + mfaId);
-        log.info("Verificando código MFA para mfaId: {}, código fornecido: {}, código armazenado: {}", mfaId, code, stored);
         if (stored == null) {
             return false;
         }
@@ -56,14 +54,8 @@ public class MFAService {
 
     public void sendMFACode(User user, String mfaId) {
         String code = getMFACode(mfaId);
+        log.info("MFA code send {}: {}", user.getEmail(), code);
 
-        // Simulação de envio - integrar com serviço de SMS/Email
-        log.info("Enviando código MFA para {}: {}", user.getEmail(), code);
-
-        // Em produção, integrar com:
-        // - Serviço de SMS (Twilio, etc)
-        // - Serviço de Email
-        // - App Authenticator
     }
 
     private String getMFACode(String mfaId) {
