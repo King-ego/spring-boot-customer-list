@@ -1,6 +1,7 @@
 package com.diego.list.customers.controller;
 
 import com.diego.list.customers.command.createUser.CreateUserCommand;
+import com.diego.list.customers.dto.UpdateUserDto;
 import com.diego.list.customers.http.responses.ReturnUsers;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.services.UsersServices;
@@ -74,5 +75,17 @@ public class UsersController {
         Optional<User> user = usersServices.getUserByEmail(email);
         return user.map(ResponseEntity::ok)
                   .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{userId}")
+    public ResponseEntity<Void> updateUserPartially(
+            @PathVariable UUID userId,
+            @RequestBody UpdateUserDto updates) {
+        try {
+            usersServices.updateUserPartial(userId, updates);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
