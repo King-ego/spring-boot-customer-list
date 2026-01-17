@@ -26,7 +26,7 @@ public class Product {
     @Column(precision =  10, scale = 2)
     private BigDecimal price;
 
-    private Integer quantity_in_stock;
+    private Integer quantityInStock;
 
     private String description;
 
@@ -35,7 +35,7 @@ public class Product {
     @Column(unique = true, nullable = false)
     private String slug;
 
-    private String image_url;
+    private String imageUrl;
 
     private LocalDateTime createdAt;
 
