@@ -1,4 +1,4 @@
-package com.diego.list.customers.fila.exchange;
+package com.diego.list.customers.fila.exchange.config;
 
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.*;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public class RabbitMQConfig {
+public class PaymentQueueConfig {
     public static final String QUEUE_NAME = "customer-queue";
     public static final String EXCHANGE_NAME = "customer-exchange";
     public static final String ROUTING_KEY = "customer-routing-key";
@@ -25,7 +25,7 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding binding(Queue queue, TopicExchange exchange) {
+    public Binding customerBinding(Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
     }
 
