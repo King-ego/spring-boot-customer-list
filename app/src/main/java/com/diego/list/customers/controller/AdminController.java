@@ -41,11 +41,11 @@ public class AdminController {
                                                           @CookieValue("session_id") String adminSessionId) {
         Session adminSession = sessionService.getSession(adminSessionId);
         if (adminSession == null || !adminSession.getPermissions().contains("ADMIN")) {
-            return ResponseEntity.status(403).body(new ApiResponse("Acesso negado"));
+            return ResponseEntity.status(403).body(new ApiResponse("Not authorized"));
         }
 
         int revoked = sessionService.revokeAllUserSessions(userId, null, "admin");
-        return ResponseEntity.ok(new ApiResponse(revoked + " sessões revogadas", revoked));
+        return ResponseEntity.ok(new ApiResponse(revoked + " session revoke", revoked));
     }
 
     @GetMapping("/security-logs")
