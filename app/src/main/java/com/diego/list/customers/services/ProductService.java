@@ -35,7 +35,7 @@ public class ProductService {
         Product product = Product.builder()
                 .name(command.getName())
                 .price(command.getPrice())
-                .quantity_in_stock(command.getQuantity_in_stock())
+                .quantityInStock(command.getQuantityInStock())
                 .description(command.getDescription())
                 .category(command.getCategory())
                 .slug(slug)
