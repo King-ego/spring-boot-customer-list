@@ -6,7 +6,8 @@ target/
 !**/src/test/**/target/
 **/.env
 fluxo.md
-projects/k8s/base/challenge-english/secret.yaml.template
+**/secret.yaml
+**/configmap.yaml
 
 ### STS ###
 .apt_generated
