@@ -6,21 +6,21 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-mn-db
-    template:
-      metadata:
-        labels:
-          app: postgres-mn-db
-      spec:
-        containers:
-        - name: postgres
-          image: postgres:17
-          ports:
-          - containerPort: 5432
-          env:
-          - name: POSTGRES_USER
-            value: "diego"
-          - name: POSTGRES_PASSWORD
-            value: "diego"
-          - name: POSTGRES_DB
-            value: "manager_person"
+      app: postgres_mn_db
+  template:
+    metadata:
+      labels:
+        app: postgres_mn_db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:17
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: "diego"
+        - name: POSTGRES_PASSWORD
+          value: "diego"
+        - name: POSTGRES_DB
+          value: "manager_person"
