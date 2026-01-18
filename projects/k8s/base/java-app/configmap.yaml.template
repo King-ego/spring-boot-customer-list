@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: java-app-config
+  namespace: dev
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres_mn_db:5432/manager_person"
+  SPRING_DATASOURCE_USERNAME: ""
+  SPRING_DATASOURCE_PASSWORD: ""
+  SPRING_REDIS_HOST: "redis-app"
+  SPRING_REDIS_PORT: "6379"
+  SPRING_REDIS_PASSWORD: ""
+  SPRING_RABBITMQ_HOST: "rabbitmq"
+  SPRING_RABBITMQ_PORT: "5672"
