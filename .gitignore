@@ -5,6 +5,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 **/.env
+fluxo.md
 
 ### STS ###
 .apt_generated
