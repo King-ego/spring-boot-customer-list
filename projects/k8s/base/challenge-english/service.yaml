@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: challenge-english
+spec:
+    selector:
+        app: challenge-english
+    ports:
+    - port: 8097
+      targetPort: 8097
+    type: ClusterIP
