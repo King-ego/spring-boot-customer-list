@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-app
+spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: redis-app
+    template:
+      metadata:
+        labels:
+          app: redis-app
+      spec:
+        containers:
+        - name: redis
+          image: redis:7-alpine
+          command: ["redis-server", "--requirepass", "12345", "--bind", "0.0.0.0"]
+          ports:
+          - containerPort: 6379
+          livenessProbe:
+            exec:
+              command:
+              - redis-cli
+              - -a
+              - "12345"
+              - ping
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
