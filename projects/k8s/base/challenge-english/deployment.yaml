@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: challenge-english
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: challenge-english
+    template:
+        metadata:
+            labels:
+                app: challenge-english
+        spec:
+            containers:
+            - name: challenge-english
+              image: challenge-english:latest
+              imagePullPolicy: Never
+              ports:
+              - containerPort: 8097
+              envFrom:
+                - secretRef:
+                    name: challenge-english-secret
