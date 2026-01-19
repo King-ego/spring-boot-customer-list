@@ -24,6 +24,7 @@ kubectl get services -n dev
 
 # Aplicar
 kubectl apply -f projects/k8s/base/ingress.yaml
+kubectl apply -f projects/k8s/base/resource-quota.yaml
 
 # Acessar aplicação
 
@@ -89,3 +90,9 @@ kubectl get pods -n dev -w
 
 # Deletar namespace
     kubectl delete namespace dev
+
+## Opicional
+# Controlar recursos em determinados horarios
+    kubectl apply -f https://github.com/kedacore/keda/releases/download/v2.12.0/keda-2.12.0.yaml
+    se esta adicionando depois de subir tudo
+    kubectl apply -f projects/k8s/base/java-app/scaled-object.yaml
