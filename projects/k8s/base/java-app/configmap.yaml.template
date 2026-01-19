@@ -4,7 +4,7 @@ metadata:
   name: java-app-config
   namespace: dev
 data:
-  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres_mn_db:5432/manager_person"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-mn-db:5432/manager_person"
   SPRING_DATASOURCE_USERNAME: ""
   SPRING_DATASOURCE_PASSWORD: ""
   SPRING_REDIS_HOST: "redis-app"
