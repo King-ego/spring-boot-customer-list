@@ -1,7 +1,7 @@
 services:
-  postgres_mn_db:
+  postgres-mn-db:
     image: postgres:17
-    container_name: postgres_mn_db
+    container_name: postgres-mn-db
     environment:
       POSTGRES_USER: diego
       POSTGRES_PASSWORD: diego
@@ -37,7 +37,7 @@ services:
     #- .:/src/payment
     depends_on:
       - rabbitmq
-      - postgres_mn_db
+      - postgres-mn-db
 
   java-app:
     build:
@@ -52,7 +52,7 @@ services:
       # - .:/src/app
     depends_on:
       - rabbitmq
-      - postgres_mn_db
+      - postgres-mn-db
       - redis_app
 
   challenge_english:
@@ -67,7 +67,7 @@ services:
       HUGGING_KEY: ${HUGGING_KEY}
       HUGGING_MODEL: ${HUGGING_MODEL}
     depends_on:
-      - postgres_mn_db
+      - postgres-mn-db
 
   test_attack:
     build:
