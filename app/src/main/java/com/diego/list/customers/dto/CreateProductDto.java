@@ -19,7 +19,7 @@ public class CreateProductDto {
     private BigDecimal price;
 
     @NotNull(message = "A quantidade em estoque é obrigatória")
-    private Integer quantity_in_stock;
+    private Integer quantityInStock;
 
     private String description;
 
