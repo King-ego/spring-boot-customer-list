@@ -16,7 +16,7 @@ public class CreateProductCommand {
 
     private BigDecimal price;
 
-    private Integer quantity_in_stock;
+    private Integer quantityInStock;
 
     private String description;
 
