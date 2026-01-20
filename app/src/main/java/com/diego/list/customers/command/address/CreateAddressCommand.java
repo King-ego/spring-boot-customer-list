@@ -17,13 +17,13 @@ public class CreateAddressCommand {
     private String recipient;
 
     @NotNull
-    private String zip_code;
+    private String zipCode;
 
     @NotNull
-    private String street_address;
+    private String streetAddress;
 
     @NotNull
-    private String street_number;
+    private String streetNumber;
 
     @NotNull
     private String neighborhood;
@@ -37,11 +37,11 @@ public class CreateAddressCommand {
     private String complement;
 
     @NotNull
-    private String phone_number;
+    private String phoneNumber;
 
     @NotNull
     private UUID user_id;
 
     @NotNull
-    private Boolean is_default;
+    private Boolean isDefault;
 }
