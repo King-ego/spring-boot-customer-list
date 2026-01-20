@@ -18,7 +18,7 @@ public class CreateMethodPaymentDto {
     private String type;
 
     @NotBlank(message = "method_payment_id is required")
-    private String method_payment_id;
+    private String methodPaymentId;
 
     @NotBlank(message = "isDefault is required")
     private boolean isDefault;
@@ -27,10 +27,10 @@ public class CreateMethodPaymentDto {
     private String brand;
 
     @NotBlank(message = "exp_month is required")
-    private String exp_month;
+    private String expMonth;
 
     @NotBlank(message = "exp_year is required")
-    private String exp_year;
+    private String expYear;
 
     @NotBlank(message = "last4 is required")
     private String last4;
