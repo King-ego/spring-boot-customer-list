@@ -48,7 +48,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse> logout(@CookieValue(name = "session_id", required = false) String sessionId,
                                               HttpServletResponse response) {
         if (sessionId != null) {
-            sessionService.revokeSession(sessionId, "user", "Logout voluntário");
+            sessionService.revokeSession(sessionId, "user", "Logout by user");
         }
 
         ResponseCookie cookie = ResponseCookie.from("session_id", "")
@@ -61,7 +61,7 @@ public class AuthController {
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        return ResponseEntity.ok(new ApiResponse("Logout realizado com sucesso"));
+        return ResponseEntity.ok(new ApiResponse("Logout with success"));
     }
 
     @PostMapping("/logout-all")
@@ -72,10 +72,10 @@ public class AuthController {
                     session.getUserId(), sessionId, "user");
 
             return ResponseEntity.ok(new ApiResponse(
-                    revoked + " sessões revogadas", revoked));
+                    revoked + " session revoke", revoked));
         }
 
-        return ResponseEntity.badRequest().body(new ApiResponse("Sessão não encontrada 2"));
+        return ResponseEntity.badRequest().body(new ApiResponse("Session not found"));
     }
 
     private ResponseCookie createSessionCookie(String sessionId) {
