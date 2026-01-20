@@ -18,8 +18,8 @@ import java.util.UUID;
 public class ChallengeController {
     private final ChallengeServices challengeServices;
 
-    @GetMapping("/:user_id")
-    public String getChallenge(@Valid @PathVariable UUID customer_id) {
+    @GetMapping("/:userId")
+    public String getChallenge(@Valid @PathVariable UUID userId) {
         return challengeServices.getChallengeEnglish();
     }
 }
