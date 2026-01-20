@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .findFirst()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .orElse("Erro de validação");
+                .orElse("Error validating request");
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new SimpleError(HttpStatus.BAD_REQUEST.value(), message));
