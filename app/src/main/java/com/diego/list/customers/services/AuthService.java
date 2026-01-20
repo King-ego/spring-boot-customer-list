@@ -39,27 +39,24 @@ public class AuthService {
     private final ObjectMapper objectMapper;
 
     public AuthResponse login(LoginRequest request, HttpServletRequest httpRequest) {
-        log.info("request: {}", request);
-        log.info("httpRequest: {}", httpRequest);
 
         var validated = isRateLimited(request.getEmail(), httpRequest.getRemoteAddr());
-        log.info("validated: {}", validated);
-        log.info("email: {}", request.getEmail());
-        log.info("remote: {}", httpRequest.getRemoteAddr());
         if (validated) {
-            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Muitas tentativas. Tente novamente mais tarde.");
+            log.error("Too many login attempts");
+            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Too many login attempts. Please try again later.");
         }
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            securityMonitor.logAuthAttempt(user.getId(), false, httpRequest, "Senha incorreta");
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas");
+            log.error("Invalid credentials for user");
+            securityMonitor.logAuthAttempt(user.getId(), false, httpRequest, "Invalid credentials");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
         if (!user.isEnabled() || !user.isAccountNonLocked()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Conta bloqueada ou desativada");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Account is disabled or locked");
         }
 
         String deviceFingerprint = fingerprintService.generateFingerprint(httpRequest);
@@ -87,11 +84,11 @@ public class AuthService {
     public AuthResponse verifyMFA(MFAVerificationRequest request, HttpServletRequest httpRequest) {
         TempTokenData tempData = verifyTempToken(request.getTempToken());
         User user = userRepository.findById(tempData.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token"));
 
         if (!mfaService.verifyMFACode(request.getMfaId(), request.getCode())) {
             securityMonitor.logMFAAttempt(user.getId(), false, httpRequest);
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Código inválido");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid MFA code");
         }
 
         String deviceFingerprint = fingerprintService.generateFingerprint(httpRequest);
@@ -104,7 +101,7 @@ public class AuthService {
         Session session = sessionService.createSession(user, httpRequest, deviceFingerprint);
         sessionService.registerDeviceIfNew(user.getId(), deviceFingerprint, httpRequest);
 
-        securityMonitor.logAuthAttempt(user.getId(), true, httpRequest, "Login bem-sucedido");
+        securityMonitor.logAuthAttempt(user.getId(), true, httpRequest, "Successful login");
         user.setLastLogin(LocalDateTime.now());
         userRepository.save(user);
 
@@ -145,7 +142,7 @@ public class AuthService {
         try {
             redisTemplate.opsForValue().set("tempToken:" + token, objectMapper.writeValueAsString(tempData), Duration.ofMinutes(5));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Erro ao gerar token temporário", e);
+            throw new RuntimeException("Generate temp token error", e);
         }
 
         return token;
@@ -156,11 +153,11 @@ public class AuthService {
             String data = (String) redisTemplate.opsForValue().get("tempToken:" + token);
             log.info("token data: {}", data);
             if (data == null) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token expirado ou inválido");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Expired or invalid token");
             }
             return objectMapper.readValue(data, TempTokenData.class);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token", e);
         }
     }
 }
