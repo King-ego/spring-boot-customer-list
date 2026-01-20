@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres_mn_db
+      app: postgres-mn-db
   template:
     metadata:
       labels:
-        app: postgres_mn_db
+        app: postgres-mn-db
     spec:
       containers:
       - name: postgres
@@ -24,3 +24,19 @@ spec:
           value: "diego"
         - name: POSTGRES_DB
           value: "manager_person"
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+            ephemeral-storage: "1Gi"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+            ephemeral-storage: "512Mi"
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
