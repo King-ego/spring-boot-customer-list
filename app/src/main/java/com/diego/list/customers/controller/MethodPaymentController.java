@@ -25,11 +25,11 @@ public class MethodPaymentController {
         CreateMethodPaymentCommand command = new CreateMethodPaymentCommand(
             methodPaymentDto.getCustomerId(),
             methodPaymentDto.getType(),
-            methodPaymentDto.getMethod_payment_id(),
+            methodPaymentDto.getMethodPaymentId(),
             methodPaymentDto.isDefault(),
             methodPaymentDto.getBrand(),
-            methodPaymentDto.getExp_month(),
-            methodPaymentDto.getExp_year(),
+            methodPaymentDto.getExpMonth(),
+            methodPaymentDto.getExpYear(),
             methodPaymentDto.getLast4(),
             methodPaymentDto.getFunding()
         );
