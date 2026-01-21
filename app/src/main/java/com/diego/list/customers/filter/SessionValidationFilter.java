@@ -39,9 +39,6 @@ public class SessionValidationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("FILTRO EXECUTADO: " + request.getRequestURI());
-        log.error("FILTRO EXECUTADO: {} {}", request.getMethod(), request.getRequestURI());
-
         if (isPublicEndpoint(request)) {
             filterChain.doFilter(request, response);
             return;
@@ -50,7 +47,7 @@ public class SessionValidationFilter extends OncePerRequestFilter {
         String sessionId = getSessionIdFromRequest(request);
 
         if (sessionId == null) {
-            sendError(response, "Sessão não encontrada", HttpStatus.BAD_REQUEST);
+            sendError(response, "Session Not found", HttpStatus.BAD_REQUEST);
             return;
         }
 
@@ -58,7 +55,7 @@ public class SessionValidationFilter extends OncePerRequestFilter {
             Session session = sessionService.getSession(sessionId);
             log.info("Session: {}", session);
             if (session == null || !sessionService.validateSession(session, request)) {
-                sendError(response, "Sessão inválida ou expirada", HttpStatus.NOT_FOUND);
+                sendError(response, "Session invalid or expired", HttpStatus.NOT_FOUND);
                 return;
             }
 
@@ -74,10 +71,10 @@ public class SessionValidationFilter extends OncePerRequestFilter {
 
 
         } catch (Exception e) {
-            log.info("Erro na validação da sessão", e);
-            sendError(response, "Erro de autenticação", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.info("Error during session validation: ", e);
+            sendError(response, "Authenticated error", HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
-            SecurityContextHolder.clearContext(); // Limpa após a requisição
+            SecurityContextHolder.clearContext();
         }
     }
 
