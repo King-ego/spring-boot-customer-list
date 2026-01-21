@@ -27,7 +27,7 @@ public class ProductController {
         CreateProductCommand create = new CreateProductCommand(
                 product.getName(),
                 product.getPrice(),
-                product.getQuantity_in_stock(),
+                product.getQuantityInStock(),
                 product.getDescription(),
                 product.getCategory()
         );
