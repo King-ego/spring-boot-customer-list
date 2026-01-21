@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 public class UpdateAddressCommand {
     private String recipient;
 
-    private String zip_code;
+    private String zipCode;
 
-    private String street_address;
+    private String streetAddress;
 
-    private String street_number;
+    private String streetNumber;
 
     private String neighborhood;
 
@@ -25,7 +25,7 @@ public class UpdateAddressCommand {
 
     private String complement;
 
-    private String phone_number;
+    private String phoneNumber;
 
-    private Boolean is_default;
+    private Boolean isDefault;
 }
