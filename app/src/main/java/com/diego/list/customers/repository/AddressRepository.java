@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface AddressRepository extends JpaRepository<Address, UUID> {
     @Query("SELECT a FROM Address a WHERE a.user.id = :userId")
     List<Address> findByUserId(UUID userId);
+    @Query("UPDATE Address a SET a.isDefault = :isDefault WHERE a.id = :addressId")
+    void updateParse(UUID addressId, boolean isDefault);
 }
