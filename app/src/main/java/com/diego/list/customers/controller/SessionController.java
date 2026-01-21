@@ -26,16 +26,16 @@ public class SessionController {
         Session targetSession = sessionService.getSession(targetSessionId);
 
         if (currentSession == null || targetSession == null) {
-            return ResponseEntity.badRequest().body(new ApiResponse("Sessão não encontrada 3"));
+            return ResponseEntity.badRequest().body(new ApiResponse("Session not found"));
         }
 
         if (!currentSession.getUserId().equals(targetSession.getUserId()) &&
                 !currentSession.getPermissions().contains("ADMIN")) {
-            return ResponseEntity.status(403).body(new ApiResponse("Sem permissão para revogar esta sessão"));
+            return ResponseEntity.status(403).body(new ApiResponse("Not authorized to revoke this session"));
         }
 
-        sessionService.revokeSession(targetSessionId, currentSession.getRevokedBy(), "Revogação manual");
-        return ResponseEntity.ok(new ApiResponse("Sessão revogada com sucesso"));
+        sessionService.revokeSession(targetSessionId, currentSession.getRevokedBy(), "Revoked by user");
+        return ResponseEntity.ok(new ApiResponse("Session revoked successfully"));
     }
 
     @GetMapping("/stats")
