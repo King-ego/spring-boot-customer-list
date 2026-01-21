@@ -23,15 +23,15 @@ public class MethodPayment {
 
     private String type;
 
-    private String method_payment_id;
+    private String methodPaymentId;
 
     private boolean isDefault;
 
     private String brand;
 
-    private String exp_month;
+    private String expMonth;
 
-    private String exp_year;
+    private String expYear;
 
     private String last4;
 
