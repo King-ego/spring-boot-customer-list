@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -15,10 +17,10 @@ public class RedisUtils {
 
     public void safeDel( String keys) {
         try {
-            Long deleted = redisTemplate.delete(java.util.Arrays.asList(keys));
-            log.debug("Chaves deletadas: {} resultado: {}", keys, deleted);
+            Long deleted = redisTemplate.delete(Collections.singletonList(keys));
+            log.debug("Key Deleted: {} result: {}", keys, deleted);
         } catch (Exception e) {
-            log.warn("Erro ao deletar chaves {}: {}", keys, e.getMessage());
+            log.warn("Erro in delete {}: {}", keys, e.getMessage());
         }
     }
 }
