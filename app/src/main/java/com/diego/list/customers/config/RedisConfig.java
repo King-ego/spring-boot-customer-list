@@ -35,10 +35,7 @@ public class RedisConfig {
 
     @PostConstruct
     public void init() {
-        log.info("=== REDIS CONFIG ===");
-        log.info("Host: {}", redisHost);
-        log.info("Port: {}", redisPort);
-        log.info("Password configurada: {}", redisPassword != null && !redisPassword.isEmpty());
+        log.info("=== REDIS CONFIG START ===");
     }
 
     @Bean
