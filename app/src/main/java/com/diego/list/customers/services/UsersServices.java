@@ -10,7 +10,7 @@ import com.diego.list.customers.model.User;
 import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.security.SessionAuthentication;
-import com.diego.list.customers.services.execute.CreateTypeAccount;
+import com.diego.list.customers.application.usecase.account.CreateTypeAccount;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
