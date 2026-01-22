@@ -1,4 +1,4 @@
-package com.diego.list.customers.application.usecase.account;
+package com.diego.list.customers.application.usecase.address;
 
 import com.diego.list.customers.model.Address;
 import com.diego.list.customers.repository.AddressRepository;

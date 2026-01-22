@@ -1,4 +1,4 @@
-package com.diego.list.customers.application.usecase.account;
+package com.diego.list.customers.application.usecases.account;
 
 import com.diego.list.customers.command.createUser.CreateCustomerCommand;
 import com.diego.list.customers.command.createUser.CreateSellerCommand;

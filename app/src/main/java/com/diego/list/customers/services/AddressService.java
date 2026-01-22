@@ -7,7 +7,7 @@ import com.diego.list.customers.model.Address;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.AddressRepository;
 import com.diego.list.customers.repository.UserRepository;
-import com.diego.list.customers.application.usecase.account.OnlyAddressDefault;
+import com.diego.list.customers.application.usecase.address.OnlyAddressDefault;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
