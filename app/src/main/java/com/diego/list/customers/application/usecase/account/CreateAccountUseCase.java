@@ -1,7 +1,7 @@
 package com.diego.list.customers.application.usecase.account;
 
-import com.diego.list.customers.application.command.createUser.CreateCustomerCommand;
-import com.diego.list.customers.application.command.createUser.CreateSellerCommand;
+import com.diego.list.customers.application.command.users.CreateCustomerCommand;
+import com.diego.list.customers.application.command.users.CreateSellerCommand;
 import com.diego.list.customers.model.Customer;
 import com.diego.list.customers.model.Seller;
 import com.diego.list.customers.repository.CustomerRepository;
