@@ -1,4 +1,4 @@
-package com.diego.list.customers.command;
+package com.diego.list.customers.application.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
