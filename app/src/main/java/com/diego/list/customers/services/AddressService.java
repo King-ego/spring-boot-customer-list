@@ -1,7 +1,7 @@
 package com.diego.list.customers.services;
 
-import com.diego.list.customers.command.address.CreateAddressCommand;
-import com.diego.list.customers.command.address.UpdateAddressCommand;
+import com.diego.list.customers.application.command.address.CreateAddressCommand;
+import com.diego.list.customers.application.command.address.UpdateAddressCommand;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Address;
 import com.diego.list.customers.model.User;
