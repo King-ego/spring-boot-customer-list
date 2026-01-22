@@ -7,11 +7,10 @@ import com.diego.list.customers.model.Address;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.AddressRepository;
 import com.diego.list.customers.repository.UserRepository;
-import com.diego.list.customers.services.execute.OnlyAddressDefault;
+import com.diego.list.customers.application.usecase.account.OnlyAddressDefault;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
