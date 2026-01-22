@@ -10,7 +10,7 @@ import com.diego.list.customers.model.User;
 import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.security.SessionAuthentication;
-import com.diego.list.customers.application.usecase.account.CreateTypeAccount;
+import com.diego.list.customers.application.usecase.account.CreateAccountUseCase;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class UsersServices {
     @Autowired
     private UserRepository userRepository;
 
-    private final CreateTypeAccount createTypeAccount;
+    private final CreateAccountUseCase createAccountUseCase;
     private final PasswordEncoder passwordEncoder;
 
     /*@PersistenceContext
@@ -93,7 +93,7 @@ public class UsersServices {
                             .user(create_user)
                             .document(createUser.getCustomerDetails().getDocument())
                             .build();
-                    createTypeAccount.createRoleCustomer(customerCommand);
+                    createAccountUseCase.createRoleCustomer(customerCommand);
                 },
                 UserRole.SELLER, () -> {
                     CreateSellerCommand sellerCommand = CreateSellerCommand.builder()
@@ -102,7 +102,7 @@ public class UsersServices {
                             .documentNumber(createUser.getSellerDetails().getDocumentNumber())
                             .storeDescription(createUser.getSellerDetails().getStoreDescription())
                             .build();
-                    createTypeAccount.createRoleSeller(sellerCommand);
+                    createAccountUseCase.createRoleSeller(sellerCommand);
                 }
         );
 
