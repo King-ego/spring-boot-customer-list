@@ -1,6 +1,7 @@
 package com.diego.list.customers.controller;
 
-import com.diego.list.customers.command.address.*;
+import com.diego.list.customers.application.command.address.CreateAddressCommand;
+import com.diego.list.customers.application.command.address.UpdateAddressCommand;
 import com.diego.list.customers.model.Address;
 import com.diego.list.customers.services.AddressService;
 import lombok.RequiredArgsConstructor;
