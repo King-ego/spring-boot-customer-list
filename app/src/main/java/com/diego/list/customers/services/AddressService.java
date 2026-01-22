@@ -7,7 +7,7 @@ import com.diego.list.customers.model.Address;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.AddressRepository;
 import com.diego.list.customers.repository.UserRepository;
-import com.diego.list.customers.application.usecase.address.OnlyAddressDefault;
+import com.diego.list.customers.application.usecase.address.AddressDefaultUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ import java.util.UUID;
 public class AddressService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
-    private final OnlyAddressDefault onlyAddressDefault;
+    private final AddressDefaultUseCase addressDefaultUseCase;
 
     public void CreateAddress(CreateAddressCommand createAddressCommand) {
         Optional<User> existUser = userRepository.findById(createAddressCommand.getUser_id());
@@ -50,7 +50,7 @@ public class AddressService {
 
         Address newAddress = addressRepository.save(address);
 
-        onlyAddressDefault.validate(createAddressCommand.getIsDefault(), createAddressCommand.getUser_id(), newAddress.getId());
+        addressDefaultUseCase.validate(createAddressCommand.getIsDefault(), createAddressCommand.getUser_id(), newAddress.getId());
     }
 
     public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
