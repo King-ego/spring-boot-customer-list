@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class CreateTypeAccount {
+public class CreateAccountUseCase {
     private final CustomerRepository customerRepository;
     private final SellerRepository sellerRepository;
 
