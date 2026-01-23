@@ -1,6 +1,6 @@
 package com.diego.list.customers.controller;
 
-import com.diego.list.customers.controller.records.UserSessionsResponse;
+import com.diego.list.customers.controller.response.sessions.UserSessionsResponse;
 import com.diego.list.customers.dto.ApiResponse;
 import com.diego.list.customers.model.SecurityLog;
 import com.diego.list.customers.model.Session;
