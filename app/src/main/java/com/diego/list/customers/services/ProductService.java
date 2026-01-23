@@ -1,6 +1,6 @@
 package com.diego.list.customers.services;
 
-import com.diego.list.customers.command.CreateProductCommand;
+import com.diego.list.customers.application.command.CreateProductCommand;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Product;
 import com.diego.list.customers.repository.ProductRepository;
