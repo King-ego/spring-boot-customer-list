@@ -1,11 +1,10 @@
 package com.diego.list.customers.services;
 
-import com.diego.list.customers.command.CreateMethodPaymentCommand;
+import com.diego.list.customers.application.command.CreateMethodPaymentCommand;
 import com.diego.list.customers.model.MethodPayment;
 import com.diego.list.customers.repository.MethodPaymentRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
