@@ -1,6 +1,6 @@
 package com.diego.list.customers.controller;
 
-import com.diego.list.customers.command.CreateProductCommand;
+import com.diego.list.customers.application.command.CreateProductCommand;
 import com.diego.list.customers.dto.CreateProductDto;
 import com.diego.list.customers.dto.FilterProductDto;
 import com.diego.list.customers.model.Product;
