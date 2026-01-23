@@ -1,4 +1,4 @@
-package com.diego.list.customers.http.responses;
+package com.diego.list.customers.controller.response.users;
 import com.diego.list.customers.model.Customer;
 import com.diego.list.customers.model.Seller;
 import com.diego.list.customers.model.User;
@@ -7,7 +7,7 @@ import com.diego.list.customers.model.UserRole;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record ReturnUsers(
+public record UsersResponse(
         UUID id,
         String name,
         String email,
@@ -26,8 +26,8 @@ public record ReturnUsers(
         SellerInfo seller
     ) {
 
-    public static ReturnUsers from(User user) {
-        return new ReturnUsers(
+    public static UsersResponse from(User user) {
+        return new UsersResponse(
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
