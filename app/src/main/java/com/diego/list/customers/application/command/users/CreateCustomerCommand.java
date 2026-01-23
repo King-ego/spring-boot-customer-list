@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class CreateCustomerCommand {
     private User user;
 
-    private String document; // CPF
+    private String document;
 
     private LocalDateTime birthDate;
 }
