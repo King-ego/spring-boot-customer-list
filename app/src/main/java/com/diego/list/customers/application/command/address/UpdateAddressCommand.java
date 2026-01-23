@@ -1,4 +1,4 @@
-package com.diego.list.customers.command.address;
+package com.diego.list.customers.application.command.address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
