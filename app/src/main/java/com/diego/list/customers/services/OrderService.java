@@ -1,7 +1,7 @@
 package com.diego.list.customers.services;
 
-import com.diego.list.customers.command.CreateOrderCommand;
-import com.diego.list.customers.command.OrderItemCommand;
+import com.diego.list.customers.application.command.CreateOrderCommand;
+import com.diego.list.customers.application.command.OrderItemCommand;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.fila.exchange.RabbitMQProducer;
 import com.diego.list.customers.fila.exchange.event.OderCreateEvent;
