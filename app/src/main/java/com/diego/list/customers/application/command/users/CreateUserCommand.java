@@ -1,4 +1,4 @@
-package com.diego.list.customers.application.command.createUser;
+package com.diego.list.customers.application.command.users;
 
 import com.diego.list.customers.model.UserRole;
 import jakarta.persistence.EnumType;
