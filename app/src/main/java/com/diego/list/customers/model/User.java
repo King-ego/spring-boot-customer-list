@@ -64,7 +64,7 @@ public class User {
     }
 
     @PrePersist
-    public void preCreate() {
+    protected void preCreate() {
         createdAt = LocalDateTime.now();
         accountNonExpired = true;
         credentialsNonExpired = true;
