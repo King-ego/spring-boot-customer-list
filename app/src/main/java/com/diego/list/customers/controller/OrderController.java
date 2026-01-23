@@ -1,7 +1,7 @@
 package com.diego.list.customers.controller;
 
-import com.diego.list.customers.command.CreateOrderCommand;
-import com.diego.list.customers.command.OrderItemCommand;
+import com.diego.list.customers.application.command.CreateOrderCommand;
+import com.diego.list.customers.application.command.OrderItemCommand;
 import com.diego.list.customers.dto.CreateOrderDto;
 import com.diego.list.customers.services.OrderService;
 import jakarta.validation.Valid;
