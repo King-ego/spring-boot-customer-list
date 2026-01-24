@@ -1,8 +1,8 @@
 package com.diego.list.customers.controller;
 
-import com.diego.list.customers.command.createUser.CreateUserCommand;
+import com.diego.list.customers.application.command.users.CreateUserCommand;
 import com.diego.list.customers.dto.UpdateUserDto;
-import com.diego.list.customers.http.responses.ReturnUsers;
+import com.diego.list.customers.controller.response.users.UsersResponse;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.services.UsersServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,10 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReturnUsers> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<UsersResponse> getUserById(@PathVariable UUID id) {
         Optional<User> user = usersServices.getUserById(id);
 
-        return user.map(ReturnUsers::from)
+        return user.map(UsersResponse::from)
                        .map(ResponseEntity::ok)
                        .orElse(ResponseEntity.notFound().build());
 
