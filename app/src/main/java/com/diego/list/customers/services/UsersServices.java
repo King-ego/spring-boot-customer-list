@@ -1,8 +1,8 @@
 package com.diego.list.customers.services;
 
-import com.diego.list.customers.command.createUser.CreateCustomerCommand;
-import com.diego.list.customers.command.createUser.CreateSellerCommand;
-import com.diego.list.customers.command.createUser.CreateUserCommand;
+import com.diego.list.customers.application.command.users.CreateCustomerCommand;
+import com.diego.list.customers.application.command.users.CreateSellerCommand;
+import com.diego.list.customers.application.command.users.CreateUserCommand;
 import com.diego.list.customers.dto.UpdateUserDto;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Session;
@@ -10,7 +10,7 @@ import com.diego.list.customers.model.User;
 import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.security.SessionAuthentication;
-import com.diego.list.customers.application.usecases.account.CreateAccountUseCase;
+import com.diego.list.customers.application.usecase.account.CreateAccountUseCase;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,31 +61,31 @@ public class UsersServices {
 
     }
 
-    public User saveUser(CreateUserCommand createUser) {
-        Optional<User> existUser = userRepository.findByEmail(createUser.getEmail());
+    public User saveUser(CreateUserCommand user) {
+        Optional<User> existUser = userRepository.findByEmail(user.getEmail());
 
         if (existUser.isPresent()) {
             throw new CustomException("Email already in use", HttpStatus.CONFLICT);
         }
 
-        if (createUser.getRole() == UserRole.CUSTOMER && createUser.getCustomerDetails() == null) {
+        if (user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null) {
             throw new CustomException("Customer details are required", HttpStatus.BAD_REQUEST);
         }
 
-        if (createUser.getRole() == UserRole.SELLER && createUser.getSellerDetails() == null) {
+        if (user.getRole() == UserRole.SELLER && user.getSellerDetails() == null) {
             throw new CustomException("Seller details are required", HttpStatus.BAD_REQUEST);
         }
 
         String password_encoder = passwordEncoder.encode(createUser.getPassword());
 
-        User user = User.builder()
-                .name(createUser.getName())
-                .email(createUser.getEmail())
+        User userBuilder = User.builder()
+                .name(user.getName())
+                .email(user.getEmail())
                 .password(password_encoder)
-                .role(createUser.getRole())
+                .role(user.getRole())
                 .build();
 
-        var create_user = userRepository.save(user);
+        var create_user = userRepository.save(userBuilder);
 
         Map<UserRole, Runnable> validatedCreateRole = Map.of(
                 UserRole.CUSTOMER, () -> {
@@ -106,7 +106,7 @@ public class UsersServices {
                 }
         );
 
-        Runnable action = validatedCreateRole.get(createUser.getRole());
+        Runnable action = validatedCreateRole.get(user.getRole());
         if (action != null) {
             action.run();
         }
