@@ -37,7 +37,7 @@ public class UsersController {
     public User createUser(@RequestBody CreateUserCommand user) {
         return usersServices.saveUser(user);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         if (usersServices.getUserById(id).isPresent()) {
