@@ -76,7 +76,7 @@ public class UsersServices {
             throw new CustomException("Seller details are required", HttpStatus.BAD_REQUEST);
         }
 
-        String password_encoder = passwordEncoder.encode(createUser.getPassword());
+        String password_encoder = passwordEncoder.encode(user.getPassword());
 
         User userBuilder = User.builder()
                 .name(user.getName())
@@ -91,16 +91,16 @@ public class UsersServices {
                 UserRole.CUSTOMER, () -> {
                     CreateCustomerCommand customerCommand = CreateCustomerCommand.builder()
                             .user(create_user)
-                            .document(createUser.getCustomerDetails().getDocument())
+                            .document(user.getCustomerDetails().getDocument())
                             .build();
                     createAccountUseCase.createRoleCustomer(customerCommand);
                 },
                 UserRole.SELLER, () -> {
                     CreateSellerCommand sellerCommand = CreateSellerCommand.builder()
                             .user(create_user)
-                            .storeName(createUser.getSellerDetails().getStoreName())
-                            .documentNumber(createUser.getSellerDetails().getDocumentNumber())
-                            .storeDescription(createUser.getSellerDetails().getStoreDescription())
+                            .storeName(user.getSellerDetails().getStoreName())
+                            .documentNumber(user.getSellerDetails().getDocumentNumber())
+                            .storeDescription(user.getSellerDetails().getStoreDescription())
                             .build();
                     createAccountUseCase.createRoleSeller(sellerCommand);
                 }
