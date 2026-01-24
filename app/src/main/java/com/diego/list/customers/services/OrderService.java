@@ -69,7 +69,9 @@ public class OrderService {
 
             orderRepository.save(order);
         });
+
         log.info("Order Created: {}", totalPrice.get());
+
         OderCreateEvent event = new OderCreateEvent(
                 groupId,
                 command.getUserId(),
