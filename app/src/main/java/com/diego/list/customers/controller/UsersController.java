@@ -37,19 +37,7 @@ public class UsersController {
     public User createUser(@RequestBody CreateUserCommand user) {
         return usersServices.saveUser(user);
     }
-
-    /*@PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User userDetails) {
-        Optional<User> optionalUser = usersServices.getUserById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setName(userDetails.getName());
-            user.setEmail(userDetails.getEmail());
-            return ResponseEntity.ok(usersServices.saveUser(user));
-        }
-        return ResponseEntity.notFound().build();
-    }*/
-
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         if (usersServices.getUserById(id).isPresent()) {
