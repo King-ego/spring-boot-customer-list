@@ -1,4 +1,4 @@
-package com.diego.list.customers.controller.records;
+package com.diego.list.customers.controller.response.sessions;
 
 import com.diego.list.customers.model.Session;
 
