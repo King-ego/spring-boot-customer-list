@@ -102,6 +102,6 @@ func main() {
 		}
 	}()
 
-	log.Printf(" [*] Waiting for messages")
+	log.Printf(" Waiting for messages")
 	<-forever
 }
