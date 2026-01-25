@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -31,4 +32,8 @@ public class Order {
     private String status;
 
     private UUID groupId;
+
+    private String paymentId;
+
+    private LocalDateTime paymentDate;
 }
