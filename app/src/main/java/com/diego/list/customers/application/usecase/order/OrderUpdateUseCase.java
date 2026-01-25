@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -13,7 +14,7 @@ import java.util.UUID;
 public class OrderUpdateUseCase {
     private final OrderRepository orderRepository;
 
-    public void updateOrderStatus(UUID orderId, String status, String paymentId) {
+    public void updateOrderStatus(UUID orderId, String status, String paymentId, LocalDateTime paymentDate) {
         // Method implementation goes here
     }
 }
