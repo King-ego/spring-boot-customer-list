@@ -57,6 +57,14 @@ public class OrderService {
                 throw new CustomException("Product not found", HttpStatus.NOT_FOUND);
             }
 
+            int currentStock = product.get().getQuantityInStock();
+
+            boolean isStockAvailable = currentStock < item.getAmount();
+
+            if (isStockAvailable) {
+                throw new CustomException("Insufficient stock for product: " + product.get().getName(), HttpStatus.BAD_REQUEST);
+            }
+
             Order order = Order.builder()
                     .customerId(command.getUserId())
                     .productId(item.getProductId())
