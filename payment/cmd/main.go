@@ -59,12 +59,12 @@ func main() {
 	}(ch)
 
 	args := amqp.Table{
-        "x-dead-letter-exchange":    "customer-dlx",
-        "x-dead-letter-routing-key": "customer.failed",
-    }
+		"x-dead-letter-exchange":    "customer-dlx",
+		"x-dead-letter-routing-key": "customer.failed",
+	}
 
 	queue, err := ch.QueueDeclare(
-		"customer-queue",
+		"order-queue",
 		true,
 		false,
 		false,
