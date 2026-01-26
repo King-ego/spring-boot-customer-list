@@ -1,5 +1,7 @@
 package com.diego.list.customers.fila.exchange.config;
 
+import org.hibernate.boot.model.internal.QueryBinder;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -14,9 +16,21 @@ public class PaymentQueueConfig {
     public static final String EXCHANGE_NAME = "customer-exchange";
     public static final String ROUTING_KEY = "customer-routing-key";
 
-    @Bean
+    public static final String DLQ_NAME = "customer-dlq";
+    public static final String DLX_NAME = "customer-dlx";
+    public static final String DLQ_ROUTING_KEY = "customer.failed";
+
+  /*  @Bean
     public Queue queue() {
         return new Queue(QUEUE_NAME, true);
+    }
+*/
+    @Bean
+    public Queue paymentQueue() {
+        return QueueBuilder.durable(QUEUE_NAME)
+                .withArgument("x-dead-letter-exchange", DLX_NAME)
+                .withArgument("x-dead-letter-routing-key", DLQ_ROUTING_KEY)
+                .build();
     }
 
     @Bean
@@ -25,9 +39,27 @@ public class PaymentQueueConfig {
     }
 
     @Bean
-    public Binding customerBinding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    public Binding customerBinding() {
+        return BindingBuilder.bind(paymentQueue()).to(exchange()).with(ROUTING_KEY);
     }
+
+    @Bean
+    public Queue deadLetterQueue() {
+        return new Queue(DLQ_NAME, true);
+    }
+
+    @Bean
+    public DirectExchange deadLetterExchange() {
+        return new DirectExchange(DLX_NAME);
+    }
+
+    @Bean
+    public Binding deadLetterBinding() {
+        return BindingBuilder.bind(deadLetterQueue())
+                .to(deadLetterExchange())
+                .with(DLQ_ROUTING_KEY);
+    }
+
 
     @Bean
     public Jackson2JsonMessageConverter messageConverter() {
@@ -39,5 +71,14 @@ public class PaymentQueueConfig {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(messageConverter());
         return template;
+    }
+    @Bean
+    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
+            ConnectionFactory connectionFactory) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(messageConverter());
+        factory.setDefaultRequeueRejected(false);
+        return factory;
     }
 }
