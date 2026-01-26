@@ -10,18 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitMQConsumer {
 
-    /*@RabbitListener(queues = PaymentQueueConfig.QUEUE_NAME)
-    public void receiveOrderEvent(OderCreateEvent event) {
-        log.info("Received order event: {}", event);
-
-        try {
-            processOrderEvent(event);
-        } catch (Exception e) {
-            log.error("Error processing order event: {}", e.getMessage());
-        }
-    }*/
-
-    private void processOrderEvent(OderCreateEvent event) {
+    @RabbitListener(queues = PaymentQueueConfig.PAYMENT_RESULT_QUEUE)
+    private void receivePaymentResult(OderCreateEvent event) {
         log.info("Processing order {} for customer {} with total: {}",
                 event.getGroupId(),
                 event.getCustomerId(),
