@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	payment "com.ecommerce.payment"
 	"github.com/streadway/amqp"
 )
 
@@ -15,9 +16,22 @@ type OrderCreatedEvent struct {
 	OrderTotal  float64 `json:"orderTotal"`
 }
 
+/* type PaymentProcessedEvent struct {
+    GroupID    string `json:"groupId"`
+    CustomerID string `json:"customerId"`
+    Status     string `json:"status"`
+    PaymentId  string `json:"paymentId"`
+    PaymentDate string `json:"paymentDate"`
+} */
+
 func connectToRabbitMQ() (*amqp.Connection, error) {
 	var conn *amqp.Connection
 	var err error
+
+	/* amqpUrl := os.Getenv("RABBITMQ_URL")
+	if amqpUrl != "" {
+		amqpUrl = "amqp://guest:guest@rabbitmq:5672/"
+	} */
 
 	for i := 0; i < 30; i++ {
 		conn, err = amqp.Dial("amqp://guest:guest@rabbitmq:5672/")
@@ -104,6 +118,25 @@ func main() {
 
 			log.Printf("Processing payment for Order ID: %s, Customer: %s, Total: %.2f",
 				event.GroupID, event.CustomerID, event.OrderTotal)
+
+			success := true
+
+			if success {
+				msgs := make(chan amqp.Delivery, 1)
+				msgs <- d
+				close(msgs)
+
+				go func() {
+					if err := payment.Publish(payment.PublishEvent{
+						Ch:   ch,
+						Msgs: msgs,
+					}); err != nil {
+						log.Printf("Failed to publish payment processed event: %s", err)
+					} else {
+						log.Printf("Payment processed event published for Order ID: %s", event.GroupID)
+					}
+				}()
+			}
 		}
 	}()
 
