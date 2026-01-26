@@ -75,6 +75,8 @@ public class OrderService {
 
         log.info("Order Created: {}", totalPrice.get());
 
+        orderRepository.flush();
+
         OderCreateEvent event = new OderCreateEvent(
                 groupId,
                 command.getUserId(),
@@ -82,13 +84,11 @@ public class OrderService {
                 totalPrice.get()
         );
 
-        TransactionSynchronizationManager.registerSynchronization(
-                new TransactionSynchronization() {
-                    @Override
-                    public void afterCommit() {
-                        rabbitMQProducer.sendEvent(event);
-                    }
-                }
-        );
+        try {
+            rabbitMQProducer.sendEvent(event);
+        } catch (Exception e) {
+            log.error("Failed to send event, rolling back transaction", e);
+            throw new CustomException("Failed to send payment event", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
