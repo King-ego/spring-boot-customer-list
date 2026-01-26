@@ -58,13 +58,18 @@ func main() {
 		}
 	}(ch)
 
+	args := amqp.Table{
+        "x-dead-letter-exchange":    "customer-dlx",
+        "x-dead-letter-routing-key": "customer.failed",
+    }
+
 	queue, err := ch.QueueDeclare(
 		"customer-queue",
 		true,
 		false,
 		false,
 		false,
-		nil,
+		args,
 	)
 	if err != nil {
 		log.Fatal("Failed to declare a queue: %s", err)
