@@ -1,32 +1,41 @@
 package payment
 
-import "github.com/streadway/amqp"
+import (
+	"encoding/json"
+	"log"
+
+	"github.com/streadway/amqp"
+)
 
 type PublishEvent struct {
-	Ch   *amqp.Channel
-	Msgs <-chan amqp.Delivery
+	Ch             *amqp.Channel
+	ProcessedEvent ProcessedEvent
 }
 
 func Publish(event PublishEvent) error {
-	var err error
-	for d := range event.Msgs {
-		if err := event.Ch.Publish(
-			"payment-result-exchange", // ✅ Exchange de resposta
-			"payment.processed",       // ✅ Routing key
-			false,
-			false,
-			amqp.Publishing{
-				ContentType: "application/json",
-				Body:        d.Body,
-				Headers: amqp.Table{
-					"__TypeId__": "com.diego.list.customers.fila.exchange.event.PaymentProcessedEvent",
-				},
-			},
-		); err != nil {
-			return err
-		}
-		return nil
+	paymentEventJSON, err := json.Marshal(event.ProcessedEvent)
+
+	if err != nil {
+		log.Printf("Error encoding payment event: %s", err)
+		return err
 	}
 
-	return err
+	if err := event.Ch.Publish(
+		"payment-result-exchange",
+		"payment.processed",
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "application/json",
+			Body:        paymentEventJSON,
+			Headers: amqp.Table{
+				"__TypeId__": "com.diego.list.customers.fila.exchange.event.PaymentProcessedEvent",
+			},
+		},
+	); err != nil {
+		return err
+	}
+
+	return nil
+
 }
