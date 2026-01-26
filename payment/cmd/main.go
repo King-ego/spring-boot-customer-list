@@ -9,21 +9,6 @@ import (
 	"github.com/streadway/amqp"
 )
 
-type OrderCreatedEvent struct {
-	GroupID     string  `json:"groupId"`
-	CustomerID  string  `json:"customerId"`
-	OrderStatus string  `json:"orderStatus"`
-	OrderTotal  float64 `json:"orderTotal"`
-}
-
-/* type PaymentProcessedEvent struct {
-    GroupID    string `json:"groupId"`
-    CustomerID string `json:"customerId"`
-    Status     string `json:"status"`
-    PaymentId  string `json:"paymentId"`
-    PaymentDate string `json:"paymentDate"`
-} */
-
 func connectToRabbitMQ() (*amqp.Connection, error) {
 	var conn *amqp.Connection
 	var err error
@@ -109,7 +94,7 @@ func main() {
 		for d := range msg {
 			log.Printf("Received a message: %s", d.Body)
 
-			var event OrderCreatedEvent
+			var event payment.OrderCreatedEvent
 			err := json.Unmarshal(d.Body, &event)
 			if err != nil {
 				log.Printf("Error decoding JSON: %s", err)
@@ -119,24 +104,28 @@ func main() {
 			log.Printf("Processing payment for Order ID: %s, Customer: %s, Total: %.2f",
 				event.GroupID, event.CustomerID, event.OrderTotal)
 
-			success := true
+			processedEvent, err := payment.Processed(event)
 
-			if success {
-				msgs := make(chan amqp.Delivery, 1)
-				msgs <- d
-				close(msgs)
-
-				go func() {
-					if err := payment.Publish(payment.PublishEvent{
-						Ch:   ch,
-						Msgs: msgs,
-					}); err != nil {
-						log.Printf("Failed to publish payment processed event: %s", err)
-					} else {
-						log.Printf("Payment processed event published for Order ID: %s", event.GroupID)
-					}
-				}()
+			if err != nil {
+				log.Printf("Error processing payment: %s", err)
+				continue
 			}
+
+			msgs := make(chan amqp.Delivery, 1)
+			msgs <- d
+			close(msgs)
+
+			go func() {
+				if err := payment.Publish(payment.PublishEvent{
+					Ch:             ch,
+					ProcessedEvent: processedEvent,
+				}); err != nil {
+					log.Printf("Failed to publish payment processed event: %s", err)
+				} else {
+					log.Printf("Payment processed event published for Order ID: %s", event.GroupID)
+				}
+			}()
+
 		}
 	}()
 
