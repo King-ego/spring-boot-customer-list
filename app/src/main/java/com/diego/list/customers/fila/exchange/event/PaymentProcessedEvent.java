@@ -12,10 +12,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentProcessedEvent {
-    private UUID orderId;
+    private UUID groupId;
     private UUID customerId;
-    private String paymentStatus;
-    private BigDecimal amountPaid;
+    private String status;
     private LocalDateTime paymentDate;
     private String paymentId;
 }
