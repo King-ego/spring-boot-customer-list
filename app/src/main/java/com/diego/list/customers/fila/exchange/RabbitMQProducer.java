@@ -15,14 +15,14 @@ public class RabbitMQProducer {
     }
 
     public void sendMessage(String message) {
-        rabbitTemplate.convertAndSend(PaymentQueueConfig.EXCHANGE_NAME, PaymentQueueConfig.ROUTING_KEY, message);
+        rabbitTemplate.convertAndSend(PaymentQueueConfig.ORDER_EXCHANGE, PaymentQueueConfig.ORDER_ROUTING_KEY, message);
 
-        log.info("Sent message to exchange: {}", PaymentQueueConfig.EXCHANGE_NAME);
+        log.info("Sent message to exchange: {}", PaymentQueueConfig.ORDER_EXCHANGE);
     }
 
     public void sendEvent(Object event) {
-        rabbitTemplate.convertAndSend(PaymentQueueConfig.EXCHANGE_NAME, PaymentQueueConfig.ROUTING_KEY, event);
+        rabbitTemplate.convertAndSend(PaymentQueueConfig.ORDER_EXCHANGE, PaymentQueueConfig.ORDER_ROUTING_KEY, event);
 
-        log.info("Sent event to exchange: {}", PaymentQueueConfig.EXCHANGE_NAME);
+        log.info("Sent event to exchange: {}", PaymentQueueConfig.ORDER_EXCHANGE);
     }
 }
