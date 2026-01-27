@@ -12,37 +12,56 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class PaymentQueueConfig {
-    public static final String QUEUE_NAME = "customer-queue";
-    public static final String EXCHANGE_NAME = "customer-exchange";
-    public static final String ROUTING_KEY = "customer-routing-key";
+    public static final String ORDER_QUEUE = "order-queue";
+    public static final String ORDER_EXCHANGE = "order-exchange";
+    public static final String ORDER_ROUTING_KEY = "order.created";
+
+    // Fila para RECEBER respostas (Go → Java)
+    public static final String PAYMENT_RESULT_QUEUE = "payment-result-queue";
+    public static final String PAYMENT_RESULT_EXCHANGE = "payment-result-exchange";
+    public static final String PAYMENT_RESULT_ROUTING_KEY = "payment.processed";
+
 
     public static final String DLQ_NAME = "customer-dlq";
     public static final String DLX_NAME = "customer-dlx";
     public static final String DLQ_ROUTING_KEY = "customer.failed";
 
-  /*  @Bean
-    public Queue queue() {
-        return new Queue(QUEUE_NAME, true);
-    }
-*/
     @Bean
-    public Queue paymentQueue() {
-        return QueueBuilder.durable(QUEUE_NAME)
+    public Queue orderQueue() {
+        return QueueBuilder.durable(ORDER_QUEUE)
                 .withArgument("x-dead-letter-exchange", DLX_NAME)
                 .withArgument("x-dead-letter-routing-key", DLQ_ROUTING_KEY)
                 .build();
     }
 
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+    public TopicExchange orderExchange() {
+        return new TopicExchange(ORDER_EXCHANGE);
     }
 
     @Bean
-    public Binding customerBinding() {
-        return BindingBuilder.bind(paymentQueue()).to(exchange()).with(ROUTING_KEY);
+    public Binding orderBinding() {
+        return BindingBuilder.bind(orderQueue()).to(orderExchange()).with(ORDER_ROUTING_KEY);
     }
 
+    @Bean
+    public Queue paymentResultQueue() {
+        return new Queue(PAYMENT_RESULT_QUEUE, true);
+    }
+
+    @Bean
+    public TopicExchange paymentResultExchange() {
+        return new TopicExchange(PAYMENT_RESULT_EXCHANGE);
+    }
+
+    @Bean
+    public Binding paymentResultBinding() {
+        return BindingBuilder.bind(paymentResultQueue())
+                .to(paymentResultExchange())
+                .with(PAYMENT_RESULT_ROUTING_KEY);
+    }
+
+    // DLQ configs...
     @Bean
     public Queue deadLetterQueue() {
         return new Queue(DLQ_NAME, true);
