@@ -21,6 +21,13 @@ public class RabbitMQConsumer {
                 event.getPaymentId(),
                 event.getStatus());
 
+        orderUpdateUseCase.updateOrderStatus(
+                event.getGroupId(),
+                event.getStatus(),
+                event.getPaymentId(),
+                event.getPaymentDate()
+        );
+
         log.info("Order {} processed successfully", event);
 
     }
