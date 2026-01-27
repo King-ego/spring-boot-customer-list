@@ -12,7 +12,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class AddressDefaultUseCase {
+public class
+AddressDefaultUseCase {
     private final AddressRepository addressRepository;
 
     public void validate(boolean isDefault, UUID userId, UUID addressId) {
