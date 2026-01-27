@@ -54,7 +54,6 @@ public class SessionService {
         session.setMfaVerified(true);
         session.setPermissions(getUserPermissions(user));
 
-        // Salva no Redis
         sessionRedisRepository.save(session);
 
         String userSessionsKey = "user_sessions:" + user.getId();
@@ -110,7 +109,6 @@ public class SessionService {
         String userSessionsKey = "user_sessions:" + session.getUserId();
         redisTemplate.opsForSet().remove(userSessionsKey, sessionId);
 
-        // Log de segurança
         securityMonitor.logSessionRevocation(session, revokedBy, reason);
 
         log.info("Sessão revogada: {}, motivo: {}, por: {}", sessionId, reason, revokedBy);
@@ -179,11 +177,11 @@ public class SessionService {
                 request.getHeader("Screen-Resolution"),
                 request.getHeader("Timezone"),
                 request.getHeader("Accept-Language"),
-                "Brasil", // Simulado - integrar com serviço de GeoIP
-                "São Paulo", // Simulado
+                "Brasil",
+                "São Paulo",
                 userAgent.getOperatingSystem().isMobileDevice(),
-                false, // Simplificado
-                true // Simplificado
+                false,
+                true
         );
     }
 
