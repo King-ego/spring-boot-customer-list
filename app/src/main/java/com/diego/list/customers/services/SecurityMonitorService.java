@@ -26,26 +26,22 @@ public class SecurityMonitorService {
         int riskScore = 0;
         List<String> riskFactors = new ArrayList<>();
 
-        // 1. Verifica dispositivo
         if (!isDeviceRecognized(user.getId(), deviceFingerprint)) {
             riskScore += 30;
             riskFactors.add("Dispositivo não reconhecido");
         }
 
-        // 2. Verifica localização (simulado)
         String ip = getClientIP(request);
         if (isUnusualLocation(user.getId(), ip)) {
             riskScore += 25;
             riskFactors.add("Localização incomum");
         }
 
-        // 3. Verifica horário
         if (isUnusualTime(user)) {
             riskScore += 15;
             riskFactors.add("Horário incomum");
         }
 
-        // 4. Verifica IP de risco (simulado)
         if (isRiskyIP(ip)) {
             riskScore += 20;
             riskFactors.add("IP de risco");
@@ -113,22 +109,18 @@ public class SecurityMonitorService {
     }
 
     private boolean isUnusualLocation(UUID userId, String ip) {
-        // Simulado - integrar com serviço de GeoIP
-        // Verificar se o IP está em localização incomum para o usuário
         return false;
     }
 
     private boolean isUnusualTime(User user) {
-        // Simulado - verificar se é horário incomum para o usuário
         int currentHour = LocalDateTime.now().getHour();
         int startHour = 8;
         int endHour = 20;
-        return currentHour < startHour || currentHour > endHour; // Fora do horário comercial
+        return currentHour < startHour || currentHour > endHour;
     }
 
     private boolean isRiskyIP(String ip) {
-        // Simulado - integrar com lista de IPs de risco
-        return ip.startsWith("185.") || ip.startsWith("104."); // Exemplo
+        return ip.startsWith("185.") || ip.startsWith("104.");
     }
 
     private void checkAndBlockAccount(UUID userId, HttpServletRequest request) {
