@@ -16,7 +16,6 @@ public class PaymentQueueConfig {
     public static final String ORDER_EXCHANGE = "order-exchange";
     public static final String ORDER_ROUTING_KEY = "order.created";
 
-    // Fila para RECEBER respostas (Go → Java)
     public static final String PAYMENT_RESULT_QUEUE = "payment-result-queue";
     public static final String PAYMENT_RESULT_EXCHANGE = "payment-result-exchange";
     public static final String PAYMENT_RESULT_ROUTING_KEY = "payment.processed";
@@ -61,7 +60,6 @@ public class PaymentQueueConfig {
                 .with(PAYMENT_RESULT_ROUTING_KEY);
     }
 
-    // DLQ configs...
     @Bean
     public Queue deadLetterQueue() {
         return new Queue(DLQ_NAME, true);
