@@ -77,7 +77,6 @@ public class PaymentQueueConfig {
                 .with(DLQ_ROUTING_KEY);
     }
 
-
     @Bean
     public Jackson2JsonMessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
