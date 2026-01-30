@@ -168,6 +168,7 @@ public class SessionService {
                 System.currentTimeMillis();
     }
 
+
     private DeviceInfo extractDeviceInfo(HttpServletRequest request) {
         UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
 
