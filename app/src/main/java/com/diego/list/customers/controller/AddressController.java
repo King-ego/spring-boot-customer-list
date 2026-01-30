@@ -6,6 +6,8 @@ import com.diego.list.customers.model.Address;
 import com.diego.list.customers.services.AddressService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.ReturnedType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,8 +37,8 @@ public class AddressController {
     }
 
     @DeleteMapping("/{addressId}")
-    public String deleteAddress(@Valid @PathVariable UUID addressId) {
+    public ResponseEntity<String> deleteAddress(@Valid @PathVariable UUID addressId) {
         addressService.DeleteAddress(addressId);
-        return "Deleted";
+        return ResponseEntity.ok("Deleted");
     }
 }
