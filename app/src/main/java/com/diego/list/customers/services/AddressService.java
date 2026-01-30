@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -56,13 +55,13 @@ public class AddressService {
     }
 
     public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
-        Optional <Address> existingAddress = addressRepository.findById(addressId);
+        /*Optional <Address> existingAddress = addressRepository.findById(addressId);
 
         if (existingAddress.isEmpty()) {
             throw new CustomException("Address not found", HttpStatus.NOT_FOUND);
-        }
+        }*/
 
-        Address address = existingAddress.get();
+        Address address = validateExistAddress(addressId);
 
         address.setCity(updateAddressCommand.getCity());
         address.setStreetAddress(updateAddressCommand.getStreetAddress());
@@ -90,18 +89,20 @@ public class AddressService {
     }
 
     public void DeleteAddress(UUID addressId){
-        Optional <Address> existingAddress = addressRepository.findById(addressId);
-
-        if (existingAddress.isEmpty()) {
-            throw new CustomException("Address not found", HttpStatus.NOT_FOUND);
-        }
+        validateExistAddress(addressId);
 
         addressRepository.deleteById(addressId);
     }
 
+
     private User validateExistCustomer(UUID userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
+    }
+
+    private Address validateExistAddress(UUID addressId) {
+        return addressRepository.findById(addressId)
+                .orElseThrow(() -> new CustomException("Address not found", HttpStatus.NOT_FOUND));
     }
 
 
