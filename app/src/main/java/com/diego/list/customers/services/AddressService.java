@@ -26,13 +26,7 @@ public class AddressService {
     private final AddressRepository addressRepository;
     private final AddressDefaultUseCase addressDefaultUseCase;
 
-    public void CreateAddress(CreateAddressCommand createAddressCommand) {/*
-        Optional<User> existUser = userRepository.findById(createAddressCommand.getUser_id());*/
-
-        /*if (existUser.isEmpty()) {
-            throw new CustomException("User not found", HttpStatus.NOT_FOUND);
-        }*/
-
+    public void CreateAddress(CreateAddressCommand createAddressCommand) {
         User existUser = validateExistCustomer(createAddressCommand.getUser_id());
 
         Address address = Address.builder()
@@ -55,11 +49,6 @@ public class AddressService {
     }
 
     public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
-        /*Optional <Address> existingAddress = addressRepository.findById(addressId);
-
-        if (existingAddress.isEmpty()) {
-            throw new CustomException("Address not found", HttpStatus.NOT_FOUND);
-        }*/
 
         Address address = validateExistAddress(addressId);
 
@@ -79,9 +68,6 @@ public class AddressService {
     }
 
     public List<Address> GetAddressesByUserId(UUID userId){
-        /*if (!userRepository.existsById(userId)) {
-            throw new CustomException("User not found", HttpStatus.NOT_FOUND);
-        }*/
 
         validateExistCustomer(userId);
 
