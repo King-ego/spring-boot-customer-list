@@ -131,8 +131,7 @@ public class UsersServices {
         if (userDetails.getPassword() != null) {
             encodedPassword = passwordEncoder.encode(userDetails.getPassword());
         }
-/*
-        entityManager.clear();*/
+
         userRepository.updateParse(
                 id,
                 userDetails.getName(),
