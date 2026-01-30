@@ -27,12 +27,14 @@ public class AddressService {
     private final AddressRepository addressRepository;
     private final AddressDefaultUseCase addressDefaultUseCase;
 
-    public void CreateAddress(CreateAddressCommand createAddressCommand) {
-        Optional<User> existUser = userRepository.findById(createAddressCommand.getUser_id());
+    public void CreateAddress(CreateAddressCommand createAddressCommand) {/*
+        Optional<User> existUser = userRepository.findById(createAddressCommand.getUser_id());*/
 
-        if (existUser.isEmpty()) {
+        /*if (existUser.isEmpty()) {
             throw new CustomException("User not found", HttpStatus.NOT_FOUND);
-        }
+        }*/
+
+        User existUser = validateExistCustomer(createAddressCommand.getUser_id());
 
         Address address = Address.builder()
                 .city(createAddressCommand.getCity())
@@ -45,7 +47,7 @@ public class AddressService {
                 .zipCode(createAddressCommand.getZipCode())
                 .phoneNumber(createAddressCommand.getPhoneNumber())
                 .isDefault(createAddressCommand.getIsDefault())
-                .user(existUser.get())
+                .user(existUser)
                 .build();
 
         Address newAddress = addressRepository.save(address);
@@ -78,9 +80,11 @@ public class AddressService {
     }
 
     public List<Address> GetAddressesByUserId(UUID userId){
-        if (!userRepository.existsById(userId)) {
+        /*if (!userRepository.existsById(userId)) {
             throw new CustomException("User not found", HttpStatus.NOT_FOUND);
-        }
+        }*/
+
+        validateExistCustomer(userId);
 
         return addressRepository.findByUserId(userId);
     }
@@ -93,6 +97,11 @@ public class AddressService {
         }
 
         addressRepository.deleteById(addressId);
+    }
+
+    private User validateExistCustomer(UUID userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
     }
 
 
