@@ -85,5 +85,15 @@ public class AddressService {
         return addressRepository.findByUserId(userId);
     }
 
+    public void DeleteAddress(UUID addressId){
+        Optional <Address> existingAddress = addressRepository.findById(addressId);
+
+        if (existingAddress.isEmpty()) {
+            throw new CustomException("Address not found", HttpStatus.NOT_FOUND);
+        }
+
+        addressRepository.deleteById(addressId);
+    }
+
 
 }
