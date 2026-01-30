@@ -4,6 +4,7 @@ import com.diego.list.customers.application.command.address.CreateAddressCommand
 import com.diego.list.customers.application.command.address.UpdateAddressCommand;
 import com.diego.list.customers.model.Address;
 import com.diego.list.customers.services.AddressService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,5 +32,11 @@ public class AddressController {
     @GetMapping("/{userId}")
     public List<Address> getAddressesByUserId(@PathVariable UUID userId) {
         return addressService.GetAddressesByUserId(userId);
+    }
+
+    @DeleteMapping("/{addressId}")
+    public String deleteAddress(@Valid @PathVariable UUID addressId) {
+        addressService.DeleteAddress(addressId);
+        return "Deleted";
     }
 }
