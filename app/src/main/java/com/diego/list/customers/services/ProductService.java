@@ -56,6 +56,9 @@ public class ProductService {
     }
 
     public void deleteProduct(UUID productId) {
+        productRepository.findById(productId)
+                .orElseThrow(() -> new CustomException("Product not found", HttpStatus.NOT_FOUND));
+
         productRepository.deleteById(productId);
     }
 }
