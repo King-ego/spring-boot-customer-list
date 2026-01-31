@@ -47,17 +47,6 @@ public class UsersController {
         return ResponseEntity.notFound().build();
     }
 
-    /*@GetMapping("/search")
-    public ResponseEntity<List<ListUsers>> searchUsers(@RequestParam String term) {
-        List<User> users = usersServices.searchUsers(term);
-
-        List<ListUsers> response = users.stream()
-                .map(ListUsers::from)
-                .toList();
-
-        return ResponseEntity.ok(response);
-    }
-*/
     @GetMapping("/by-email")
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         Optional<User> user = usersServices.getUserByEmail(email);
