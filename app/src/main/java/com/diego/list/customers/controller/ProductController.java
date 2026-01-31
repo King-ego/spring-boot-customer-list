@@ -51,4 +51,9 @@ public class ProductController {
     public String getBySlug(@PathVariable String slug) {
         return "Test" + slug;
     }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<String> deleteProduct(@Valid @PathVariable UUID productId) {
+        return ResponseEntity.ok("Deleted Product Successfully");
+    }
 }
