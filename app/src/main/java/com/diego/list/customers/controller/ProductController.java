@@ -37,7 +37,6 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.CREATED).toString();
     }
-
     @GetMapping
     public List<Product> index(@ModelAttribute FilterProductDto query){
         return productService.getAllProducts();
