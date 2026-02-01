@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.6</version>
+		<version>3.5.7</version>
 		<relativePath/>
 	</parent>
 	<groupId>com.diego</groupId>
@@ -127,7 +127,18 @@
             <artifactId>stripe-java</artifactId>
             <version>25.0.0</version>
         </dependency>
-	</dependencies>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sqs</artifactId>
+            <version>2.25.62</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
