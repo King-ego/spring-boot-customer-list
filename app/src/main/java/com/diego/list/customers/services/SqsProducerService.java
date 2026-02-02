@@ -16,6 +16,7 @@ public class SqsProducerService {
         sqsClient.sendMessage(r -> r
                 .queueUrl(queueUrl)
                 .messageBody(message)
+
         );
     }
 }
