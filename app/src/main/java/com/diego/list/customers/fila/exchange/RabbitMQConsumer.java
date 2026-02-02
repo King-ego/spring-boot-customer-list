@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class RabbitMQConsumer {
     private final OrderUpdateUseCase orderUpdateUseCase;
-    @RabbitListener(queues = PaymentQueueConfig.PAYMENT_RESULT_QUEUE)
+    @RabbitListener(queues = "${rabbitmq.queue.payment-result.name}")
     private void receivePaymentResult(PaymentProcessedEvent event) {
         log.info("Processing order {} for customer {} with total: {} and status: {}",
                 event.getGroupId(),
