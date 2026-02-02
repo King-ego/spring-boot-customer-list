@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sqs.SqsClient;
 
 @Service
-@AllArgsConstructor
 public class SqsProducerProducer {
 
     private final SqsClient sqsClient;
@@ -15,6 +14,11 @@ public class SqsProducerProducer {
 
     @Value("${aws.sqs.queue-url}")
     private String queueUrl;
+
+    public  SqsProducerProducer(SqsClient sqsClient, ObjectMapper objectMapper) {
+        this.sqsClient = sqsClient;
+        this.objectMapper = objectMapper;
+    }
 
     public void send(String message) {
         sqsClient.sendMessage(r -> r
