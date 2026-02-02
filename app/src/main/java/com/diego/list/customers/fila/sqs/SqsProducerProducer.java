@@ -2,6 +2,7 @@ package com.diego.list.customers.fila.sqs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sqs.SqsClient;
 
@@ -12,15 +13,17 @@ public class SqsProducerProducer {
     private final SqsClient sqsClient;
     private final ObjectMapper objectMapper;
 
+    @Value("${aws.sqs.queue-url}")
+    private String queueUrl;
 
-    public void send(String queueUrl, String message) {
+    public void send(String message) {
         sqsClient.sendMessage(r -> r
                 .queueUrl(queueUrl)
                 .messageBody(message)
         );
     }
 
-    public void convertAndSend(String queueUrl, Object event) {
+    public void convertAndSend(Object event) {
         try {
             String messageBody = objectMapper.writeValueAsString(event);
             sqsClient.sendMessage(r -> r
