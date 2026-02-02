@@ -1,29 +1,43 @@
 package com.diego.list.customers.fila.exchange.config;
 
-import org.hibernate.boot.model.internal.QueryBinder;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
 public class PaymentQueueConfig {
-    public static final String ORDER_QUEUE = "order-queue";
-    public static final String ORDER_EXCHANGE = "order-exchange";
-    public static final String ORDER_ROUTING_KEY = "order.created";
+    @Value("${rabbitmq.queue.order.name}")
+    private String ORDER_QUEUE;
 
-    public static final String PAYMENT_RESULT_QUEUE = "payment-result-queue";
-    public static final String PAYMENT_RESULT_EXCHANGE = "payment-result-exchange";
-    public static final String PAYMENT_RESULT_ROUTING_KEY = "payment.processed";
+    @Value("${rabbitmq.exchange.order.name}")
+    private String ORDER_EXCHANGE;
 
+    @Value("${rabbitmq.routing-key.order.created}")
+    private String ORDER_ROUTING_KEY;
 
-    public static final String DLQ_NAME = "customer-dlq";
-    public static final String DLX_NAME = "customer-dlx";
-    public static final String DLQ_ROUTING_KEY = "customer.failed";
+    @Value("${rabbitmq.queue.payment-result.name}")
+    private String PAYMENT_RESULT_QUEUE;
+
+    @Value("${rabbitmq.exchange.payment-result.name}")
+    private String PAYMENT_RESULT_EXCHANGE;
+
+    @Value("${rabbitmq.routing-key.payment.processed}")
+    private String PAYMENT_RESULT_ROUTING_KEY;
+
+    @Value("${rabbitmq.queue.dlq.name}")
+    private String DLQ_NAME;
+
+    @Value("${rabbitmq.exchange.dlx.name}")
+    private String DLX_NAME;
+
+    @Value("${rabbitmq.routing-key.dlq}")
+    private String DLQ_ROUTING_KEY;
 
     @Bean
     public Queue orderQueue() {
