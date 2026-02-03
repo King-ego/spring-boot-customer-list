@@ -1,4 +1,4 @@
-package com.diego.list.customers.fila.sqs;
+package com.diego.list.customers.fila.aws;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
