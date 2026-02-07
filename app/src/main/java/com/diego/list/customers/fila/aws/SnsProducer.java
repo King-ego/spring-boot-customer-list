@@ -12,7 +12,6 @@ public class SnsProducer {
 
     @Value("${aws.sns.topic-arn}")
     private String topicArn;
-
     public SnsProducer(SnsClient snsClient, ObjectMapper objectMapper) {
         this.snsClient = snsClient;
         this.objectMapper = objectMapper;
