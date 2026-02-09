@@ -14,7 +14,6 @@ public class RedisUtils {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-
     public void safeDel( String keys) {
         try {
             Long deleted = redisTemplate.delete(Collections.singletonList(keys));
