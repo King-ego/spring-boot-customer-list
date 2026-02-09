@@ -29,6 +29,5 @@ public class OrderUpdateUseCase {
         }
 
         order.forEach(o -> orderRepository.updateParse(o.getGroupId(), status, paymentId, paymentDate));
-
     }
 }
