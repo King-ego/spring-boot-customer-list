@@ -25,7 +25,6 @@ public class SqsProducer {
                 .messageBody(message)
         );
     }
-
     public void convertAndSend(Object event) {
         try {
             String messageBody = objectMapper.writeValueAsString(event);
