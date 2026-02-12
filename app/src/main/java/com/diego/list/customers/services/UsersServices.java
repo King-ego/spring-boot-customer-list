@@ -76,13 +76,16 @@ public class UsersServices {
             throw new CustomException("Seller details are required", HttpStatus.BAD_REQUEST);
         }
 
-        String password_encoder = passwordEncoder.encode(user.getPassword());
+        String randomPassword = UUID.randomUUID().toString();
+
+        String password_encoder = passwordEncoder.encode(randomPassword);
 
         User userBuilder = User.builder()
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(password_encoder)
                 .role(user.getRole())
+                .enabled(false)
                 .build();
 
         var create_user = userRepository.save(userBuilder);
