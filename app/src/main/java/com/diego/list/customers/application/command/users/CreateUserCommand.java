@@ -17,8 +17,6 @@ public class CreateUserCommand {
 
     private String email;
 
-    private String password;
-
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
