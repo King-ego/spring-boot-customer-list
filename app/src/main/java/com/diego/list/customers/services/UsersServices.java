@@ -143,4 +143,8 @@ public class UsersServices {
                 encodedPassword
         );
     }
+
+    public void enabledUser(UUID id) {
+        /*userRepository.enabledUser(id);*/
+    }
 }
