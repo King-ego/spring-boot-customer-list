@@ -38,6 +38,9 @@ public class UsersController {
         return usersServices.saveUser(user);
     }
 
+    @PatchMapping("/enabled/user/{id}")
+    public ResponseEntity<Void> toggleUserEnabled(@PathVariable UUID id) {}
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         if (usersServices.getUserById(id).isPresent()) {
