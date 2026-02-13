@@ -39,7 +39,9 @@ public class UsersController {
     }
 
     @PatchMapping("/enabled/user/{id}")
-    public ResponseEntity<Void> toggleUserEnabled(@PathVariable UUID id) {}
+    public void UserEnabled(@PathVariable UUID id) {
+        usersServices.enabledUser(id);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
