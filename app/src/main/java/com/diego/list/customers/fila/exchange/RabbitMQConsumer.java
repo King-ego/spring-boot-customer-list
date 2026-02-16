@@ -31,3 +31,4 @@ public class RabbitMQConsumer {
         log.info("Order {} processed successfully", event);
     }
 }
+
