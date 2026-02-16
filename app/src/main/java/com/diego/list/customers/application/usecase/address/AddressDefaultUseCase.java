@@ -32,3 +32,4 @@ AddressDefaultUseCase {
         log.info("One address set as default for user");
     }
 }
+
