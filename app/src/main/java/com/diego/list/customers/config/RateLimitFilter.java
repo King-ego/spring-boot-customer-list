@@ -37,4 +37,3 @@ public class RateLimitFilter extends HttpFilter {
         }
     }
 }
-
