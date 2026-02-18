@@ -71,9 +71,10 @@ public class UsersServices {
 
         ValidationUsersExceptions.validate(existUser.isPresent(), "Email already in use", HttpStatus.CONFLICT);
 
-        if (user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null) {
-            throw new CustomException("Customer details are required", HttpStatus.BAD_REQUEST);
-        }
+        boolean isCustomer = user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null;
+
+        ValidationUsersExceptions.validate(isCustomer, "Customer details are required", HttpStatus.BAD_REQUEST);
+
 
         if (user.getRole() == UserRole.SELLER && user.getSellerDetails() == null) {
             throw new CustomException("Seller details are required", HttpStatus.BAD_REQUEST);
