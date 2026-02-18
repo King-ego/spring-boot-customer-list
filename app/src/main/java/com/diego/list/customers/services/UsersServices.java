@@ -11,7 +11,7 @@ import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.security.SessionAuthentication;
 import com.diego.list.customers.application.usecase.account.CreateAccountUseCase;
-import com.diego.list.customers.utils.exceptions.ValidationUsersExceptions;
+import com.diego.list.customers.utils.exceptions.ValidationExceptions;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,17 +65,17 @@ public class UsersServices {
     public User saveUser(CreateUserCommand user) {
         Optional<User> existUser = userRepository.findByEmail(user.getEmail());
 
-        ValidationUsersExceptions
+        ValidationExceptions
                 .validate(existUser.isPresent(), "Email already in use", HttpStatus.CONFLICT);
 
         boolean isCustomerWithoutDetail = user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null;
 
-        ValidationUsersExceptions
+        ValidationExceptions
                 .validate(isCustomerWithoutDetail, "Customer details are required", HttpStatus.BAD_REQUEST);
 
         boolean isSellerWithoutDetail = user.getRole() == UserRole.SELLER && user.getSellerDetails() == null;
 
-        ValidationUsersExceptions
+        ValidationExceptions
                 .validate(isSellerWithoutDetail, "Seller details are required", HttpStatus.BAD_REQUEST);
 
         String randomPassword = UUID.randomUUID().toString();
@@ -122,7 +122,7 @@ public class UsersServices {
     public void deleteUser(UUID id) {
         Optional<User> user = userRepository.findById(id);
 
-        ValidationUsersExceptions
+        ValidationExceptions
                 .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
 
         userRepository.deleteById(id);
@@ -145,7 +145,7 @@ public class UsersServices {
             encodedPassword = passwordEncoder.encode(userDetails.getPassword());
         }
 
-        ValidationUsersExceptions
+        ValidationExceptions
                 .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
 
         userRepository.updateParse(
@@ -160,7 +160,7 @@ public class UsersServices {
     public void enabledUser(UUID id) {
         Optional<User> user = userRepository.findById(id);
 
-        ValidationUsersExceptions
+        ValidationExceptions
                 .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
         /*userRepository.enabledUser(id);*/
     }
