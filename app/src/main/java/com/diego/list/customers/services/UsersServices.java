@@ -65,19 +65,18 @@ public class UsersServices {
     public User saveUser(CreateUserCommand user) {
         Optional<User> existUser = userRepository.findByEmail(user.getEmail());
 
-        /*if (existUser.isPresent()) {
-            throw new CustomException("Email already in use", HttpStatus.CONFLICT);
-        }*/
+        ValidationUsersExceptions
+                .validate(existUser.isPresent(), "Email already in use", HttpStatus.CONFLICT);
 
-        ValidationUsersExceptions.validate(existUser.isPresent(), "Email already in use", HttpStatus.CONFLICT);
+        boolean isCustomerWithoutDetail = user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null;
 
-        boolean isCustomer = user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null;
+        ValidationUsersExceptions
+                .validate(isCustomerWithoutDetail, "Customer details are required", HttpStatus.BAD_REQUEST);
 
-        ValidationUsersExceptions.validate(isCustomer, "Customer details are required", HttpStatus.BAD_REQUEST);
+        boolean isSellerWithoutDetail = user.getRole() == UserRole.SELLER && user.getSellerDetails() == null;
 
-        boolean isSeller = user.getRole() == UserRole.SELLER && user.getSellerDetails() == null;
-
-        ValidationUsersExceptions.validate(isSeller, "Seller details are required", HttpStatus.BAD_REQUEST);
+        ValidationUsersExceptions
+                .validate(isSellerWithoutDetail, "Seller details are required", HttpStatus.BAD_REQUEST);
 
         String randomPassword = UUID.randomUUID().toString();
 
