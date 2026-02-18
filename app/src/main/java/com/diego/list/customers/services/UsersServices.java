@@ -157,13 +157,13 @@ public class UsersServices {
         );
     }
 
-    public void enabledUser(UUID id) {
-        Optional<User> user = userRepository.findById(id);
+    public void enabledUser(UUID userId) {
+        Optional<User> user = userRepository.findById(userId);
 
         ValidationExceptions
                 .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
 
-        userRepository.enabledParse(id);
+        userRepository.enabledParse(userId);
         /*userRepository.enabledUser(id);*/
     }
 
