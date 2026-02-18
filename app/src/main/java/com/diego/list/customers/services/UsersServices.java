@@ -70,13 +70,11 @@ public class UsersServices {
 
         boolean isCustomerWithoutDetail = user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null;
 
-        ValidationExceptions
-                .validate(isCustomerWithoutDetail, "Customer details are required", HttpStatus.BAD_REQUEST);
+        UserValidator.validateCustomerDetails(isCustomerWithoutDetail);
 
         boolean isSellerWithoutDetail = user.getRole() == UserRole.SELLER && user.getSellerDetails() == null;
 
-        ValidationExceptions
-                .validate(isSellerWithoutDetail, "Seller details are required", HttpStatus.BAD_REQUEST);
+        UserValidator.validateSellerDetails(isSellerWithoutDetail);
 
         String randomPassword = UUID.randomUUID().toString();
 
