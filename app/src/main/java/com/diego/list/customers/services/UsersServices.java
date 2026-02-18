@@ -162,6 +162,8 @@ public class UsersServices {
 
         ValidationExceptions
                 .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
+
+        userRepository.enabledParse(id);
         /*userRepository.enabledUser(id);*/
     }
 
