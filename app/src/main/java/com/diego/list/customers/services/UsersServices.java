@@ -120,8 +120,7 @@ public class UsersServices {
     public void deleteUser(UUID id) {
         Optional<User> user = userRepository.findById(id);
 
-        ValidationExceptions
-                .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
+        UserValidator.validateUserNotFound(user.isEmpty());
 
         userRepository.deleteById(id);
     }
@@ -137,8 +136,7 @@ public class UsersServices {
     ) {
         Optional<User> user = userRepository.findById(id);
 
-        ValidationExceptions
-                .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
+        UserValidator.validateUserNotFound(user.isEmpty());
 
         String encodedPassword = user.get().getPassword();
 
