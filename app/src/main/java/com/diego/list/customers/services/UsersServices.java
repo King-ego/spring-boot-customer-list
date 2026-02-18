@@ -3,6 +3,7 @@ package com.diego.list.customers.services;
 import com.diego.list.customers.application.command.users.CreateCustomerCommand;
 import com.diego.list.customers.application.command.users.CreateSellerCommand;
 import com.diego.list.customers.application.command.users.CreateUserCommand;
+import com.diego.list.customers.application.validation.UserValidator;
 import com.diego.list.customers.dto.UpdateUserDto;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Session;
@@ -65,8 +66,7 @@ public class UsersServices {
     public User saveUser(CreateUserCommand user) {
         Optional<User> existUser = userRepository.findByEmail(user.getEmail());
 
-        ValidationExceptions
-                .validate(existUser.isPresent(), "Email already in use", HttpStatus.CONFLICT);
+        UserValidator.validateUserExists(existUser.isPresent());
 
         boolean isCustomerWithoutDetail = user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null;
 
