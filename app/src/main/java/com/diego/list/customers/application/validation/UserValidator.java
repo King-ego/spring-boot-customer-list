@@ -17,28 +17,16 @@ public class UserValidator {
                 .validate(condition, "User is exist", HttpStatus.CONFLICT);
     }
 
-    public void validateEmailNotInUse(Optional<User> existingUser) {
-        if (existingUser.isPresent()) {
-            throw new CustomException("Email already in use", HttpStatus.CONFLICT);
-        }
+    public static void validateCustomerDetails(Boolean condition) {
+        ValidationExceptions
+                .validate(condition, "Customer details are required", HttpStatus.BAD_REQUEST);
     }
 
-    public void validateCustomerDetails(UserRole role, Object customerDetails) {
-        if (role == UserRole.CUSTOMER && customerDetails == null) {
-            throw new CustomException("Customer details are required", HttpStatus.BAD_REQUEST);
-        }
+    public static void validateSellerDetails(Boolean condition) {
+        ValidationExceptions
+                .validate(condition, "Seller details are required", HttpStatus.BAD_REQUEST);
+
     }
 
-    public void validateSellerDetails(UserRole role, Object sellerDetails) {
-        if (role == UserRole.SELLER && sellerDetails == null) {
-            throw new CustomException("Seller details are required", HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    public void validateUserNotNull(User user) {
-        if (user == null) {
-            throw new CustomException("User cannot be null", HttpStatus.BAD_REQUEST);
-        }
-    }
 }
 
