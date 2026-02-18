@@ -28,5 +28,10 @@ public class UserValidator {
 
     }
 
+    public static void validateUserNotFound(Boolean condition) {
+        ValidationExceptions
+                .validate(condition, "User not found", HttpStatus.NOT_FOUND);
+    }
+
 }
 
