@@ -68,7 +68,7 @@ public class UsersServices {
             throw new CustomException("Email already in use", HttpStatus.CONFLICT);
         }*/
 
-        this.exiterUser(existUser.isPresent());
+        this.UserErrorBounce(existUser.isPresent(), "Email already in use");
 
         if (user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null) {
             throw new CustomException("Customer details are required", HttpStatus.BAD_REQUEST);
@@ -150,9 +150,9 @@ public class UsersServices {
         /*userRepository.enabledUser(id);*/
     }
 
-    private void exiterUser(Boolean user_exist) {
-        if (user_exist) {
-            throw new CustomException("User exist", HttpStatus.CONFLICT);
+    private void UserErrorBounce(Boolean condition, String message) {
+        if (condition) {
+            throw new CustomException(message, HttpStatus.BAD_REQUEST);
         }
     }
 }
