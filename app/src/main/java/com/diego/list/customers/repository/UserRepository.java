@@ -36,4 +36,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             String phone,
             String password
     );
+
+    @Modifying
+    @Query("UPDATE User u SET u.enabled = true WHERE u.id = :userId")
+    void enabledParse(UUID userId);
 }
