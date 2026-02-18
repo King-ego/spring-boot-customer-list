@@ -139,14 +139,14 @@ public class UsersServices {
     ) {
         Optional<User> user = userRepository.findById(id);
 
-        String encodedPassword = null;
+        ValidationExceptions
+                .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
+
+        String encodedPassword = user.get().getPassword();
 
         if (userDetails.getPassword() != null) {
             encodedPassword = passwordEncoder.encode(userDetails.getPassword());
         }
-
-        ValidationExceptions
-                .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
 
         userRepository.updateParse(
                 id,
