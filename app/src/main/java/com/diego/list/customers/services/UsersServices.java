@@ -137,10 +137,16 @@ public class UsersServices {
             UUID id,
             UpdateUserDto userDetails
     ) {
+        Optional<User> user = userRepository.findById(id);
+
         String encodedPassword = null;
+
         if (userDetails.getPassword() != null) {
             encodedPassword = passwordEncoder.encode(userDetails.getPassword());
         }
+
+        ValidationUsersExceptions
+                .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
 
         userRepository.updateParse(
                 id,
