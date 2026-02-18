@@ -12,7 +12,6 @@ import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.security.SessionAuthentication;
 import com.diego.list.customers.application.usecase.account.CreateAccountUseCase;
-import com.diego.list.customers.utils.exceptions.ValidationExceptions;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -159,7 +158,6 @@ public class UsersServices {
         UserValidator.validateUserNotFound(user.isEmpty());
 
         userRepository.enabledParse(userId);
-        /*userRepository.enabledUser(id);*/
     }
 
 }
