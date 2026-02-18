@@ -64,9 +64,11 @@ public class UsersServices {
     public User saveUser(CreateUserCommand user) {
         Optional<User> existUser = userRepository.findByEmail(user.getEmail());
 
-        if (existUser.isPresent()) {
+        /*if (existUser.isPresent()) {
             throw new CustomException("Email already in use", HttpStatus.CONFLICT);
-        }
+        }*/
+
+        this.exiterUser(existUser.isPresent());
 
         if (user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null) {
             throw new CustomException("Customer details are required", HttpStatus.BAD_REQUEST);
@@ -146,5 +148,11 @@ public class UsersServices {
 
     public void enabledUser(UUID id) {
         /*userRepository.enabledUser(id);*/
+    }
+
+    private void exiterUser(Boolean user_exist) {
+        if (user_exist) {
+            throw new CustomException("User exist", HttpStatus.CONFLICT);
+        }
     }
 }
