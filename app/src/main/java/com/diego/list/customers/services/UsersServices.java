@@ -75,10 +75,9 @@ public class UsersServices {
 
         ValidationUsersExceptions.validate(isCustomer, "Customer details are required", HttpStatus.BAD_REQUEST);
 
+        boolean isSeller = user.getRole() == UserRole.SELLER && user.getSellerDetails() == null;
 
-        if (user.getRole() == UserRole.SELLER && user.getSellerDetails() == null) {
-            throw new CustomException("Seller details are required", HttpStatus.BAD_REQUEST);
-        }
+        ValidationUsersExceptions.validate(isSeller, "Seller details are required", HttpStatus.BAD_REQUEST);
 
         String randomPassword = UUID.randomUUID().toString();
 
@@ -152,9 +151,4 @@ public class UsersServices {
         /*userRepository.enabledUser(id);*/
     }
 
-    private void UserErrorBounce(Boolean condition, String message) {
-        if (condition) {
-            throw new CustomException(message, HttpStatus.BAD_REQUEST);
-        }
-    }
 }
