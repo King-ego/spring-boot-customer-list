@@ -156,8 +156,7 @@ public class UsersServices {
     public void enabledUser(UUID userId) {
         Optional<User> user = userRepository.findById(userId);
 
-        ValidationExceptions
-                .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
+        UserValidator.validateUserNotFound(user.isEmpty());
 
         userRepository.enabledParse(userId);
         /*userRepository.enabledUser(id);*/
