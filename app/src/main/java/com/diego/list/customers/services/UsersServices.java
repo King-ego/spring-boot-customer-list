@@ -11,6 +11,7 @@ import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.security.SessionAuthentication;
 import com.diego.list.customers.application.usecase.account.CreateAccountUseCase;
+import com.diego.list.customers.utils.exceptions.ValidationUsersExceptions;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +69,7 @@ public class UsersServices {
             throw new CustomException("Email already in use", HttpStatus.CONFLICT);
         }*/
 
-        this.UserErrorBounce(existUser.isPresent(), "Email already in use");
+        ValidationUsersExceptions.validate(existUser.isPresent(), "Email already in use", HttpStatus.CONFLICT);
 
         if (user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null) {
             throw new CustomException("Customer details are required", HttpStatus.BAD_REQUEST);
