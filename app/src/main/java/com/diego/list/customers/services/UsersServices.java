@@ -120,6 +120,11 @@ public class UsersServices {
     }
 
     public void deleteUser(UUID id) {
+        Optional<User> user = userRepository.findById(id);
+
+        ValidationUsersExceptions
+                .validate(user.isEmpty(), "User not found", HttpStatus.NOT_FOUND);
+
         userRepository.deleteById(id);
     }
 
