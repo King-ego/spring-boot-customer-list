@@ -2,6 +2,7 @@ package com.diego.list.customers.services;
 
 import com.diego.list.customers.application.command.address.CreateAddressCommand;
 import com.diego.list.customers.application.command.address.UpdateAddressCommand;
+import com.diego.list.customers.application.validation.UserValidator;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Address;
 import com.diego.list.customers.model.User;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,7 +29,9 @@ public class AddressService {
     private final AddressDefaultUseCase addressDefaultUseCase;
 
     public void CreateAddress(CreateAddressCommand createAddressCommand) {
-        User existUser = validateExistCustomer(createAddressCommand.getUser_id());
+        Optional<User> existUser = userRepository.findById(createAddressCommand.getUser_id());
+
+        UserValidator.validateUserNotFound(existUser.isEmpty());
 
         Address address = Address.builder()
                 .city(createAddressCommand.getCity())
@@ -40,7 +44,7 @@ public class AddressService {
                 .zipCode(createAddressCommand.getZipCode())
                 .phoneNumber(createAddressCommand.getPhoneNumber())
                 .isDefault(createAddressCommand.getIsDefault())
-                .user(existUser)
+                .user(existUser.get())
                 .build();
 
         Address newAddress = addressRepository.save(address);
@@ -83,7 +87,7 @@ public class AddressService {
     }
 
 
-    private User validateExistCustomer(UUID userId) {
+    /*private User validateExistCustomer(UUID userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
     }
@@ -97,7 +101,7 @@ public class AddressService {
         if(address.getIsDefault()){
             throw  new CustomException("Default address cannot be deleted", HttpStatus.BAD_REQUEST);
         }
-    }
+    }*/
 
 
 }
