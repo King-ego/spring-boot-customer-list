@@ -14,8 +14,7 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-    Optional<User> findByEmail(String email);/*
-    boolean existsByUsername(String name);*/
+    Optional<User> findByEmail(String email);
     boolean existsByEmail(String email);
     @Query("SELECT u FROM User u WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR LOWER(u.email) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     List<User> findByNameOrEmailContaining(@Param("searchTerm") String searchTerm);
