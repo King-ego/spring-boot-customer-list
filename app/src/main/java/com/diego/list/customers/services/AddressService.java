@@ -72,8 +72,9 @@ public class AddressService {
     }
 
     public List<Address> GetAddressesByUserId(UUID userId){
+        Optional<User> user =  userRepository.findById(userId);
 
-        validateExistCustomer(userId);
+        UserValidator.validateUserNotFound(user.isEmpty());
 
         return addressRepository.findByUserId(userId);
     }
