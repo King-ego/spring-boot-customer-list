@@ -94,21 +94,4 @@ public class AddressService {
     }
 
 
-    /*private User validateExistCustomer(UUID userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
-    }
-
-    private Address validateExistAddress(UUID addressId) {
-        return addressRepository.findById(addressId)
-                .orElseThrow(() -> new CustomException("Address not found", HttpStatus.NOT_FOUND));
-    }
-
-    private void isDefaultAddress(Address address){
-        if(address.getIsDefault()){
-            throw  new CustomException("Default address cannot be deleted", HttpStatus.BAD_REQUEST);
-        }
-    }*/
-
-
 }
