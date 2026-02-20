@@ -10,4 +10,9 @@ public class AddressValidator {
         ValidationExceptions
                 .validate(condition, "Default address cannot be deleted", HttpStatus.BAD_REQUEST);
     }
+
+        public static void validateAddressNotFound(Boolean condition) {
+            ValidationExceptions
+                    .validate(condition, "Address not found", HttpStatus.NOT_FOUND);
+        }
 }
