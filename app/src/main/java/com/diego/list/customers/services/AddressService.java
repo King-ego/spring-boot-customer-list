@@ -81,7 +81,11 @@ public class AddressService {
     }
 
     public void DeleteAddress(UUID addressId){
-        Address address = validateExistAddress(addressId);
+        Optional <Address> optionalAddress = addressRepository.findById(addressId);
+
+        AddressValidator.validateAddressNotFound(optionalAddress.isEmpty());
+
+        Address address = optionalAddress.get();
 
         AddressValidator.validateDefaultAddress(address.getIsDefault());
 
