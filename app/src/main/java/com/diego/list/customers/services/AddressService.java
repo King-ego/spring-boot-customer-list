@@ -4,7 +4,6 @@ import com.diego.list.customers.application.command.address.CreateAddressCommand
 import com.diego.list.customers.application.command.address.UpdateAddressCommand;
 import com.diego.list.customers.application.validation.AddressValidator;
 import com.diego.list.customers.application.validation.UserValidator;
-import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Address;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.AddressRepository;
@@ -12,7 +11,6 @@ import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.application.usecase.address.AddressDefaultUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,8 +52,11 @@ public class AddressService {
     }
 
     public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
+        Optional<Address> optionalAddress = addressRepository.findById(addressId);
 
-        Address address = validateExistAddress(addressId);
+        AddressValidator.validateAddressNotFound(optionalAddress.isEmpty());
+
+        Address address = optionalAddress.get();
 
         address.setCity(updateAddressCommand.getCity());
         address.setStreetAddress(updateAddressCommand.getStreetAddress());
