@@ -2,6 +2,7 @@ package com.diego.list.customers.services;
 
 import com.diego.list.customers.application.command.address.CreateAddressCommand;
 import com.diego.list.customers.application.command.address.UpdateAddressCommand;
+import com.diego.list.customers.application.validation.AddressValidator;
 import com.diego.list.customers.application.validation.UserValidator;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.model.Address;
@@ -82,7 +83,7 @@ public class AddressService {
     public void DeleteAddress(UUID addressId){
         Address address = validateExistAddress(addressId);
 
-        isDefaultAddress(address);
+        AddressValidator.validateDefaultAddress(address.getIsDefault());
 
         addressRepository.deleteById(addressId);
     }
