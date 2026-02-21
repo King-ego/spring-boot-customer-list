@@ -5,6 +5,7 @@ import com.diego.list.customers.application.command.OrderItemCommand;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.fila.exchange.RabbitMQProducer;
 import com.diego.list.customers.fila.exchange.event.OderCreateEvent;
+import com.diego.list.customers.model.Customer;
 import com.diego.list.customers.model.Order;
 import com.diego.list.customers.model.Product;
 import com.diego.list.customers.repository.CustomerRepository;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import java.util.UUID;
@@ -31,6 +33,7 @@ public class OrderService {
     private final RabbitMQProducer rabbitMQProducer;
 
     public void createOrder(CreateOrderCommand command) {
+        Optional <Customer> customerOpt = customerRepository.findByUserId(command.getUserId());
         validateCustomer(command.getUserId());
 
         UUID groupId = UUID.randomUUID();
