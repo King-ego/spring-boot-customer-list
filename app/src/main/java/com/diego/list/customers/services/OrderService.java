@@ -46,10 +46,10 @@ public class OrderService {
         sendOrderEvent(groupId, command.getUserId(), totalPrice.get());
     }
 
-    private void validateCustomer(UUID userId) {
+    /*private void validateCustomer(UUID userId) {
         customerRepository.findByUserId(userId)
                 .orElseThrow(() -> new CustomException("Customer not found", HttpStatus.NOT_FOUND));
-    }
+    }*/
 
     private void processOrderItem(OrderItemCommand item, UUID userId, UUID groupId, AtomicReference<BigDecimal> totalPrice) {
         Product product = validateAndGetProduct(item.getProductId());
