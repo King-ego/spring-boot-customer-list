@@ -2,6 +2,7 @@ package com.diego.list.customers.services;
 
 import com.diego.list.customers.application.command.CreateOrderCommand;
 import com.diego.list.customers.application.command.OrderItemCommand;
+import com.diego.list.customers.application.validation.CustomerValidator;
 import com.diego.list.customers.errors.CustomException;
 import com.diego.list.customers.fila.exchange.RabbitMQProducer;
 import com.diego.list.customers.fila.exchange.event.OderCreateEvent;
@@ -34,7 +35,7 @@ public class OrderService {
 
     public void createOrder(CreateOrderCommand command) {
         Optional <Customer> customerOpt = customerRepository.findByUserId(command.getUserId());
-        validateCustomer(command.getUserId());
+        CustomerValidator.validateCustomerNotFound(customerOpt.isEmpty());
 
         UUID groupId = UUID.randomUUID();
         AtomicReference<BigDecimal> totalPrice = new AtomicReference<>(BigDecimal.ZERO);
