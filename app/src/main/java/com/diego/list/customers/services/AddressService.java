@@ -30,7 +30,7 @@ public class AddressService {
     public void CreateAddress(CreateAddressCommand createAddressCommand) {
         Optional<User> existUser = userRepository.findById(createAddressCommand.getUser_id());
 
-        UserValidator.validateUserNotFound(existUser.isEmpty());
+        UserValidator.exceptionUserNotFound(existUser.isEmpty());
 
         Address address = Address.builder()
                 .city(createAddressCommand.getCity())
@@ -76,7 +76,7 @@ public class AddressService {
     public List<Address> GetAddressesByUserId(UUID userId){
         Optional<User> user =  userRepository.findById(userId);
 
-        UserValidator.validateUserNotFound(user.isEmpty());
+        UserValidator.exceptionUserNotFound(user.isEmpty());
 
         return addressRepository.findByUserId(userId);
     }
