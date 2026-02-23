@@ -65,15 +65,15 @@ public class UsersServices {
     public User saveUser(CreateUserCommand user) {
         Optional<User> existUser = userRepository.findByEmail(user.getEmail());
 
-        UserValidator.validateUserExists(existUser.isPresent());
+        UserValidator.exceptionUserExists(existUser.isPresent());
 
         boolean isCustomerWithoutDetail = user.getRole() == UserRole.CUSTOMER && user.getCustomerDetails() == null;
 
-        UserValidator.validateCustomerDetails(isCustomerWithoutDetail);
+        UserValidator.exceptionCustomerDetails(isCustomerWithoutDetail);
 
         boolean isSellerWithoutDetail = user.getRole() == UserRole.SELLER && user.getSellerDetails() == null;
 
-        UserValidator.validateSellerDetails(isSellerWithoutDetail);
+        UserValidator.exceptionSellerDetails(isSellerWithoutDetail);
 
         String randomPassword = UUID.randomUUID().toString();
 
@@ -119,7 +119,7 @@ public class UsersServices {
     public void deleteUser(UUID id) {
         Optional<User> user = userRepository.findById(id);
 
-        UserValidator.validateUserNotFound(user.isEmpty());
+        UserValidator.exceptionUserNotFound(user.isEmpty());
 
         userRepository.deleteById(id);
     }
@@ -135,7 +135,7 @@ public class UsersServices {
     ) {
         Optional<User> user = userRepository.findById(id);
 
-        UserValidator.validateUserNotFound(user.isEmpty());
+        UserValidator.exceptionUserNotFound(user.isEmpty());
 
         String encodedPassword = user.get().getPassword();
 
@@ -155,7 +155,7 @@ public class UsersServices {
     public void enabledUser(UUID userId) {
         Optional<User> user = userRepository.findById(userId);
 
-        UserValidator.validateUserNotFound(user.isEmpty());
+        UserValidator.exceptionUserNotFound(user.isEmpty());
 
         userRepository.enabledParse(userId);
     }
