@@ -1,5 +1,6 @@
 package com.diego.list.customers.services;
 
+import com.diego.list.customers.application.usecase.securityMonitor.GetClientIpUseCase;
 import com.diego.list.customers.model.*;
 import com.diego.list.customers.repository.DeviceRepository;
 import com.diego.list.customers.repository.SecurityLogRepository;
@@ -31,7 +32,7 @@ public class SecurityMonitorService {
             riskFactors.add("Dispositivo não reconhecido");
         }
 
-        String ip = getClientIP(request);
+        String ip = GetClientIpUseCase.getClientIP(request);
         if (isUnusualLocation(user.getId(), ip)) {
             riskScore += 25;
             riskFactors.add("Localização incomum");
@@ -55,7 +56,7 @@ public class SecurityMonitorService {
         logEntry.setUserId(userId);
         logEntry.setEventType(success ? SecurityEventType.LOGIN_SUCCESS : SecurityEventType.LOGIN_FAILURE);
         logEntry.setDescription(description);
-        logEntry.setIpAddress(getClientIP(request));
+        logEntry.setIpAddress(GetClientIpUseCase.getClientIP(request));
         logEntry.setUserAgent(request.getHeader("User-Agent"));
         logEntry.setSuccess(success);
         logEntry.setRiskScore(0);
@@ -72,7 +73,7 @@ public class SecurityMonitorService {
         logEntry.setUserId(userId);
         logEntry.setEventType(SecurityEventType.MFA_VERIFICATION);
         logEntry.setDescription(success ? "MFA verificado com sucesso" : "Falha na verificação MFA");
-        logEntry.setIpAddress(getClientIP(request));
+        logEntry.setIpAddress(GetClientIpUseCase.getClientIP(request));
         logEntry.setSuccess(success);
 
         securityLogRepository.save(logEntry);
@@ -96,7 +97,7 @@ public class SecurityMonitorService {
         logEntry.setUserId(userId);
         logEntry.setEventType(SecurityEventType.SUSPICIOUS_ACTIVITY);
         logEntry.setDescription(activity);
-        logEntry.setIpAddress(getClientIP(request));
+        logEntry.setIpAddress(GetClientIpUseCase.getClientIP(request));
         logEntry.setSuccess(false);
         logEntry.setRiskScore(80);
 
@@ -132,18 +133,18 @@ public class SecurityMonitorService {
             SecurityLog blockLog = new SecurityLog();
             blockLog.setUserId(userId);
             blockLog.setEventType(SecurityEventType.ACCOUNT_LOCKED);
-            blockLog.setIpAddress(getClientIP(request));
+            blockLog.setIpAddress(GetClientIpUseCase.getClientIP(request));
             blockLog.setDescription("Conta bloqueada devido a múltiplas tentativas falhas");
             securityLogRepository.save(blockLog);
         }
     }
 
-    private String getClientIP(HttpServletRequest request) {
+    /*private String getClientIP(HttpServletRequest request) {
         String xfHeader = request.getHeader("X-Forwarded-For");
         if (xfHeader != null) {
             return xfHeader.split(",")[0];
         }
         return request.getRemoteAddr();
-    }
+    }*/
 
 }
