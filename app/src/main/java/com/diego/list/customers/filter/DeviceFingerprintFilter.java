@@ -1,5 +1,6 @@
 package com.diego.list.customers.filter;
 
+import com.diego.list.customers.application.usecase.securityMonitor.GetClientIpUseCase;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,18 +23,11 @@ public class DeviceFingerprintFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String userAgent = request.getHeader("User-Agent");
-        String ip = getClientIP(request);
+        String ip = GetClientIpUseCase.getClientIP(request);
 
         log.debug("Request from IP: {}, User-Agent: {}", ip, userAgent);
 
         filterChain.doFilter(request, response);
     }
 
-    private String getClientIP(HttpServletRequest request) {
-        String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader != null) {
-            return xfHeader.split(",")[0];
-        }
-        return request.getRemoteAddr();
-    }
 }
