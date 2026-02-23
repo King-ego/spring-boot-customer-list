@@ -1,5 +1,6 @@
 package com.diego.list.customers.services;
 
+import com.diego.list.customers.application.usecase.securityMonitor.GetClientIpUseCase;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class DeviceFingerprintService {
         fingerprintData.append(request.getHeader("Accept-Charset"));
         fingerprintData.append(request.getHeader("Screen-Resolution"));
         fingerprintData.append(request.getHeader("Timezone"));
-        fingerprintData.append(getClientIP(request));
+        fingerprintData.append(GetClientIpUseCase.getClientIP(request));
 
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -31,13 +32,5 @@ public class DeviceFingerprintService {
             log.error("Generating fingerprint failed, falling back to simple hashCode", e);
             return String.valueOf(fingerprintData.toString().hashCode());
         }
-    }
-
-    private String getClientIP(HttpServletRequest request) {
-        String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader != null) {
-            return xfHeader.split(",")[0];
-        }
-        return request.getRemoteAddr();
     }
 }
