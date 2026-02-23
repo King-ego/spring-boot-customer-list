@@ -1,5 +1,6 @@
 package com.diego.list.customers.services;
 
+import com.diego.list.customers.application.usecase.securityMonitor.GetClientIpUseCase;
 import com.diego.list.customers.dto.SessionStats;
 import com.diego.list.customers.model.*;
 import com.diego.list.customers.repository.DeviceRepository;
@@ -44,7 +45,7 @@ public class SessionService {
         session.setSessionId(sessionId);
         session.setUserId(user.getId());
         session.setDeviceFingerprint(deviceFingerprint);
-        session.setIpAddress(getClientIP(request));
+        session.setIpAddress(GetClientIpUseCase.getClientIP(request));
         session.setUserAgent(request.getHeader("User-Agent"));
         session.setDeviceInfo(deviceInfo);
         session.setCreatedAt(LocalDateTime.now());
@@ -141,7 +142,7 @@ public class SessionService {
             device.setUser(userRepository.findById(userId).orElse(null));
             device.setDeviceFingerprint(deviceFingerprint);
             device.setUserAgent(request.getHeader("User-Agent"));
-            device.setIpAddress(getClientIP(request));
+            device.setIpAddress(GetClientIpUseCase.getClientIP(request));
             device.setFirstSeen(LocalDateTime.now());
             device.setLastSeen(LocalDateTime.now());
             device.setTrusted(false);
@@ -199,13 +200,13 @@ public class SessionService {
         return permissions;
     }
 
-    private String getClientIP(HttpServletRequest request) {
+    /*private String getClientIP(HttpServletRequest request) {
         String xfHeader = request.getHeader("X-Forwarded-For");
         if (xfHeader != null) {
             return xfHeader.split(",")[0];
         }
         return request.getRemoteAddr();
-    }
+    }*/
 
     public List<Session> getAllUserSessions(UUID userId) {
         return sessionRedisRepository.findByUserId(userId);
