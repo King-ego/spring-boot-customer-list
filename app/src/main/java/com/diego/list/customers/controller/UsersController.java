@@ -53,10 +53,8 @@ public class UsersController {
     }
 
     @GetMapping("/by-email")
-    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
-        Optional<User> user = usersServices.getUserByEmail(email);
-        return user.map(ResponseEntity::ok)
-                  .orElse(ResponseEntity.notFound().build());
+    public User getUserByEmail(@RequestParam String email) {
+        return usersServices.getUserByEmail(email);
     }
 
     @PatchMapping("/{userId}")
