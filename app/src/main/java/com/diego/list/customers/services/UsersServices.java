@@ -58,13 +58,7 @@ public class UsersServices {
             throw new CustomException("Not Access", HttpStatus.FORBIDDEN);
         }
 
-        Optional <User> user =  userRepository.findById(id);
-
-        Boolean disabledUser = user.isPresent() && !user.get().isEnabled();
-
-        UserValidator.exceptionDisabledUser(disabledUser);
-
-        return user;
+        return userRepository.findById(id);
 
     }
 
@@ -131,18 +125,9 @@ public class UsersServices {
     }
 
 
-    public User getUserByEmail(String email) {
-        Optional<User> userOpt = userRepository.findByEmail(email);
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email).filter(User::isEnabled);
 
-        UserValidator.exceptionUserNotFound(userOpt.isEmpty());
-
-        User user = userOpt.get();
-
-        Boolean disabledUser =  !user.isEnabled();
-
-        UserValidator.exceptionDisabledUser(disabledUser);
-
-        return user;
     }
 
     public void updateUserPartial(
