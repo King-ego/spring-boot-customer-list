@@ -35,7 +35,7 @@ public class OrderService {
 
     public void createOrder(CreateOrderCommand command) {
         Optional <Customer> customerOpt = customerRepository.findByUserId(command.getUserId());
-        CustomerValidator.validateCustomerNotFound(customerOpt.isEmpty());
+        CustomerValidator.exceptionCustomerNotFound(customerOpt.isEmpty());
 
         UUID groupId = UUID.randomUUID();
         AtomicReference<BigDecimal> totalPrice = new AtomicReference<>(BigDecimal.ZERO);
