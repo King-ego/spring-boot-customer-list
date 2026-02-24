@@ -54,7 +54,7 @@ public class AddressService {
     public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
         Optional<Address> optionalAddress = addressRepository.findById(addressId);
 
-        AddressValidator.validateAddressNotFound(optionalAddress.isEmpty());
+        AddressValidator.exceptionAddressNotFound(optionalAddress.isEmpty());
 
         Address address = optionalAddress.get();
 
@@ -84,11 +84,11 @@ public class AddressService {
     public void DeleteAddress(UUID addressId){
         Optional <Address> optionalAddress = addressRepository.findById(addressId);
 
-        AddressValidator.validateAddressNotFound(optionalAddress.isEmpty());
+        AddressValidator.exceptionAddressNotFound(optionalAddress.isEmpty());
 
         Address address = optionalAddress.get();
 
-        AddressValidator.validateDefaultAddress(address.getIsDefault());
+        AddressValidator.exceptionDefaultAddress(address.getIsDefault());
 
         addressRepository.deleteById(addressId);
     }
