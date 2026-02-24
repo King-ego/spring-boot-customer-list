@@ -131,8 +131,18 @@ public class UsersServices {
     }
 
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getUserByEmail(String email) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+
+        UserValidator.exceptionUserNotFound(userOpt.isEmpty());
+
+        User user = userOpt.get();
+
+        Boolean disabledUser =  !user.isEnabled();
+
+        UserValidator.exceptionDisabledUser(disabledUser);
+
+        return user;
     }
 
     public void updateUserPartial(
@@ -142,6 +152,10 @@ public class UsersServices {
         Optional<User> user = userRepository.findById(id);
 
         UserValidator.exceptionUserNotFound(user.isEmpty());
+
+        Boolean disabledUser = !user.get().isEnabled();
+
+        UserValidator.exceptionDisabledUser(disabledUser);
 
         String encodedPassword = user.get().getPassword();
 
