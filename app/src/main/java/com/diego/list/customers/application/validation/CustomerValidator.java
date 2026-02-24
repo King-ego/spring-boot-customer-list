@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomerValidator {
-    public static void validateCustomerNotFound(Boolean condition) {
+    public static void exceptionCustomerNotFound(Boolean condition) {
         ValidationExceptions.validate(
                 condition, "Customer not found", HttpStatus.NOT_FOUND
         );
