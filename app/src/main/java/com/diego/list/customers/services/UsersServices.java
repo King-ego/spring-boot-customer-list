@@ -58,7 +58,7 @@ public class UsersServices {
             throw new CustomException("Not Access", HttpStatus.FORBIDDEN);
         }
 
-        return userRepository.findById(id);
+        return userRepository.findById(id).filter(User::isEnabled);
 
     }
 
