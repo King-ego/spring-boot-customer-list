@@ -58,7 +58,13 @@ public class UsersServices {
             throw new CustomException("Not Access", HttpStatus.FORBIDDEN);
         }
 
-        return userRepository.findById(id);
+        Optional <User> user =  userRepository.findById(id);
+
+        Boolean disabledUser = user.isPresent() && !user.get().isEnabled();
+
+        UserValidator.exceptionDisabledUser(disabledUser);
+
+        return user;
 
     }
 
