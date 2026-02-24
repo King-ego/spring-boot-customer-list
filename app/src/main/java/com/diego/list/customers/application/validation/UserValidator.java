@@ -28,4 +28,9 @@ public class UserValidator {
                 .validate(condition, "User not found", HttpStatus.NOT_FOUND);
     }
 
+    public static void exceptionDisabledUser(Boolean condition) {
+        ValidationExceptions
+                .validate(condition, "User is disabled", HttpStatus.FORBIDDEN);
+    }
+
 }
