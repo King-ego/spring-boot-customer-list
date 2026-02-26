@@ -19,25 +19,6 @@ public class SessionController {
 
     private final SessionService sessionService;
 
-    /*@PostMapping("/revoke/{targetSessionId}")
-    public ResponseEntity<ApiResponse> revokeSession(@PathVariable String targetSessionId,
-                                                     @CookieValue("session_id") String currentSessionId) {
-        Session currentSession = sessionService.getSession(currentSessionId);
-        Session targetSession = sessionService.getSession(targetSessionId);
-
-        if (currentSession == null || targetSession == null) {
-            return ResponseEntity.badRequest().body(new ApiResponse("Session not found"));
-        }
-
-        if (!currentSession.getUserId().equals(targetSession.getUserId()) &&
-                !currentSession.getPermissions().contains("ADMIN")) {
-            return ResponseEntity.status(403).body(new ApiResponse("Not authorized to revoke this session"));
-        }
-
-        sessionService.revokeSession(targetSessionId, currentSession.getRevokedBy(), "Revoked by user");
-        return ResponseEntity.ok(new ApiResponse("Session revoked successfully"));
-    }*/
-
     @PostMapping("/revoke/{targetSessionId}")
     public ResponseEntity<ApiResponse> revokeSession(@PathVariable String targetSessionId,
                                                      @CookieValue("session_id") String currentSessionId) {
