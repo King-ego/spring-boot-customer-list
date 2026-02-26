@@ -4,4 +4,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SendMainConfirmAccountUseCase {
+    public void snsSendMessage(Object message) {
+
+    }
 }
