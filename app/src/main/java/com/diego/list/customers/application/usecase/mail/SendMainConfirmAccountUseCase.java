@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 public class SendMainConfirmAccountUseCase {
     private final SnsProducer snsProducer;
     public void snsSendMessage(Object message) {
+        if (message == null) return;
+        if (message)
 
     }
 }
