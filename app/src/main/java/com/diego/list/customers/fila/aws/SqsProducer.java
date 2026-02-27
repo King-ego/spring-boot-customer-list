@@ -36,6 +36,5 @@ public class SqsProducer {
         } catch (Exception e) {
             throw new RuntimeException("Failed to convert event to JSON", e);
         }
-
     }
 }
