@@ -11,7 +11,9 @@ public class SendMainConfirmAccountUseCase {
     private final SnsProducer snsProducer;
     public void snsSendMessage(SnsSendMailCommand inputs) {
         validateInput(inputs.getEmail(), inputs.getName());
+
         Object payload = createMessage(inputs.getEmail(), inputs.getName());
+        
         snsProducer.convertAndSend(payload);
 
     }
