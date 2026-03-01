@@ -139,11 +139,11 @@ public class AuthService {
         String token = UUID.randomUUID().toString();
         TempTokenData tempData = new TempTokenData(userId, LocalDateTime.now().plusMinutes(5));
 
-        try {
+        /*try {
             redisTemplate.opsForValue().set("tempToken:" + token, objectMapper.writeValueAsString(tempData), Duration.ofMinutes(5));
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Generate temp token error", e);
-        }
+        }*/
 
         return token;
     }
