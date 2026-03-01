@@ -200,14 +200,6 @@ public class SessionService {
         return permissions;
     }
 
-    /*private String getClientIP(HttpServletRequest request) {
-        String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader != null) {
-            return xfHeader.split(",")[0];
-        }
-        return request.getRemoteAddr();
-    }*/
-
     public List<Session> getAllUserSessions(UUID userId) {
         return sessionRedisRepository.findByUserId(userId);
     }
