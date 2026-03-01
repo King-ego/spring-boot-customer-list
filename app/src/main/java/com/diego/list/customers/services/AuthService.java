@@ -6,7 +6,7 @@ import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.services.records.RiskAssessment;
 import com.diego.list.customers.services.records.TempTokenData;
-import com.diego.list.customers.utils.SaveKeyInRedisUtils;
+import com.diego.list.customers.utils.KeyInRedisUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
-    private final SaveKeyInRedisUtils saveKeyInRedisUtils;
+    private final KeyInRedisUtils keyInRedisUtils;
 
     public AuthResponse login(LoginRequest request, HttpServletRequest httpRequest) {
 
@@ -146,7 +146,7 @@ public class AuthService {
             throw new RuntimeException("Generate temp token error", e);
         }*/
 
-        saveKeyInRedisUtils.punishKey("tempToken:" + token, tempData, Duration.ofMinutes(5));
+        keyInRedisUtils.punishKey("tempToken:" + token, tempData, Duration.ofMinutes(5));
 
         return token;
     }
