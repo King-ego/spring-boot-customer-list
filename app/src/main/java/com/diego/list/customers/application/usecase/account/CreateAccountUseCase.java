@@ -4,6 +4,7 @@ import com.diego.list.customers.application.command.users.CreateCustomerCommand;
 import com.diego.list.customers.application.command.users.CreateSellerCommand;
 import com.diego.list.customers.model.Customer;
 import com.diego.list.customers.model.Seller;
+import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.CustomerRepository;
 import com.diego.list.customers.repository.SellerRepository;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,10 @@ import org.springframework.stereotype.Service;
 public class CreateAccountUseCase {
     private final CustomerRepository customerRepository;
     private final SellerRepository sellerRepository;
+
+    public void createAccount(User user){
+
+    }
 
     public void createRoleCustomer(CreateCustomerCommand command){
         Customer customer = Customer.builder()
