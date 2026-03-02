@@ -89,6 +89,7 @@ public class UsersServices {
 
         User create_user = userRepository.save(userBuilder);
 
+        createAccountUseCase.createAccount(user, create_user);
 
         return  create_user;
     }
