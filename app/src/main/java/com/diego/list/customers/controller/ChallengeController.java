@@ -23,4 +23,3 @@ public class ChallengeController {
         return challengeServices.getChallengeEnglish();
     }
 }
-
