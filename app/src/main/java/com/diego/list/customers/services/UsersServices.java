@@ -89,29 +89,6 @@ public class UsersServices {
 
         User create_user = userRepository.save(userBuilder);
 
-        Map<UserRole, Runnable> validatedCreateRole = Map.of(
-                UserRole.CUSTOMER, () -> {
-                    CreateCustomerCommand customerCommand = CreateCustomerCommand.builder()
-                            .user(create_user)
-                            .document(user.getCustomerDetails().getDocument())
-                            .build();
-                    createAccountUseCase.createRoleCustomer(customerCommand);
-                },
-                UserRole.SELLER, () -> {
-                    CreateSellerCommand sellerCommand = CreateSellerCommand.builder()
-                            .user(create_user)
-                            .storeName(user.getSellerDetails().getStoreName())
-                            .documentNumber(user.getSellerDetails().getDocumentNumber())
-                            .storeDescription(user.getSellerDetails().getStoreDescription())
-                            .build();
-                    createAccountUseCase.createRoleSeller(sellerCommand);
-                }
-        );
-
-        Runnable action = validatedCreateRole.get(user.getRole());
-        if (action != null) {
-            action.run();
-        }
 
         return  create_user;
     }
