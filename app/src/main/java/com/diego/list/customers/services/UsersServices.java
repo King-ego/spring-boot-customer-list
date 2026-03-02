@@ -87,7 +87,7 @@ public class UsersServices {
                 .enabled(false)
                 .build();
 
-        var create_user = userRepository.save(userBuilder);
+        User create_user = userRepository.save(userBuilder);
 
         Map<UserRole, Runnable> validatedCreateRole = Map.of(
                 UserRole.CUSTOMER, () -> {
