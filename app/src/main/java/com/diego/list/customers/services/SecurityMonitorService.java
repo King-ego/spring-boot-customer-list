@@ -1,6 +1,7 @@
 package com.diego.list.customers.services;
 
 import com.diego.list.customers.application.usecase.securityMonitor.GetClientIpUseCase;
+import com.diego.list.customers.application.validation.AuthValidator;
 import com.diego.list.customers.model.*;
 import com.diego.list.customers.repository.DeviceRepository;
 import com.diego.list.customers.repository.SecurityLogRepository;
@@ -43,7 +44,9 @@ public class SecurityMonitorService {
             riskFactors.add("Horário incomum");
         }
 
-        if (isRiskyIP(ip)) {
+        boolean isRiskyIP = AuthValidator.isRiskyIP(ip);
+
+        if (isRiskyIP) {
             riskScore += 20;
             riskFactors.add("IP de risco");
         }
