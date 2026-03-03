@@ -120,9 +120,9 @@ public class SecurityMonitorService {
         return currentHour < startHour || currentHour > endHour;
     }
 
-    private boolean isRiskyIP(String ip) {
+    /*private boolean isRiskyIP(String ip) {
         return ip.startsWith("185.") || ip.startsWith("104.");
-    }
+    }*/
 
     private void checkAndBlockAccount(UUID userId, HttpServletRequest request) {
         long failureCount = securityLogRepository.countRecentFailures(userId, LocalDateTime.now().minusMinutes(15));
