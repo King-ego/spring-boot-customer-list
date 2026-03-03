@@ -1,7 +1,6 @@
 package com.diego.list.customers.fila.exchange;
 
 import com.diego.list.customers.application.usecase.order.OrderUpdateUseCase;
-import com.diego.list.customers.fila.exchange.config.PaymentQueueConfig;
 import com.diego.list.customers.fila.exchange.event.PaymentProcessedEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
