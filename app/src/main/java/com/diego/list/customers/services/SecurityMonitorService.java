@@ -123,10 +123,6 @@ public class SecurityMonitorService {
         return currentHour < startHour || currentHour > endHour;
     }
 
-    /*private boolean isRiskyIP(String ip) {
-        return ip.startsWith("185.") || ip.startsWith("104.");
-    }*/
-
     private void checkAndBlockAccount(UUID userId, HttpServletRequest request) {
         long failureCount = securityLogRepository.countRecentFailures(userId, LocalDateTime.now().minusMinutes(15));
 
@@ -142,12 +138,5 @@ public class SecurityMonitorService {
         }
     }
 
-    /*private String getClientIP(HttpServletRequest request) {
-        String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader != null) {
-            return xfHeader.split(",")[0];
-        }
-        return request.getRemoteAddr();
-    }*/
 
 }
