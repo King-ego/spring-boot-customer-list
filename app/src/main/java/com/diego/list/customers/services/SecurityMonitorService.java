@@ -39,7 +39,7 @@ public class SecurityMonitorService {
             riskFactors.add("Localização incomum");
         }
 
-        if (isUnusualTime(user)) {
+        if (AuthValidator.isUnusualTime()) {
             riskScore += 15;
             riskFactors.add("Horário incomum");
         }
