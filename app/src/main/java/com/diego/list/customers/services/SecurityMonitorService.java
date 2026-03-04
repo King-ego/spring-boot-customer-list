@@ -116,12 +116,12 @@ public class SecurityMonitorService {
         return false;
     }
 
-    private boolean isUnusualTime(User user) {
+    /*private boolean isUnusualTime(User user) {
         int currentHour = LocalDateTime.now().getHour();
         int startHour = 8;
         int endHour = 20;
         return currentHour < startHour || currentHour > endHour;
-    }
+    }*/
 
     private void checkAndBlockAccount(UUID userId, HttpServletRequest request) {
         long failureCount = securityLogRepository.countRecentFailures(userId, LocalDateTime.now().minusMinutes(15));
