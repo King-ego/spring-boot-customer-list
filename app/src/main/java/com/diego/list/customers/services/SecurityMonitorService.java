@@ -39,7 +39,7 @@ public class SecurityMonitorService {
             riskFactors.add("Localização incomum");
         }
 
-        if (AuthValidator.isUnusualTime()) {
+        if (AuthValidator.isUnusualTime(user)) {
             riskScore += 15;
             riskFactors.add("Horário incomum");
         }
@@ -112,10 +112,10 @@ public class SecurityMonitorService {
         return deviceRepository.findByUserIdAndDeviceFingerprint(userId, deviceFingerprint).isPresent();
     }
 
-    private boolean isUnusualLocation(UUID userId, String ip) {
+    /*private boolean isUnusualLocation(UUID userId, String ip) {
         return false;
-    }
-    
+    }*/
+
     private void checkAndBlockAccount(UUID userId, HttpServletRequest request) {
         long failureCount = securityLogRepository.countRecentFailures(userId, LocalDateTime.now().minusMinutes(15));
 
