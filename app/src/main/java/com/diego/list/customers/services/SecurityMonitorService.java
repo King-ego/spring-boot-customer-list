@@ -34,7 +34,7 @@ public class SecurityMonitorService {
         }
 
         String ip = GetClientIpUseCase.getClientIP(request);
-        if (isUnusualLocation(user.getId(), ip)) {
+        if (AuthValidator.isUnusualLocation(user.getId(), ip)) {
             riskScore += 25;
             riskFactors.add("Localização incomum");
         }
