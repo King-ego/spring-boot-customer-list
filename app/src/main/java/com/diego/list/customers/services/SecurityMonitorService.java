@@ -1,5 +1,6 @@
 package com.diego.list.customers.services;
 
+import com.diego.list.customers.application.usecase.account.CheckAndBlockAccountUseCase;
 import com.diego.list.customers.application.usecase.securityMonitor.GetClientIpUseCase;
 import com.diego.list.customers.application.validation.AuthValidator;
 import com.diego.list.customers.model.*;
@@ -23,6 +24,7 @@ public class SecurityMonitorService {
 
     private final SecurityLogRepository securityLogRepository;
     private final DeviceRepository deviceRepository;
+    private final CheckAndBlockAccountUseCase checkAndBlockAccountUseCase;
 
     public RiskAssessment assessRisk(User user, HttpServletRequest request, String deviceFingerprint) {
         int riskScore = 0;
@@ -67,7 +69,7 @@ public class SecurityMonitorService {
         securityLogRepository.save(logEntry);
 
         if (!success) {
-            checkAndBlockAccount(userId, request);
+            checkAndBlockAccountUseCase.execute(userId, request);
         }
     }
 
@@ -112,8 +114,8 @@ public class SecurityMonitorService {
         return deviceRepository.findByUserIdAndDeviceFingerprint(userId, deviceFingerprint).isPresent();
     }
 
-    private void checkAndBlockAccount(UUID userId, HttpServletRequest request) {
-        long failureCount = securityLogRepository.countRecentFailures(userId, LocalDateTime.now().minusMinutes(15));
+   /* private void checkAndBlockAccount(UUID userId, HttpServletRequest request) {
+        *//*long failureCount = securityLogRepository.countRecentFailures(userId, LocalDateTime.now().minusMinutes(15));
 
         if (failureCount >= 5) {
             log.warn("Conta bloqueada devido a múltiplas tentativas falhas: {}", userId);
@@ -124,8 +126,8 @@ public class SecurityMonitorService {
             blockLog.setIpAddress(GetClientIpUseCase.getClientIP(request));
             blockLog.setDescription("Conta bloqueada devido a múltiplas tentativas falhas");
             securityLogRepository.save(blockLog);
-        }
-    }
+        }*//*
+    }*/
 
 
 }
