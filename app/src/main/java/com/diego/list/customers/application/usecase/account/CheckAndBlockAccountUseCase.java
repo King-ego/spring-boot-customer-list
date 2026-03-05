@@ -27,7 +27,6 @@ public class CheckAndBlockAccountUseCase {
 
     private void blockAccount(UUID userId) {
         log.warn("Conta bloqueada devido a múltiplas tentativas falhas: {}", userId);
-
-        userRepository.updateParse(userId, );
+        userRepository.accountNonLockedParse(userId, false);
     }
 }
