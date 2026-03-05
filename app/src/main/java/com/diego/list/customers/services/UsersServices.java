@@ -140,7 +140,7 @@ public class UsersServices {
 
         UserValidator.exceptionUserNotFound(user.isEmpty());
 
-        userRepository.enabledParse(userId);
+        userRepository.enabledParse(userId, true);
     }
 
 }
