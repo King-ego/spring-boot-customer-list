@@ -112,10 +112,6 @@ public class SecurityMonitorService {
         return deviceRepository.findByUserIdAndDeviceFingerprint(userId, deviceFingerprint).isPresent();
     }
 
-    /*private boolean isUnusualLocation(UUID userId, String ip) {
-        return false;
-    }*/
-
     private void checkAndBlockAccount(UUID userId, HttpServletRequest request) {
         long failureCount = securityLogRepository.countRecentFailures(userId, LocalDateTime.now().minusMinutes(15));
 
