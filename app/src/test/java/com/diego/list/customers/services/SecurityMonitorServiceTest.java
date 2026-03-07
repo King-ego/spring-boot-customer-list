@@ -118,4 +118,25 @@ public class SecurityMonitorServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("Deve adicionar fator de risco quando IP é de risco")
+    void assessRisk_riskyIp_shouldAddRiskFactor() {
+        when(deviceRepository.findByUserIdAndDeviceFingerprint(userId, "fp-123"))
+                .thenReturn(Optional.of(new Device()));
+
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class);
+             MockedStatic<AuthValidator> mockedAuth = mockStatic(AuthValidator.class)) {
+
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("malicious-ip");
+            mockedAuth.when(() -> AuthValidator.isUnusualLocation(userId, "malicious-ip")).thenReturn(false);
+            mockedAuth.when(() -> AuthValidator.isUnusualTime(user)).thenReturn(false);
+            mockedAuth.when(() -> AuthValidator.isRiskyIP("malicious-ip")).thenReturn(true);
+
+            RiskAssessment result = securityMonitorService.assessRisk(user, request, "fp-123");
+
+            assertEquals(20, result.score());
+            assertTrue(result.factors().contains("IP de risco"));
+        }
+    }
+
 }
