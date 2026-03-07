@@ -237,4 +237,19 @@ public class SecurityMonitorServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("Deve salvar log de MFA com falha")
+    void logMFAAttempt_failure_shouldSaveLogWithFailureDescription() {
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class)) {
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("192.168.0.1");
+
+            securityMonitorService.logMFAAttempt(userId, false, request);
+
+            verify(securityLogRepository, times(1)).save(argThat(log ->
+                    !log.isSuccess() &&
+                            log.getDescription().equals("Falha na verificação MFA")
+            ));
+        }
+    }
+
 }
