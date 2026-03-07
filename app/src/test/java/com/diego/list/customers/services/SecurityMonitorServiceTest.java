@@ -97,4 +97,25 @@ public class SecurityMonitorServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("Deve adicionar fator de risco quando horário é incomum")
+    void assessRisk_unusualTime_shouldAddRiskFactor() {
+        when(deviceRepository.findByUserIdAndDeviceFingerprint(userId, "fp-123"))
+                .thenReturn(Optional.of(new Device()));
+
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class);
+             MockedStatic<AuthValidator> mockedAuth = mockStatic(AuthValidator.class)) {
+
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("192.168.0.1");
+            mockedAuth.when(() -> AuthValidator.isUnusualLocation(userId, "192.168.0.1")).thenReturn(false);
+            mockedAuth.when(() -> AuthValidator.isUnusualTime(user)).thenReturn(true);
+            mockedAuth.when(() -> AuthValidator.isRiskyIP("192.168.0.1")).thenReturn(false);
+
+            RiskAssessment result = securityMonitorService.assessRisk(user, request, "fp-123");
+
+            assertEquals(15, result.score());
+            assertTrue(result.factors().contains("Horário incomum"));
+        }
+    }
+
 }
