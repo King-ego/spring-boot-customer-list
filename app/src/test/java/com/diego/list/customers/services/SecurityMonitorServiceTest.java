@@ -1,17 +1,30 @@
 package com.diego.list.customers.services;
 
 import com.diego.list.customers.application.usecase.account.CheckAndBlockAccountUseCase;
+import com.diego.list.customers.application.usecase.securityMonitor.GetClientIpUseCase;
+import com.diego.list.customers.application.validation.AuthValidator;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.DeviceRepository;
 import com.diego.list.customers.repository.SecurityLogRepository;
+import com.diego.list.customers.services.records.RiskAssessment;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
 import java.util.UUID;
+
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class SecurityMonitorServiceTest {
@@ -38,6 +51,28 @@ public class SecurityMonitorServiceTest {
         userId = UUID.randomUUID();
         user = new User();
         user.setId(userId);
+    }
+
+    @Test
+    @DisplayName("Deve adicionar fator de risco quando dispositivo não é reconhecido")
+    void assessRisk_deviceNotRecognized_shouldAddRiskFactor() {
+        when(deviceRepository.findByUserIdAndDeviceFingerprint(userId, "fp-123"))
+                .thenReturn(Optional.empty());
+
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class);
+             MockedStatic<AuthValidator> mockedAuth = mockStatic(AuthValidator.class)) {
+
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("192.168.0.1");
+            mockedAuth.when(() -> AuthValidator.isUnusualLocation(userId, "192.168.0.1")).thenReturn(false);
+            mockedAuth.when(() -> AuthValidator.isUnusualTime(user)).thenReturn(false);
+            mockedAuth.when(() -> AuthValidator.isRiskyIP("192.168.0.1")).thenReturn(false);
+
+            RiskAssessment result = securityMonitorService.assessRisk(user, request, "fp-123");
+
+            assertEquals(30, result.score());
+            assertTrue(result.requiresMFA());
+            assertTrue(result.factors().contains("Dispositivo não reconhecido"));
+        }
     }
 
 }
