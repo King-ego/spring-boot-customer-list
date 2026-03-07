@@ -5,6 +5,7 @@ import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.DeviceRepository;
 import com.diego.list.customers.repository.SecurityLogRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -31,5 +32,12 @@ public class SecurityMonitorServiceTest {
 
     private UUID userId;
     private User user;
+
+    @BeforeEach
+    void setUp() {
+        userId = UUID.randomUUID();
+        user = new User();
+        user.setId(userId);
+    }
 
 }
