@@ -221,4 +221,20 @@ public class SecurityMonitorServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("Deve salvar log de MFA com sucesso")
+    void logMFAAttempt_success_shouldSaveLogWithCorrectType() {
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class)) {
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("192.168.0.1");
+
+            securityMonitorService.logMFAAttempt(userId, true, request);
+
+            verify(securityLogRepository, times(1)).save(argThat(log ->
+                    log.getEventType() == SecurityEventType.MFA_VERIFICATION &&
+                            log.isSuccess() &&
+                            log.getDescription().equals("MFA verificado com sucesso")
+            ));
+        }
+    }
+
 }
