@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -159,6 +160,28 @@ public class SecurityMonitorServiceTest {
             assertEquals(90, result.score());
             /*assertTrue(result.isHighRisk());*/
             assertEquals(4, result.factors().size());
+        }
+    }
+
+    @Test
+    @DisplayName("Deve retornar risco zero quando tudo está normal")
+    void assessRisk_noFactors_shouldReturnZeroRisk() {
+        when(deviceRepository.findByUserIdAndDeviceFingerprint(userId, "fp-123"))
+                .thenReturn(Optional.of(new Device()));
+
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class);
+             MockedStatic<AuthValidator> mockedAuth = mockStatic(AuthValidator.class)) {
+
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("192.168.0.1");
+            mockedAuth.when(() -> AuthValidator.isUnusualLocation(userId, "192.168.0.1")).thenReturn(false);
+            mockedAuth.when(() -> AuthValidator.isUnusualTime(user)).thenReturn(false);
+            mockedAuth.when(() -> AuthValidator.isRiskyIP("192.168.0.1")).thenReturn(false);
+
+            RiskAssessment result = securityMonitorService.assessRisk(user, request, "fp-123");
+
+            assertEquals(0, result.score());/*
+            assertFalse(result.isHighRisk());*/
+            assertTrue(result.factors().isEmpty());
         }
     }
 
