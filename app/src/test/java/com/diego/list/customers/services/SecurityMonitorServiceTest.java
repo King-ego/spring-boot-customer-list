@@ -4,6 +4,7 @@ import com.diego.list.customers.application.usecase.account.CheckAndBlockAccount
 import com.diego.list.customers.application.usecase.securityMonitor.GetClientIpUseCase;
 import com.diego.list.customers.application.validation.AuthValidator;
 import com.diego.list.customers.model.Device;
+import com.diego.list.customers.model.SecurityEventType;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.DeviceRepository;
 import com.diego.list.customers.repository.SecurityLogRepository;
@@ -21,12 +22,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
 
 import java.util.Optional;
 import java.util.UUID;
-
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class SecurityMonitorServiceTest {
@@ -182,6 +184,23 @@ public class SecurityMonitorServiceTest {
             assertEquals(0, result.score());/*
             assertFalse(result.isHighRisk());*/
             assertTrue(result.factors().isEmpty());
+        }
+    }
+
+    @Test
+    @DisplayName("Deve salvar log e NÃO chamar bloqueio quando login é bem-sucedido")
+    void logAuthAttempt_success_shouldSaveLogAndNotBlock() {
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class)) {
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("192.168.0.1");
+            when(request.getHeader("User-Agent")).thenReturn("Mozilla/5.0");
+
+            securityMonitorService.logAuthAttempt(userId, true, request, "Login bem-sucedido");
+
+            verify(securityLogRepository, times(1)).save(argThat(log ->
+                    log.getEventType() == SecurityEventType.LOGIN_SUCCESS &&
+                            log.isSuccess()
+            ));
+            verify(checkAndBlockAccountUseCase, never()).execute(any(), any());
         }
     }
 
