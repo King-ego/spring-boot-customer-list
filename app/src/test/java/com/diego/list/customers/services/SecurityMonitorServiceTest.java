@@ -204,4 +204,21 @@ public class SecurityMonitorServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("Deve salvar log e chamar bloqueio quando login falha")
+    void logAuthAttempt_failure_shouldSaveLogAndCheckBlock() {
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class)) {
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("192.168.0.1");
+            when(request.getHeader("User-Agent")).thenReturn("Mozilla/5.0");
+
+            securityMonitorService.logAuthAttempt(userId, false, request, "Senha incorreta");
+
+            verify(securityLogRepository, times(1)).save(argThat(log ->
+                    log.getEventType() == SecurityEventType.LOGIN_FAILURE &&
+                            !log.isSuccess()
+            ));
+            verify(checkAndBlockAccountUseCase, times(1)).execute(userId, request);
+        }
+    }
+
 }
