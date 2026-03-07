@@ -139,4 +139,27 @@ public class SecurityMonitorServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("Deve acumular todos os fatores de risco")
+    void assessRisk_allFactors_shouldAccumulateScore() {
+        when(deviceRepository.findByUserIdAndDeviceFingerprint(userId, "fp-123"))
+                .thenReturn(Optional.empty());
+
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class);
+             MockedStatic<AuthValidator> mockedAuth = mockStatic(AuthValidator.class)) {
+
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("malicious-ip");
+            mockedAuth.when(() -> AuthValidator.isUnusualLocation(userId, "malicious-ip")).thenReturn(true);
+            mockedAuth.when(() -> AuthValidator.isUnusualTime(user)).thenReturn(true);
+            mockedAuth.when(() -> AuthValidator.isRiskyIP("malicious-ip")).thenReturn(true);
+
+            RiskAssessment result = securityMonitorService.assessRisk(user, request, "fp-123");
+
+            // 30 (device) + 25 (location) + 15 (time) + 20 (ip) = 90
+            assertEquals(90, result.score());
+            /*assertTrue(result.isHighRisk());*/
+            assertEquals(4, result.factors().size());
+        }
+    }
+
 }
