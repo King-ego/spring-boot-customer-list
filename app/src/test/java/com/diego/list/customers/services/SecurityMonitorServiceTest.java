@@ -3,6 +3,7 @@ package com.diego.list.customers.services;
 import com.diego.list.customers.application.usecase.account.CheckAndBlockAccountUseCase;
 import com.diego.list.customers.application.usecase.securityMonitor.GetClientIpUseCase;
 import com.diego.list.customers.application.validation.AuthValidator;
+import com.diego.list.customers.model.Device;
 import com.diego.list.customers.model.User;
 import com.diego.list.customers.repository.DeviceRepository;
 import com.diego.list.customers.repository.SecurityLogRepository;
@@ -72,6 +73,27 @@ public class SecurityMonitorServiceTest {
             assertEquals(30, result.score());
             assertTrue(result.requiresMFA());
             assertTrue(result.factors().contains("Dispositivo não reconhecido"));
+        }
+    }
+
+    @Test
+    @DisplayName("Deve adicionar fator de risco quando localização é incomum")
+    void assessRisk_unusualLocation_shouldAddRiskFactor() {
+        when(deviceRepository.findByUserIdAndDeviceFingerprint(userId, "fp-123"))
+                .thenReturn(Optional.of(new Device()));
+
+        try (MockedStatic<GetClientIpUseCase> mockedIp = mockStatic(GetClientIpUseCase.class);
+             MockedStatic<AuthValidator> mockedAuth = mockStatic(AuthValidator.class)) {
+
+            mockedIp.when(() -> GetClientIpUseCase.getClientIP(request)).thenReturn("10.0.0.1");
+            mockedAuth.when(() -> AuthValidator.isUnusualLocation(userId, "10.0.0.1")).thenReturn(true);
+            mockedAuth.when(() -> AuthValidator.isUnusualTime(user)).thenReturn(false);
+            mockedAuth.when(() -> AuthValidator.isRiskyIP("10.0.0.1")).thenReturn(false);
+
+            RiskAssessment result = securityMonitorService.assessRisk(user, request, "fp-123");
+
+            assertEquals(25, result.score());
+            assertTrue(result.factors().contains("Localização incomum"));
         }
     }
 
