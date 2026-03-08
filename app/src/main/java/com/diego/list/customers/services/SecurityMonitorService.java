@@ -128,6 +128,4 @@ public class SecurityMonitorService {
             securityLogRepository.save(blockLog);
         }*//*
     }*/
-
-
 }
