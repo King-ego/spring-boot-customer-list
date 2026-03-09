@@ -84,19 +84,12 @@ public class UserServicesTest {
     /*@Test
     @DisplayName("Save user CUSTOMER with valid data")
     void testSaveUser_CustomerValidData() {
-        // Criar um mock de CreateUserCommand completamente via Mockito
         CreateUserCommand command = mock(CreateUserCommand.class);
 
-        // Criar um objeto anônimo para simular CustomerDetails
-        // pois não temos acesso direto ao tipo - usamos Answer para retornar um stub
-        CreateUserCommand.CustomerDetails customerDetails = mock(CreateUserCommand.CustomerDetails.class);
-        when(customerDetails.getDocument()).thenReturn("123.456.789-00");
 
         when(command.getEmail()).thenReturn("customer@email.com");
         when(command.getName()).thenReturn("Customer Test");
         when(command.getRole()).thenReturn(UserRole.CUSTOMER);
-        when(command.getCustomerDetails()).thenReturn(customerDetails);
-        when(command.getSellerDetails()).thenReturn(null);
 
         User savedUser = new User();
         savedUser.setId(UUID.randomUUID());
@@ -104,8 +97,8 @@ public class UserServicesTest {
         when(userRepository.findByEmail("customer@email.com")).thenReturn(Optional.empty());
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
-        doNothing().when(createAccountUseCase).createAccount(any(CreateUserCommand.class), any(User.class));
-
+        *//*doNothing().when(createAccountUseCase).createAccount(any(CreateUserCommand.class), any(User.class));
+*//*
         User result = usersServices.saveUser(command);
 
         assertNotNull(result);
@@ -113,7 +106,7 @@ public class UserServicesTest {
         verify(userRepository, times(1)).save(any(User.class));
         verify(createAccountUseCase, times(1)).createAccount(any(CreateUserCommand.class), any(User.class));
     }
-*/
+    */
     @Test
     @DisplayName("Save user should throw exception when email already exists")
     void testSaveUser_EmailAlreadyExists() {
