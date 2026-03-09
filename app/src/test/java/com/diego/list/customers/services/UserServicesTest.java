@@ -1,8 +1,10 @@
 package com.diego.list.customers.services;
 
+import com.diego.list.customers.application.command.users.CreateUserCommand;
 import com.diego.list.customers.application.usecase.account.CreateAccountUseCase;
 import com.diego.list.customers.model.Session;
 import com.diego.list.customers.model.User;
+import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.UserRepository;
 import com.diego.list.customers.security.SessionAuthentication;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,6 +71,36 @@ public class UserServicesTest {
         assertTrue(result.isPresent());
         assertEquals(userId, result.get().getId());
         verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    @DisplayName("Save user customer with valid data")
+    void testSaveUser_ValidData() {
+        CreateUserCommand command = mock(CreateUserCommand.class);
+
+        // Mock do customerDetails para não ser null
+        CreateUserCommand.CustomerDetails customerDetails = mock(CreateUserCommand.CustomerDetails.class);
+        when(customerDetails.getDocument()).thenReturn("123.456.789-00");
+
+
+        when(command.getEmail()).thenReturn("test@email.com");
+        when(command.getRole()).thenReturn(UserRole.CUSTOMER);
+
+        User savedUser = new User();
+
+        savedUser.setId(UUID.randomUUID());
+
+        when(userRepository.findByEmail(command.getEmail())).thenReturn(java.util.Optional.empty());
+        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        doNothing().when(createAccountUseCase).createAccount(any(CreateUserCommand.class), any(User.class));
+
+        User result = usersServices.saveUser(command);
+
+        assertEquals(savedUser.getId(), result.getId());
+        verify(userRepository, times(1)).save(any(User.class));
+        verify(createAccountUseCase, times(1)).createAccount(any(CreateUserCommand.class), any(User.class));
+
     }
 
 }
