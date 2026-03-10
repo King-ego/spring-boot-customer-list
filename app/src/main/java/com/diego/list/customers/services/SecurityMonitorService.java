@@ -113,19 +113,4 @@ public class SecurityMonitorService {
     private boolean isDeviceRecognized(UUID userId, String deviceFingerprint) {
         return deviceRepository.findByUserIdAndDeviceFingerprint(userId, deviceFingerprint).isPresent();
     }
-
-   /* private void checkAndBlockAccount(UUID userId, HttpServletRequest request) {
-        *//*long failureCount = securityLogRepository.countRecentFailures(userId, LocalDateTime.now().minusMinutes(15));
-
-        if (failureCount >= 5) {
-            log.warn("Conta bloqueada devido a múltiplas tentativas falhas: {}", userId);
-
-            SecurityLog blockLog = new SecurityLog();
-            blockLog.setUserId(userId);
-            blockLog.setEventType(SecurityEventType.ACCOUNT_LOCKED);
-            blockLog.setIpAddress(GetClientIpUseCase.getClientIP(request));
-            blockLog.setDescription("Conta bloqueada devido a múltiplas tentativas falhas");
-            securityLogRepository.save(blockLog);
-        }*//*
-    }*/
 }
