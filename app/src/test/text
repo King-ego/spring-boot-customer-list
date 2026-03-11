@@ -1,0 +1,3 @@
+./mvnw clean test
+
+sudo rm -rf target/ && ./mvnw test
