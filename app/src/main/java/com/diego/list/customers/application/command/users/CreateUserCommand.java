@@ -30,4 +30,3 @@ public class CreateUserCommand {
 
     private CreateSellerCommand sellerDetails;
 }
-
