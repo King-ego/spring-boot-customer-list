@@ -114,4 +114,3 @@ public class SecurityMonitorService {
         return deviceRepository.findByUserIdAndDeviceFingerprint(userId, deviceFingerprint).isPresent();
     }
 }
-
