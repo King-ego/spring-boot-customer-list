@@ -4,11 +4,15 @@ import com.diego.list.customers.application.command.mail.SnsSendMailCommand;
 import com.diego.list.customers.fila.aws.SnsProducer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @Service
 @AllArgsConstructor
 public class SendMainConfirmAccountUseCase {
     private final SnsProducer snsProducer;
+    private final TemplateEngine templateEngine;
+
     public void snsSendMessage(SnsSendMailCommand inputs) {
         validateInput(inputs.getEmail(), inputs.getName());
 
@@ -33,5 +37,12 @@ public class SendMainConfirmAccountUseCase {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name is required");
         }
+    }
+
+    public String buildConfirmAccountEmail(String name, String confirmationLink) {
+        Context context = new Context();
+        context.setVariable("name", name);
+        context.setVariable("confirmationLink", confirmationLink);
+        return templateEngine.process("confirm-account", context);
     }
 }
