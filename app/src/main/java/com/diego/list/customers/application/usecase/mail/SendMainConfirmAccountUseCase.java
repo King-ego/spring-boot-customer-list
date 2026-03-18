@@ -23,11 +23,16 @@ public class SendMainConfirmAccountUseCase {
     }
 
     private Object createMessage(String email, String name) {
+        String htmlBody = this.buildConfirmAccountEmail(name, "https://seusite.com/confirm");
+
         return SnsSendMailCommand.builder()
                 .email(email)
                 .name(name)
-                .message("Welcome to our service! Your account has been successfully created.")
+                .message(htmlBody)
                 .build();
+        /*
+                .message("Welcome to our service! Your account has been successfully created.")
+                */
     }
 
     private void validateInput(String email, String name) {
