@@ -20,7 +20,6 @@ public class SendMainConfirmAccountUseCase {
         Object payload = createMessage(user.getEmail(), user.getName(), user);
         
         snsProducer.convertAndSend(payload);
-
     }
 
     private Object createMessage(String email, String name, User user) {
