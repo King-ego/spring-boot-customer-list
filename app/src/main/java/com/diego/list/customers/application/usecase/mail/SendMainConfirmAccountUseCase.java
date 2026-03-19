@@ -14,10 +14,10 @@ public class SendMainConfirmAccountUseCase {
     private final SnsProducer snsProducer;
     private final TemplateEngine templateEngine;
 
-    public void snsSendMessage(SnsSendMailCommand inputs) {
-        validateInput(inputs.getEmail(), inputs.getName());
+    public void snsSendMessage(User user) {
+        validateInput(user.getEmail(), user.getName());
 
-        Object payload = createMessage(inputs.getEmail(), inputs.getName(), inputs.getReceiver());
+        Object payload = createMessage(user.getEmail(), user.getName(), user);
         
         snsProducer.convertAndSend(payload);
 
