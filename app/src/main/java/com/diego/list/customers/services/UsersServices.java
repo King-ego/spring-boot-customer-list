@@ -1,7 +1,5 @@
 package com.diego.list.customers.services;
 
-import com.diego.list.customers.application.command.users.CreateCustomerCommand;
-import com.diego.list.customers.application.command.users.CreateSellerCommand;
 import com.diego.list.customers.application.command.users.CreateUserCommand;
 import com.diego.list.customers.application.usecase.mail.SendMainConfirmAccountUseCase;
 import com.diego.list.customers.application.validation.UserValidator;
@@ -23,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
