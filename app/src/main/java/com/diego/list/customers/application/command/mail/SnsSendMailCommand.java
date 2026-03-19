@@ -14,5 +14,4 @@ public class SnsSendMailCommand {
     private String email;
     private String name;
     private String message;
-    private User receiver;
 }
