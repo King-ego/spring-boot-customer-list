@@ -23,7 +23,8 @@ public class SendMainConfirmAccountUseCase {
     }
 
     private Object createMessage(String email, String name) {
-        String htmlBody = this.buildConfirmAccountEmail(name, "https://seusite.com/confirm");
+        String link = "https://seusite.com/confirm?token=abc123";
+        String htmlBody = this.buildConfirmAccountEmail(name, link);
 
         return SnsSendMailCommand.builder()
                 .email(email)
