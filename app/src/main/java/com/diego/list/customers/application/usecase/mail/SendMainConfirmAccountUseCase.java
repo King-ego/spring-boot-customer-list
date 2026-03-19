@@ -2,6 +2,7 @@ package com.diego.list.customers.application.usecase.mail;
 
 import com.diego.list.customers.application.command.mail.SnsSendMailCommand;
 import com.diego.list.customers.fila.aws.SnsProducer;
+import com.diego.list.customers.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -16,13 +17,13 @@ public class SendMainConfirmAccountUseCase {
     public void snsSendMessage(SnsSendMailCommand inputs) {
         validateInput(inputs.getEmail(), inputs.getName());
 
-        Object payload = createMessage(inputs.getEmail(), inputs.getName());
+        Object payload = createMessage(inputs.getEmail(), inputs.getName(), inputs.getReceiver());
         
         snsProducer.convertAndSend(payload);
 
     }
 
-    private Object createMessage(String email, String name) {
+    private Object createMessage(String email, String name, User user) {
         String link = "https://seusite.com/confirm?token=abc123";
         String htmlBody = this.buildConfirmAccountEmail(name, link);
 
