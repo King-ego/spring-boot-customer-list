@@ -44,7 +44,7 @@ public class SendMainConfirmAccountUseCase {
         }
     }
 
-    public String buildConfirmAccountEmail(String name, String confirmationLink) {
+    private String buildConfirmAccountEmail(String name, String confirmationLink) {
         Context context = new Context();
         context.setVariable("name", name);
         context.setVariable("confirmationLink", confirmationLink);
