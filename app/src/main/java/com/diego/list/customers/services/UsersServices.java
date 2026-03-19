@@ -3,6 +3,7 @@ package com.diego.list.customers.services;
 import com.diego.list.customers.application.command.users.CreateCustomerCommand;
 import com.diego.list.customers.application.command.users.CreateSellerCommand;
 import com.diego.list.customers.application.command.users.CreateUserCommand;
+import com.diego.list.customers.application.usecase.mail.SendMainConfirmAccountUseCase;
 import com.diego.list.customers.application.validation.UserValidator;
 import com.diego.list.customers.dto.UpdateUserDto;
 import com.diego.list.customers.errors.CustomException;
@@ -37,6 +38,7 @@ public class UsersServices {
 
     private final CreateAccountUseCase createAccountUseCase;
     private final PasswordEncoder passwordEncoder;
+    private final SendMainConfirmAccountUseCase sendMainConfirmAccountUseCase;
 
     /*@PersistenceContext
     private EntityManager entityManager;*/
@@ -90,6 +92,8 @@ public class UsersServices {
         User create_user = userRepository.save(userBuilder);
 
         createAccountUseCase.createAccount(user, create_user);
+
+        sendMainConfirmAccountUseCase.snsSendMessage(create_user);
 
         return  create_user;
     }
