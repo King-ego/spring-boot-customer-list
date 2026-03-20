@@ -15,3 +15,4 @@ public class SnsSendMailCommand {
     private String name;
     private String message;
 }
+
