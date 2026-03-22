@@ -3,27 +3,30 @@ package com.diego.list.customers.application.usecase.mail;
 import com.diego.list.customers.application.command.mail.SnsSendMailCommand;
 import com.diego.list.customers.fila.aws.SnsProducer;
 import com.diego.list.customers.model.User;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 @Service
-@AllArgsConstructor
 public class SendMainConfirmAccountUseCase {
     private final SnsProducer snsProducer;
     private final TemplateEngine templateEngine;
+
+    public SendMainConfirmAccountUseCase(SnsProducer snsProducer, TemplateEngine templateEngine) {
+        this.snsProducer = snsProducer;
+        this.templateEngine = templateEngine;
+    }
 
     public void snsSendMessage(User user) {
         validateInput(user.getEmail(), user.getName());
 
         Object payload = createMessage(user.getEmail(), user.getName(), user);
-        
+
         snsProducer.convertAndSend(payload);
     }
 
     private Object createMessage(String email, String name, User user) {
-        String link = "https://seusite.com/confirm?id="+user.getId();
+        String link = "https://seusite.com/confirm?id=" + user.getId();
         String htmlBody = this.buildConfirmAccountEmail(name, link);
 
         return SnsSendMailCommand.builder()
