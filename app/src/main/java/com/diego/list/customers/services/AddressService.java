@@ -21,14 +21,19 @@ import java.util.UUID;
 @Service
 @Transactional
 @Slf4j
-@RequiredArgsConstructor
 public class AddressService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final AddressDefaultUseCase addressDefaultUseCase;
 
+    public AddressService(UserRepository userRepository, AddressRepository addressRepository, AddressDefaultUseCase addressDefaultUseCase) {
+        this.userRepository = userRepository;
+        this.addressRepository = addressRepository;
+        this.addressDefaultUseCase = addressDefaultUseCase;
+    }
+
     public void CreateAddress(CreateAddressCommand createAddressCommand) {
-        Optional<User> existUser = userRepository.findById(createAddressCommand.getUser_id());
+        Optional<User> existUser = this.userRepository.findById(createAddressCommand.getUser_id());
 
         UserValidator.exceptionUserNotFound(existUser.isEmpty());
 
@@ -46,9 +51,9 @@ public class AddressService {
                 .user(existUser.get())
                 .build();
 
-        Address newAddress = addressRepository.save(address);
+        Address newAddress = this.addressRepository.save(address);
 
-        addressDefaultUseCase.validate(createAddressCommand.getIsDefault(), createAddressCommand.getUser_id(), newAddress.getId());
+        this.addressDefaultUseCase.validate(createAddressCommand.getIsDefault(), createAddressCommand.getUser_id(), newAddress.getId());
     }
 
     public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
