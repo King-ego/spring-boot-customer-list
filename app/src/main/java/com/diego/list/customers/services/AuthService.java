@@ -26,7 +26,6 @@ import java.util.UUID;
 @Service
 @Transactional
 @Slf4j
-@RequiredArgsConstructor
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -38,6 +37,28 @@ public class AuthService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
     private final KeyInRedisUtils keyInRedisUtils;
+
+    public AuthService(
+            UserRepository userRepository,
+            SessionService sessionService,
+            MFAService mfaService,
+            SecurityMonitorService securityMonitorService,
+            DeviceFingerprintService deviceFingerprintService,
+            PasswordEncoder passwordEncoder,
+            RedisTemplate<String, Object> redisTemplate,
+            ObjectMapper objectMapper,
+            KeyInRedisUtils keyInRedisUtils
+    ){
+        this.userRepository = userRepository;
+        this.sessionService = sessionService;
+        this.mfaService = mfaService;
+        this.securityMonitor = securityMonitorService;
+        this.fingerprintService=deviceFingerprintService;
+        this.passwordEncoder = passwordEncoder;
+        this.redisTemplate = redisTemplate;
+        this.objectMapper = objectMapper;
+        this.keyInRedisUtils = keyInRedisUtils;
+    }
 
     public AuthResponse login(LoginRequest request, HttpServletRequest httpRequest) {
 
