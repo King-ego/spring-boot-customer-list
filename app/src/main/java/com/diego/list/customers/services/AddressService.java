@@ -57,7 +57,7 @@ public class AddressService {
     }
 
     public void UpdateAddress(UUID addressId, UpdateAddressCommand updateAddressCommand){
-        Optional<Address> optionalAddress = addressRepository.findById(addressId);
+        Optional<Address> optionalAddress = this.addressRepository.findById(addressId);
 
         AddressValidator.exceptionAddressNotFound(optionalAddress.isEmpty());
 
@@ -74,20 +74,20 @@ public class AddressService {
         address.setPhoneNumber(updateAddressCommand.getPhoneNumber());
         address.setIsDefault(updateAddressCommand.getIsDefault());
         
-        addressRepository.save(address);
+        this.addressRepository.save(address);
 
     }
 
     public List<Address> GetAddressesByUserId(UUID userId){
-        Optional<User> user =  userRepository.findById(userId);
+        Optional<User> user =  this.userRepository.findById(userId);
 
         UserValidator.exceptionUserNotFound(user.isEmpty());
 
-        return addressRepository.findByUserId(userId);
+        return this.addressRepository.findByUserId(userId);
     }
 
     public void DeleteAddress(UUID addressId){
-        Optional <Address> optionalAddress = addressRepository.findById(addressId);
+        Optional <Address> optionalAddress = this.addressRepository.findById(addressId);
 
         AddressValidator.exceptionAddressNotFound(optionalAddress.isEmpty());
 
@@ -95,7 +95,7 @@ public class AddressService {
 
         AddressValidator.exceptionDefaultAddress(address.getIsDefault());
 
-        addressRepository.deleteById(addressId);
+        this.addressRepository.deleteById(addressId);
     }
 
 }
