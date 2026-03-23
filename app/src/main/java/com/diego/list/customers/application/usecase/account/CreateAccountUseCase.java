@@ -9,7 +9,6 @@ import com.diego.list.customers.model.User;
 import com.diego.list.customers.model.UserRole;
 import com.diego.list.customers.repository.CustomerRepository;
 import com.diego.list.customers.repository.SellerRepository;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +16,14 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class CreateAccountUseCase {
     private final CustomerRepository customerRepository;
     private final SellerRepository sellerRepository;
+
+    public CreateAccountUseCase(CustomerRepository customerRepository, SellerRepository sellerRepository) {
+        this.customerRepository = customerRepository;
+        this.sellerRepository = sellerRepository;
+    }
 
     public void createAccount(CreateUserCommand command, User create_user) {
         Map<UserRole, Runnable> validatedCreateRole = Map.of(
