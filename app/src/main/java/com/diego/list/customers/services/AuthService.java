@@ -9,7 +9,6 @@ import com.diego.list.customers.services.records.TempTokenData;
 import com.diego.list.customers.utils.KeyInRedisUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -71,9 +70,9 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (!this.passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             log.error("Invalid credentials for user");
-            securityMonitor.logAuthAttempt(user.getId(), false, httpRequest, "Invalid credentials");
+            this.securityMonitor.logAuthAttempt(user.getId(), false, httpRequest, "Invalid credentials");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
@@ -81,13 +80,13 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Account is disabled or locked");
         }
 
-        String deviceFingerprint = fingerprintService.generateFingerprint(httpRequest);
+        String deviceFingerprint = this.fingerprintService.generateFingerprint(httpRequest);
 
-        RiskAssessment risk = securityMonitor.assessRisk(user, httpRequest, deviceFingerprint);
+        RiskAssessment risk = this.securityMonitor.assessRisk(user, httpRequest, deviceFingerprint);
 
         if (risk.isRequiresMFA()) {
-            String mfaId = mfaService.generateMFACode(user.getId());
-            mfaService.sendMFACode(user, mfaId);
+            String mfaId = this.mfaService.generateMFACode(user.getId());
+            this.mfaService.sendMFACode(user, mfaId);
 
             String tempToken = generateTempToken(user.getId());
 
