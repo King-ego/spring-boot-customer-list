@@ -67,7 +67,7 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Too many login attempts. Please try again later.");
         }
 
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = this.userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas"));
 
         if (!this.passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -104,11 +104,11 @@ public class AuthService {
 
     public AuthResponse verifyMFA(MFAVerificationRequest request, HttpServletRequest httpRequest) {
         TempTokenData tempData = verifyTempToken(request.getTempToken());
-        User user = userRepository.findById(tempData.getUserId())
+        User user = this.userRepository.findById(tempData.getUserId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token"));
 
         if (!mfaService.verifyMFACode(request.getMfaId(), request.getCode())) {
-            securityMonitor.logMFAAttempt(user.getId(), false, httpRequest);
+            this.securityMonitor.logMFAAttempt(user.getId(), false, httpRequest);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid MFA code");
         }
 
@@ -119,14 +119,14 @@ public class AuthService {
     }
 
     private AuthResponse createSessionAndRespond(User user, HttpServletRequest httpRequest, String deviceFingerprint) {
-        Session session = sessionService.createSession(user, httpRequest, deviceFingerprint);
-        sessionService.registerDeviceIfNew(user.getId(), deviceFingerprint, httpRequest);
+        Session session = this.sessionService.createSession(user, httpRequest, deviceFingerprint);
+        this.sessionService.registerDeviceIfNew(user.getId(), deviceFingerprint, httpRequest);
 
-        securityMonitor.logAuthAttempt(user.getId(), true, httpRequest, "Successful login");
+        this.securityMonitor.logAuthAttempt(user.getId(), true, httpRequest, "Successful login");
         user.setLastLogin(LocalDateTime.now());
-        userRepository.save(user);
+        this.userRepository.save(user);
 
-        sessionService.cleanupInactiveSessions(user.getId());
+        this.sessionService.cleanupInactiveSessions(user.getId());
 
         return AuthResponse.builder()
                 .success(true)
@@ -140,14 +140,14 @@ public class AuthService {
         String ipKey = "rate_limit:ip:" + ip;
         String userKey = "rate_limit:user:" + username;
 
-        Long ipCount = redisTemplate.opsForValue().increment(ipKey, 1);
-        Long userCount = redisTemplate.opsForValue().increment(userKey, 1);
+        Long ipCount = this.redisTemplate.opsForValue().increment(ipKey, 1);
+        Long userCount = this.redisTemplate.opsForValue().increment(userKey, 1);
 
         if (Objects.equals(ipCount, 1L)) {
-            redisTemplate.expire(ipKey, Duration.ofMinutes(15));
+            this.redisTemplate.expire(ipKey, Duration.ofMinutes(15));
         }
         if (Objects.equals(userCount, 1L)) {
-            redisTemplate.expire(userKey, Duration.ofMinutes(15));
+            this.redisTemplate.expire(userKey, Duration.ofMinutes(15));
         }
 
         long ipCnt = ipCount == null ? 0L : ipCount;
@@ -166,19 +166,19 @@ public class AuthService {
             throw new RuntimeException("Generate temp token error", e);
         }*/
 
-        keyInRedisUtils.punishKey("tempToken:" + token, tempData, Duration.ofMinutes(5));
+        this.keyInRedisUtils.punishKey("tempToken:" + token, tempData, Duration.ofMinutes(5));
 
         return token;
     }
 
     private TempTokenData verifyTempToken(String token) {
         try {
-            String data = (String) redisTemplate.opsForValue().get("tempToken:" + token);
+            String data = (String) this.redisTemplate.opsForValue().get("tempToken:" + token);
             log.info("token data: {}", data);
             if (data == null) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Expired or invalid token");
             }
-            return objectMapper.readValue(data, TempTokenData.class);
+            return this.objectMapper.readValue(data, TempTokenData.class);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token", e);
         }
