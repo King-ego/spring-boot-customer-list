@@ -28,3 +28,4 @@ public class SessionAuthentication extends AbstractAuthenticationToken{
         return session;
     }
 }
+
