@@ -21,8 +21,8 @@ public class GetClientIpUseCase {
         return request.getRemoteAddr();
     }
 
-    private static boolean isTrustedProxy(String remoteAddr) {
-        return TRUSTED_PROXIES.contains(remoteAddr);
+    private static boolean isTrustedProxy(String remoteAdder) {
+        return TRUSTED_PROXIES.contains(remoteAdder);
     }
 }
 
