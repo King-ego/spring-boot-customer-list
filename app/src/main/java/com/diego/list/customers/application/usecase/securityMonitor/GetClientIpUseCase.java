@@ -7,6 +7,12 @@ import java.util.Set;
 
 @Component
 public class GetClientIpUseCase {
+    private static final Set<String> TRUSTED_PROXIES = Set.of(
+            "127.0.0.1",       // localhost (dev)
+            "10.0.0.1",        // seu load balancer interno
+            "172.16.0.1"       // outro proxy interno, se houver
+    );
+
     public static String getClientIP(HttpServletRequest request) {
         String xfHeader = request.getHeader("X-Forwarded-For");
         if (xfHeader != null && isTrustedProxy(request.getRemoteAddr())) {
@@ -15,9 +21,9 @@ public class GetClientIpUseCase {
         return request.getRemoteAddr();
     }
 
-    private static final Set<String> TRUSTED_PROXIES = Set.of(
-            "127.0.0.1",       // localhost (dev)
-            "10.0.0.1",        // seu load balancer interno
-            "172.16.0.1"       // outro proxy interno, se houver
-    );
+    private static boolean isTrustedProxy(String remoteAddr) {
+        return TRUSTED_PROXIES.contains(remoteAddr);
+    }
 }
+
+
