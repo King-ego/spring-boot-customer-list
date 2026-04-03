@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 public class GetClientIpUseCase {
     public static String getClientIP(HttpServletRequest request) {
         String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader != null) {
-            return xfHeader.split(",")[0];
+        if (xfHeader != null && isTrustedProxy(request.getRemoteAddr())) {
+            return xfHeader.split(",")[0].trim();
         }
         return request.getRemoteAddr();
-    }
 }
