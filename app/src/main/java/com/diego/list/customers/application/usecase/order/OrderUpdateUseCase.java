@@ -33,3 +33,4 @@ public class OrderUpdateUseCase {
         order.forEach(o -> this.orderRepository.updateParse(o.getGroupId(), status, paymentId, paymentDate));
     }
 }
+
