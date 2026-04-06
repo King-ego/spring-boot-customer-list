@@ -46,5 +46,4 @@ public class Session {
     private LocalDateTime revokedAt;
     private String revokedBy;
     private String revocationReason;
-
 }
