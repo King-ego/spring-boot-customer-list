@@ -52,7 +52,6 @@ public class Product {
     }
 }
 
-
 /*
 import jakarta.persistence.*;
 
